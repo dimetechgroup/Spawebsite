@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Mail,
   Phone,
@@ -11,10 +12,11 @@ import {
 } from 'lucide-react'
 
 const ContactPage: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <div className='bg-white min-h-screen'>
       {/* HERO SECTION */};
-      <section className='relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>
+      <section className='relative pt-28 pb-10 lg:pt-36 lg:pb-14 overflow-hidden'>
         <div className='absolute inset-0 z-0'>
           <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
         </div>
@@ -30,7 +32,7 @@ const ContactPage: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8'>
+              <h1 className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8' style={{ fontFamily: '"Playfair Display", serif' }}>
                 Get in Touch <br />
                 <span className='text-[#F7A300]'>with</span>{' '}
                 <span className='text-[#207D40]'>MySpa.</span>
@@ -77,7 +79,7 @@ const ContactPage: React.FC = () => {
         </div>
       </section>
       {/* CONTACT GRID */}
-      <section className='pb-32'>
+      <section className='pb-16'>
         <div className='container mx-auto px-4 md:px-8'>
           <div className='grid lg:grid-cols-2 gap-16 items-start'>
             {/* LEFT: INFO CARDS */}
@@ -131,16 +133,35 @@ const ContactPage: React.FC = () => {
                       P.O Address - 25733 - 00502 Karen.
                     </p>
                   </div>
-                  <div className='pt-6 border-t border-gray-50 flex items-center justify-between'>
+
+                  {/* Map embed */}
+                  <div className='rounded-2xl overflow-hidden border border-gray-100 h-48'>
+                    <iframe
+                      title='Karen Office Park'
+                      src='https://maps.google.com/maps?q=Karen+Office+Park,+Karen,+Nairobi,+Kenya&output=embed'
+                      width='100%'
+                      height='100%'
+                      style={{ border: 0 }}
+                      loading='lazy'
+                      referrerPolicy='no-referrer-when-downgrade'
+                    />
+                  </div>
+
+                  <div className='pt-4 border-t border-gray-50 flex items-center justify-between'>
                     <div className='flex items-center gap-3'>
                       <ShieldCheck size={16} className='text-[#207D40]' />
                       <span className='text-[11px] font-black uppercase tracking-widest text-gray-400'>
                         Enterprise Ready
                       </span>
                     </div>
-                    <button className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] hover:translate-x-1 transition-transform'>
+                    <a
+                      href='https://www.google.com/maps/search/Karen+Office+Park,+Karen,+Nairobi,+Kenya'
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] hover:translate-x-1 transition-transform'
+                    >
                       View on Map <ArrowRight size={12} />
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -239,7 +260,7 @@ const ContactPage: React.FC = () => {
         </div>
       </section>
       {/* FINAL FAQ REDIRECT */}
-      <section className='py-24 bg-gray-50/50'>
+      <section className='py-14 bg-gray-50/50'>
         <div className='container mx-auto px-4 md:px-8 text-center'>
           <div className='max-w-xl mx-auto'>
             <MessageSquare size={32} className='mx-auto text-[#F7A300] mb-6' />
@@ -250,7 +271,7 @@ const ContactPage: React.FC = () => {
               Explore our comprehensive knowledge base for quick answers to
               common technical and billing questions.
             </p>
-            <button className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'>
+            <button onClick={() => navigate('/faq')} className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'>
               Go to FAQ Center
             </button>
           </div>

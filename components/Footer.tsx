@@ -28,7 +28,16 @@ const Footer: React.FC = () => {
             </div>
             <p className='text-gray-400 text-sm mb-6 leading-relaxed'>
               Leading the wellness industry with cutting-edge management tools.
-              Powered by Dimetech Group Ltd.
+              Powered by{' '}
+              <a
+                href='https://dimetechgroup.com/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-gray-300 hover:text-white underline underline-offset-2 transition-colors duration-200'
+              >
+                Dimetech Group Ltd
+              </a>
+              .
             </p>
           </div>
 

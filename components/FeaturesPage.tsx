@@ -1,20 +1,7 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
-  Calendar,
-  CreditCard,
-  Globe,
-  Megaphone,
-  Package,
-  Droplets,
-  Gift,
-  Ticket,
-  Star,
   Users,
-  MessageSquare,
-  UserCheck,
-  MapPin,
-  BarChart3,
-  ShieldCheck,
   Sparkles,
   ArrowUpRight,
   Zap,
@@ -24,133 +11,16 @@ import {
   Receipt,
   Wallet,
   Play,
-  Activity,
-  TrendingUp
+  Activity
 } from 'lucide-react'
-
-const anchorFeatures = [
-  {
-    name: 'Dashboard',
-    icon: LayoutGrid,
-    desc: 'Your spa’s command center. Get a real-time overview of revenue, customers, payments, orders and inventory - all in one clean, intuitive dashboard.',
-    size: 'lg',
-    color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070'
-  },
-  {
-    name: 'CRM',
-    icon: Users,
-    desc: 'Manage client profiles, preferences, and history. Build loyalty programs, track visits, and personalize experiences.',
-    size: 'sm',
-    color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053'
-  },
-  {
-    name: 'Orders & Invoices',
-    icon: Receipt,
-    desc: 'Simplify billing with automated invoices, order tracking, and payment integration for smooth transactions.',
-    size: 'sm',
-    color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011'
-  },
-  {
-    name: 'Accounting',
-    icon: Wallet,
-    desc: 'Stay on top of finances with integrated accounting tools. Track expenses, revenue, and profitability with ease. Generate reports for smarter decisions.',
-    size: 'md',
-    color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069'
-  },
-  {
-    name: 'Stock & Inventory',
-    icon: Package,
-    desc: 'Track product usage, supplier orders, and stock levels in real time to minimize waste and optimize costs.',
-    color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070',
-    hidden: true
-  },
-  {
-    name: 'Reports & Analytics',
-    icon: BarChart3,
-    desc: 'Turn raw data into actionable insight. Generate detailed reports on revenue, staff performance, and client trends.',
-    color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015',
-    hidden: true
-  },
-  {
-    name: 'HR Management',
-    icon: UserCheck,
-    desc: 'Manage staff schedules, attendance, payroll, and performance — tailored for the unique rhythms of spa operations.',
-    color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974',
-    hidden: true
-  }
-]
-
-const utilityFeatures = [
-  {
-    name: 'Gift / Vouchers',
-    icon: Gift,
-    desc: 'Boost sales with customizable gift cards and vouchers. Perfect for promotions and rewards.'
-  },
-  {
-    name: 'HR Management',
-    icon: Users,
-    desc: 'Manage staff schedules, attendance, payroll, and performance tailored for spa operations.'
-  },
-  {
-    name: 'Stock & Inventory',
-    icon: Package,
-    desc: 'Track product usage, supplier orders, and stock levels in real time to optimize costs.'
-  },
-  {
-    name: 'Point of Sale',
-    icon: CreditCard,
-    desc: 'Seamless integrated payments and retail checkouts.'
-  },
-  {
-    name: 'Online Booking',
-    icon: Globe,
-    desc: '24/7 confirmations via web and mobile interfaces.'
-  },
-  {
-    name: 'Marketing Campaigns',
-    icon: Megaphone,
-    desc: 'Hyper-targeted SMS and email outreach tools.'
-  },
-  {
-    name: 'Product Consumption',
-    icon: Droplets,
-    desc: 'Track back-bar usage during treatments automatically.'
-  },
-  {
-    name: 'Discount Coupons',
-    icon: Ticket,
-    desc: 'Custom codes for seasonal and influencer promotions.'
-  },
-  {
-    name: 'Reward Points',
-    icon: Star,
-    desc: 'Loyalty programs that drive repeat visits and retention.'
-  },
-  {
-    name: 'Automated Feedback',
-    icon: MessageSquare,
-    desc: 'Instant customer surveys and reputation management.'
-  },
-  {
-    name: 'Incentive Management',
-    icon: TrendingUp,
-    desc: 'Performance-based reward automation for therapists.'
-  },
-  {
-    name: 'Data Security',
-    icon: ShieldCheck,
-    desc: 'Enterprise-grade encryption and automated backups.'
-  }
-]
+import {
+  anchorFeatures,
+  utilityFeatures,
+  featuresPageMarqueeItems
+} from '@/data'
 
 const FeaturesPage: React.FC = () => {
+  const navigate = useNavigate()
   const marqueeItems = [
     { text: 'REAL-TIME METRICS', icon: Activity },
     { text: 'MOBILE-FIRST UI', icon: Smartphone },
@@ -177,7 +47,10 @@ const FeaturesPage: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className='text-4xl md:text-5xl lg:text-6xl font-black text-[#111827] leading-[1.1] tracking-tighter mb-8'>
+              <h1
+                className='text-4xl md:text-5xl lg:text-6xl font-black text-[#111827] leading-[1.1] tracking-tighter mb-8'
+                style={{ fontFamily: '"Playfair Display", serif' }}
+              >
                 All-in-One <br />
                 <span className='text-transparent bg-clip-text bg-gradient-to-r from-[#207D40] to-[#F7A300]'>
                   ERP Software
@@ -206,7 +79,10 @@ const FeaturesPage: React.FC = () => {
                 </div>
 
                 <div className='absolute -bottom-4 -left-6 z-20'>
-                  <button className='bg-[#207D40] text-white px-8 py-4 rounded-xl font-black text-base hover:bg-[#1a6333] transition-all flex items-center gap-2 group shadow-xl active:scale-95 border-2 border-white whitespace-nowrap'>
+                  <button
+                    onClick={() => navigate('/contact')}
+                    className='bg-[#207D40] text-white px-8 py-4 rounded-xl font-black text-base hover:bg-[#1a6333] transition-all flex items-center gap-2 group shadow-xl active:scale-95 border-2 border-white whitespace-nowrap'
+                  >
                     Request a Demo
                     <ArrowUpRight
                       size={18}
@@ -386,7 +262,7 @@ const FeaturesPage: React.FC = () => {
                 <p
                   className='font-body'
                   style={{
-                    color: 'rgba(209,213,219,0.85)',
+                    color: 'rgba(229,233,239,0.95)',
                     fontSize: '0.85rem',
                     maxWidth: '520px',
                     lineHeight: 1.75
@@ -472,7 +348,7 @@ const FeaturesPage: React.FC = () => {
                 <p
                   className='font-body'
                   style={{
-                    color: 'rgba(209,213,219,0.8)',
+                    color: 'rgba(229,233,239,0.95)',
                     fontSize: '0.78rem',
                     lineHeight: 1.7
                   }}
@@ -557,7 +433,7 @@ const FeaturesPage: React.FC = () => {
                 <p
                   className='font-body'
                   style={{
-                    color: 'rgba(209,213,219,0.8)',
+                    color: 'rgba(229,233,239,0.95)',
                     fontSize: '0.78rem',
                     lineHeight: 1.7
                   }}
@@ -655,7 +531,7 @@ const FeaturesPage: React.FC = () => {
                 <p
                   className='font-body'
                   style={{
-                    color: 'rgba(209,213,219,0.85)',
+                    color: 'rgba(229,233,239,0.95)',
                     fontSize: '0.85rem',
                     maxWidth: '600px',
                     lineHeight: 1.75
@@ -736,7 +612,7 @@ const FeaturesPage: React.FC = () => {
               <p
                 className='font-body'
                 style={{
-                  color: 'rgba(255,255,255,0.65)',
+                  color: 'rgba(255,255,255,0.88)',
                   fontSize: '0.8rem',
                   lineHeight: 1.7,
                   marginBottom: '2rem'
@@ -867,7 +743,7 @@ const FeaturesPage: React.FC = () => {
                     <p
                       className='font-body'
                       style={{
-                        color: 'rgba(209,213,219,0.8)',
+                        color: 'rgba(229,233,239,0.95)',
                         fontSize: '0.78rem',
                         lineHeight: 1.7
                       }}
@@ -929,6 +805,19 @@ const FeaturesPage: React.FC = () => {
                 </>
               )}
             </div>
+
+            {playing && (
+              <div className='flex justify-center mt-8'>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className='flex items-center gap-2.5 bg-[#207D40] hover:bg-[#1a6333] text-white text-sm font-bold px-8 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 shadow-lg'
+                  style={{ fontFamily: '"DM Sans", sans-serif' }}
+                >
+                  Book Your Demo
+                  <ArrowUpRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -987,7 +876,7 @@ const FeaturesPage: React.FC = () => {
         <div className='flex whitespace-nowrap animate-marquee items-center'>
           {[...Array(6)].map((_, i) => (
             <div key={i} className='flex items-center'>
-              {marqueeItems.map((item, idx) => (
+              {featuresPageMarqueeItems.map((item, idx) => (
                 <div key={idx} className='flex items-center mx-12'>
                   <span className='text-white/40 text-2xl mr-12 font-light'>
                     /
@@ -1028,11 +917,11 @@ const FeaturesPage: React.FC = () => {
               your staff, and delight every guest.
             </p>
             <div className='flex flex-col sm:flex-row items-center justify-center gap-5'>
-              <button className='bg-[#F7A300] text-white px-10 py-4 rounded-xl font-black text-base hover:bg-orange-600 transition-all shadow-xl active:scale-95'>
+              <button
+                onClick={() => navigate('/contact')}
+                className='bg-[#F7A300] text-white px-10 py-4 rounded-xl font-black text-base hover:bg-orange-600 transition-all shadow-xl active:scale-95'
+              >
                 Start Your Transformation
-              </button>
-              <button className='text-white font-bold text-base hover:underline underline-offset-8'>
-                Talk to an Expert
               </button>
             </div>
           </div>
