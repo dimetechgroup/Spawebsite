@@ -1,20 +1,10 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Search,
   ArrowRight,
-  Bookmark,
   Clock,
-  User,
-  Sparkles,
-  ArrowUpRight,
-  BarChart3,
   ShieldCheck,
-  Download,
-  ChevronRight,
   TrendingUp,
-  Activity,
-  Inbox,
   Calendar,
   Mail
 } from 'lucide-react'

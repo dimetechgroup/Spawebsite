@@ -308,7 +308,7 @@ export const blogPosts: BlogPost[] = [
     title: 'Case Study: How ERP Increased Spa Revenue by 40%',
     preview:
       'A detailed walkthrough of how Zenith Wellness migrated to MySpa and optimized their resource allocation for massive growth.',
-    image: 'images/DSC06632.jpg',
+    image: 'images/Accounts.png',
     date: 'Sep 10, 2024',
     readTime: '15 min read'
   }
@@ -331,7 +331,7 @@ export const anchorFeatures: AnchorFeature[] = [
     desc: "Your spa's command center. Get a real-time overview of revenue, customers, payments, orders and inventory, all in one intuitive dashboard.",
     size: 'lg',
     color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070'
+    img: '/images/Dashboard.png'
   },
   {
     name: 'CRM',
@@ -339,7 +339,7 @@ export const anchorFeatures: AnchorFeature[] = [
     desc: 'Manage client profiles, preferences, and history. Build loyalty programs, track visits, and personalize experiences.',
     size: 'sm',
     color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2053'
+    img: '/images/CRM.png'
   },
   {
     name: 'Orders & Invoices',
@@ -347,7 +347,7 @@ export const anchorFeatures: AnchorFeature[] = [
     desc: 'Simplify billing with automated invoices, order tracking, and payment integration for smooth transactions.',
     size: 'sm',
     color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=2011'
+    img: '/images/Orders.png'
   },
   {
     name: 'Accounting',
@@ -355,14 +355,14 @@ export const anchorFeatures: AnchorFeature[] = [
     desc: 'Stay on top of finances with integrated accounting tools. Track expenses, revenue, and profitability with ease. Generate reports for smarter decisions.',
     size: 'md',
     color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069'
+    img: '/images/Accounts.png'
   },
   {
     name: 'Stock & Inventory',
     icon: Package,
     desc: 'Track product usage, supplier orders, and stock levels in real time to minimize waste and optimize costs.',
     color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070',
+    img: '/images/Stocks.png',
     hidden: true
   },
   {
@@ -370,7 +370,7 @@ export const anchorFeatures: AnchorFeature[] = [
     icon: BarChart3,
     desc: 'Turn raw data into actionable insight. Generate detailed reports on revenue, staff performance, and client trends.',
     color: 'bg-[#F7A300]',
-    img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015',
+    img: '/images/Report.png',
     hidden: true
   },
   {
@@ -378,7 +378,7 @@ export const anchorFeatures: AnchorFeature[] = [
     icon: UserCheck,
     desc: 'Manage staff schedules, attendance, payroll, and performance — tailored for the unique rhythms of spa operations.',
     color: 'bg-[#207D40]',
-    img: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974',
+    img: '/images/HR.png',
     hidden: true
   }
 ]

@@ -205,20 +205,7 @@ const FeaturesPage: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.4) 45%, transparent 100%)'
-                }}
-              />
-              {/* Subtle top-left glow */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '300px',
-                  height: '300px',
-                  background:
-                    'radial-gradient(circle, rgba(32,125,64,0.18) 0%, transparent 70%)',
-                  pointerEvents: 'none'
+                    'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 45%, transparent 100%)'
                 }}
               />
               <div
@@ -304,7 +291,7 @@ const FeaturesPage: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)'
+                    'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)'
                 }}
               />
               <div
@@ -389,7 +376,7 @@ const FeaturesPage: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)'
+                    'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)'
                 }}
               />
               <div
@@ -474,20 +461,7 @@ const FeaturesPage: React.FC = () => {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)'
-                }}
-              />
-              {/* Subtle amber glow */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  width: '280px',
-                  height: '280px',
-                  background:
-                    'radial-gradient(circle, rgba(247,163,0,0.12) 0%, transparent 70%)',
-                  pointerEvents: 'none'
+                    'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)'
                 }}
               />
               <div
@@ -696,7 +670,7 @@ const FeaturesPage: React.FC = () => {
                       position: 'absolute',
                       inset: 0,
                       background:
-                        'linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)'
+                        'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)'
                     }}
                   />
                   <div
