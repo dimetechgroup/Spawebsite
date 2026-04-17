@@ -1,57 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MySpa | Ultimate Salon & Spa Management Software</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-      html {
-        font-size: 17px;
-      }
-      body {
-        font-family: 'Inter', sans-serif;
-        scroll-behavior: smooth;
-      }
-      .gradient-bg {
-        background: linear-gradient(135deg, #f0fdf4 0%, #fffbf0 100%);
-      }
-      .green-orange-gradient {
-        background: linear-gradient(to right, #207D40, #F7A300);
-      }
-      .text-gradient {
-        background: linear-gradient(to right, #207D40, #F7A300);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
 
-      /* Custom Scrollbar Styling - BRAND COLORS */
-      ::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MySpa | Ultimate Salon & Spa Management Software</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    html {
+      font-size: 17px;
+    }
 
-      ::-webkit-scrollbar-track {
-        background: #f1f5f9;
-      }
+    body {
+      font-family: 'Inter', sans-serif;
+      scroll-behavior: smooth;
+    }
 
-      ::-webkit-scrollbar-thumb {
-        background: linear-gradient(to bottom, #207D40, #F7A300);
-        border-radius: 10px;
-        border: 3px solid #f1f5f9;
-      }
+    .gradient-bg {
+      background: linear-gradient(135deg, #f0fdf4 0%, #fffbf0 100%);
+    }
 
-      ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(to bottom, #1a6333, #d98f00);
-      }
+    .green-orange-gradient {
+      background: linear-gradient(to right, #207D40, #F7A300);
+    }
 
-      /* Firefox Support */
-      * {
-        scrollbar-width: thin;
-        scrollbar-color: #207D40 #f1f5f9;
-      }
-    </style>
+    .text-gradient {
+      background: linear-gradient(to right, #207D40, #F7A300);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Custom Scrollbar Styling - BRAND COLORS */
+    ::-webkit-scrollbar {
+      width: 12px;
+      height: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #207D40, #F7A300);
+      border-radius: 10px;
+      border: 3px solid #f1f5f9;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(to bottom, #1a6333, #d98f00);
+    }
+
+    /* Firefox Support */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #207D40 #f1f5f9;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -62,10 +69,12 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
+
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>

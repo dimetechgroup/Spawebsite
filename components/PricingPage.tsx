@@ -1,175 +1,31 @@
 import React, { useState } from 'react'
-import {
-  Check,
-  ArrowRight,
-  Sparkles,
-  Globe,
-  Rocket,
-  Landmark,
-  HelpCircle,
-  Shield,
-  ShieldCheck,
-  Activity,
-  BarChart3
-} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Check, ArrowRight, Sparkles, Rocket, Landmark } from 'lucide-react'
+import { plans } from '@/data'
 
-// ─── Brand tokens ───────────────────────────────────────────────
-const G = '#2E8B35' // brand green
-const AM = '#F5A800' // brand amber
-const Gr = a => `rgba(46,139,53,${a})` // green with alpha
-const Am = a => `rgba(245,168,0,${a})` // amber with alpha
-// ────────────────────────────────────────────────────────────────
+const G = '#2E8B35'
+const AM = '#F5A800'
+const Gr = (a: number) => `rgba(46,139,53,${a})`
+const Am = (a: number) => `rgba(245,168,0,${a})`
 
-const plans = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    icon: Rocket,
-    price: '3,000',
-    tagline: 'Perfect for small businesses starting out.',
-    features: [
-      '1–3 Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling',
-      'One-off Onboarding: KES 30,000'
-    ],
-    buttonText: 'Start Free Trial',
-    theme: 'light'
-  },
-  {
-    id: 'standard',
-    name: 'Standard',
-    icon: Sparkles,
-    price: '5,000',
-    tagline: 'Designed for growing medium to high-end businesses.',
-    features: [
-      '4–20 Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling',
-      'One-off Onboarding: KES 40,000'
-    ],
-    buttonText: 'Join the Standard Plan',
-    theme: 'green',
-    popular: true
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    icon: Landmark,
-    price: '10,000',
-    tagline: 'Built for high-end spa businesses at scale.',
-    features: [
-      'Unlimited Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling',
-      'One-off Onboarding: KES 50,000'
-    ],
-    buttonText: 'Request Premium Access',
-    theme: 'dark'
-  }
-]
+const ANNUAL_DISCOUNT = 0.15
 
-const comparisonData = [
-  {
-    category: 'Experience & Booking',
-    features: [
-      { name: '24/7 Online Booking', starter: true, growth: true, pro: true },
-      {
-        name: 'Branded Client App',
-        starter: false,
-        growth: 'Optional',
-        pro: true
-      },
-      {
-        name: 'Automated Reminders',
-        starter: 'Standard',
-        growth: 'Customizable',
-        pro: 'Priority Routing'
-      },
-      { name: 'Waitlist Management', starter: false, growth: true, pro: true }
-    ]
-  },
-  {
-    category: 'Operations & Staff',
-    features: [
-      {
-        name: 'Inventory Management',
-        starter: 'Basic',
-        growth: 'Advanced',
-        pro: 'Enterprise'
-      },
-      { name: 'Payroll & Commission', starter: false, growth: true, pro: true },
-      { name: 'Staff Mobile App', starter: true, growth: true, pro: true },
-      {
-        name: 'Shift Scheduling',
-        starter: 'Manual',
-        growth: 'Smart Auto',
-        pro: 'Optimized AI'
-      }
-    ]
-  },
-  {
-    category: 'Marketing & Growth',
-    features: [
-      {
-        name: 'Email Marketing',
-        starter: '500/mo',
-        growth: '5,000/mo',
-        pro: 'Unlimited'
-      },
-      { name: 'Loyalty Programs', starter: false, growth: true, pro: true },
-      {
-        name: 'Membership Management',
-        starter: false,
-        growth: true,
-        pro: true
-      },
-      { name: 'Review Automation', starter: true, growth: true, pro: true }
-    ]
-  },
-  {
-    category: 'Intelligence & Scale',
-    features: [
-      { name: 'Standard Reports', starter: true, growth: true, pro: true },
-      { name: 'Advanced Analytics', starter: false, growth: true, pro: true },
-      {
-        name: 'Multi-Location Control',
-        starter: false,
-        growth: false,
-        pro: true
-      },
-      { name: 'API & Webhooks', starter: false, growth: false, pro: true }
-    ]
-  }
-]
+function formatPrice (n: number) {
+  return n.toLocaleString('en-KE')
+}
 
 const PricingPage = () => {
-  const [billingCycle, setBillingCycle] = useState('monthly')
-  const [activeCategory, setActiveCategory] = useState(0)
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(
+    'monthly'
+  )
+  const navigate = useNavigate()
+
+  const getPrice = (monthlyPrice: number) => {
+    if (billingCycle === 'yearly') {
+      return formatPrice(Math.round(monthlyPrice * (1 - ANNUAL_DISCOUNT)))
+    }
+    return formatPrice(monthlyPrice)
+  }
 
   return (
     <div
@@ -204,27 +60,40 @@ const PricingPage = () => {
         }
         .cta-primary:hover { background: #256b2b; transform: translateY(-2px); box-shadow: 0 14px 40px rgba(46,139,53,0.45); }
 
-       .ghost-btn {
-  background: transparent;
-  border: 1px solid #e2e8f0;
-  color: #6b7280;
-  padding: 15px 28px; border-radius: 12px;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600; font-size: 12px;
-  letter-spacing: 0.06em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.18s;
-}
-.ghost-btn:hover { border-color: rgba(46,139,53,0.55); color: #2E8B35; }
-
-        .billing-btn {
-          padding: 9px 24px; border-radius: 8px; border: none; cursor: pointer;
-          font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 11px;
-          letter-spacing: 0.05em; transition: all 0.15s;
+        .ghost-btn {
+          background: transparent;
+          border: 1px solid #e2e8f0;
+          color: #6b7280;
+          padding: 15px 28px; border-radius: 12px;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600; font-size: 12px;
+          letter-spacing: 0.06em; text-transform: uppercase;
+          cursor: pointer; transition: all 0.18s;
         }
+        .ghost-btn:hover { border-color: rgba(46,139,53,0.55); color: #2E8B35; }
 
-        .highlight-strip {
-          border-top: 1px solid #f1f5f9; padding-top: 48px;
-          display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+        /* ── Toggle switch ── */
+        .toggle-track {
+          position: relative;
+          width: 52px; height: 28px;
+          border-radius: 99px;
+          cursor: pointer;
+          transition: background 0.22s;
+          flex-shrink: 0;
+        }
+        .toggle-thumb {
+          position: absolute;
+          top: 4px; left: 4px;
+          width: 20px; height: 20px;
+          border-radius: 50%;
+          background: #fff;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+          transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .toggle-thumb.on { transform: translateX(24px); }
+
+        .price-val {
+          transition: opacity 0.18s, transform 0.18s;
         }
 
         @keyframes fadeUp {
@@ -232,49 +101,23 @@ const PricingPage = () => {
           to   { opacity: 1; transform: translateY(0); }
         }
         .fade-up { animation: fadeUp 0.6s ease both; }
-        @keyframes slideIn {
-  from { opacity: 0; transform: translateX(18px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-        @keyframes pulse-bar {
-          0%,100% { opacity: 0.4; transform: scaleY(1); }
-          50%      { opacity: 1;   transform: scaleY(1.18); }
-        }
-        .stat-bar { animation: pulse-bar 2.8s ease-in-out infinite; transform-origin: center; }
-
-        .cmp-row { transition: background 0.12s; }
-        .cmp-row:hover { background: rgba(255,255,255,0.024) !important; }
-
-        /* White diagonal cut at bottom of hero */
-        .hero-cut {
-          position: absolute; bottom: -1px; left: 0; right: 0; height: 72px;
-          background: #fff; clip-path: polygon(0 100%, 100% 20%, 100% 100%); z-index: 2;
-        }
 
         @media (max-width: 900px) {
           .plans-grid    { grid-template-columns: 1fr !important; }
-          .highlight-strip { grid-template-columns: 1fr 1fr !important; }
-          .hero-grid     { grid-template-columns: 1fr !important; }
           .hero-img-col  { display: none !important; }
         }
       `}</style>
 
-      {/* ══════════════════════════════════════════════
-          HERO — pure neutral dark, brand glows
-      ══════════════════════════════════════════════ */}
+      {/* ══════════════════════ HERO ══════════════════════ */}
       <section
         style={{
           position: 'relative',
           background: '#ffffff',
           overflow: 'hidden',
-          minHeight: '120vh',
           display: 'flex',
           alignItems: 'center'
         }}
       >
-        {/* Fine grid */}
-        ;
         <div
           style={{
             position: 'absolute',
@@ -285,414 +128,35 @@ const PricingPage = () => {
             zIndex: 0
           }}
         />
-        {/* Green glow — top-left */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-160px',
-            left: '-140px',
-            width: '720px',
-            height: '720px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${Gr(
-              0.17
-            )} 0%, transparent 68%)`,
-            zIndex: 0
-          }}
-        />
-        {/* Amber glow — bottom-right */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-100px',
-            right: '4%',
-            width: '580px',
-            height: '580px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${Am(
-              0.11
-            )} 0%, transparent 68%)`,
-            zIndex: 0
-          }}
-        />
-        {/* Soft centre bloom */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '42%',
-            left: '40%',
-            width: '300px',
-            height: '300px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${Gr(
-              0.05
-            )} 0%, transparent 70%)`,
-            zIndex: 0
-          }}
-        />
         <div
           style={{
             width: '100%',
             maxWidth: '1920px',
             margin: '0 auto',
-            padding: '100px 5vw 160px',
+            padding: '80px 5vw 60px',
             position: 'relative',
-            zIndex: 1
+            zIndex: 1,
+            textAlign: 'center'
           }}
         >
-          <div
-            className='hero-grid'
+          <h1
             style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 580px',
-              alignItems: 'center',
-              gap: '80px'
+              fontSize: 'clamp(36px, 4vw, 64px)',
+              fontWeight: 800,
+              lineHeight: 1.0,
+              color: '#3a3939',
+              letterSpacing: '-0.04em',
+              margin: 0,
+              fontFamily: '"Playfair Display", serif'
             }}
           >
-            {/* ── Left col ── */}
-            <div>
-              {/* Eyebrow pill */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  marginBottom: '36px',
-                  background: Gr(0.1),
-                  border: `1px solid ${Gr(0.25)}`,
-                  borderRadius: '99px',
-                  padding: '7px 18px 7px 12px'
-                }}
-              >
-                <div
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background: G
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    letterSpacing: '0.4em',
-                    textTransform: 'uppercase',
-                    color: G
-                  }}
-                >
-                  Value · Logic · Scale
-                </span>
-              </div>
-              {/* ── Hero heading — reduced from clamp(52px, 6vw, 98px) to clamp(36px, 4vw, 64px) ── */}
-              <h1
-                style={{
-                  fontSize: 'clamp(36px, 4vw, 64px)',
-                  fontWeight: 800,
-                  lineHeight: 1.0,
-                  color: '#3a3939',
-                  letterSpacing: '-0.04em',
-                  marginBottom: '28px'
-                }}
-              >
-                Pricing
-                <br />
-                <span style={{ color: G }}>For</span>{' '}
-                <span style={{ color: AM }}>The</span>
-                <br />
-                Modern Brand.
-              </h1>
-              <p
-                style={{
-                  fontSize: '16px',
-                  color: 'rgba(255,255,255,0.42)',
-                  lineHeight: 1.85,
-                  marginBottom: '52px',
-                  maxWidth: '500px',
-                  fontWeight: 400
-                }}
-              >
-                Simple pricing that scales with you — whether you're a boutique
-                spa or a multi-location enterprise brand.
-              </p>
-              {/* Stats panel */};
-              <div
-                style={{
-                  display: 'flex',
-                  marginBottom: '52px',
-                  background: '#f8fafc',
-                  border: '1px solid #f1f5f9',
-                  borderRadius: '16px',
-                  overflow: 'hidden'
-                }}
-              >
-                {[
-                  { num: '2,400+', label: 'Elite Spas' },
-                  { num: '99.9%', label: 'Uptime SLA' },
-                  { num: '24/7', label: 'Support' }
-                ].map((s, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      flex: 1,
-                      padding: '24px 28px',
-                      borderRight: i < 2 ? '1px solid #f1f5f9' : 'none',
-                      position: 'relative'
-                    }}
-                  >
-                    {i === 0 && (
-                      <div
-                        className='stat-bar'
-                        style={{
-                          position: 'absolute',
-                          left: 0,
-                          top: '22%',
-                          bottom: '22%',
-                          width: '3px',
-                          background: G,
-                          borderRadius: '99px'
-                        }}
-                      />
-                    )}
-                    <div
-                      style={{
-                        fontSize: '30px',
-                        fontWeight: 900,
-                        color: '#111827',
-                        letterSpacing: '-0.03em',
-                        lineHeight: 1
-                      }}
-                    >
-                      {s.num}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: '10px',
-                        fontWeight: 600,
-                        color: '#94a3b8',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.14em',
-                        marginTop: '6px'
-                      }}
-                    >
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {/* CTA row */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '16px',
-                  flexWrap: 'wrap'
-                }}
-              >
-                <button className='cta-primary'>
-                  Get Started Now <ArrowRight size={15} />
-                </button>
-                <button className='ghost-btn'>View Demo</button>
-              </div>
-            </div>
-
-            {/* ── Right col — image ── */}
-            <div className='hero-img-col' style={{ position: 'relative' }}>
-              {/* Glow ring behind card */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: '-14px',
-                  borderRadius: '46px',
-                  background: `linear-gradient(135deg, ${Gr(0.28)}, ${Am(
-                    0.14
-                  )})`,
-                  zIndex: 0,
-                  filter: 'blur(20px)'
-                }}
-              />
-
-              <div
-                style={{
-                  borderRadius: '32px',
-                  overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 64px 120px rgba(0,0,0,0.72)',
-                  position: 'relative',
-                  zIndex: 1
-                }}
-              >
-                <img
-                  src='/images/pricing.jpeg'
-                  alt='Facial Treatment'
-                  style={{
-                    width: '100%',
-                    height: '72vh',
-                    minHeight: '580px',
-                    objectFit: 'cover',
-                    display: 'block'
-                  }}
-                />
-                {/* Bottom fade */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    background:
-                      'linear-gradient(to top, rgba(10,10,11,0.9) 0%, transparent 52%)'
-                  }}
-                />
-                {/* Green accent stripe top-right */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '4px',
-                    height: '42%',
-                    background: `linear-gradient(to bottom, ${G}, transparent)`
-                  }}
-                />
-                {/* Badge bottom-left */}
-                <div
-                  style={{ position: 'absolute', bottom: '32px', left: '28px' }}
-                >
-                  <div
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      background: G,
-                      color: '#fff',
-                      padding: '6px 14px',
-                      borderRadius: '99px',
-                      fontSize: '9px',
-                      fontWeight: 800,
-                      letterSpacing: '0.14em',
-                      textTransform: 'uppercase',
-                      marginBottom: '12px',
-                      boxShadow: `0 4px 16px ${Gr(0.5)}`
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: '5px',
-                        height: '5px',
-                        borderRadius: '50%',
-                        background: '#fff',
-                        opacity: 0.8
-                      }}
-                    />
-                    Case Study
-                  </div>
-                  <p
-                    style={{
-                      color: '#fff',
-                      fontSize: '16px',
-                      fontWeight: 700,
-                      lineHeight: 1.4
-                    }}
-                  >
-                    Trusted by 2,400+
-                    <br />
-                    Elite Spas globally.
-                  </p>
-                </div>
-              </div>
-
-              {/* Floating amber card — top-right */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '-28px',
-                  right: '-28px',
-                  background: AM,
-                  borderRadius: '22px',
-                  padding: '22px 28px',
-                  boxShadow: `0 24px 56px ${Am(0.45)}`,
-                  zIndex: 2
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '34px',
-                    fontWeight: 900,
-                    color: '#fff',
-                    lineHeight: 1
-                  }}
-                >
-                  2,400+
-                </div>
-                <div
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    color: 'rgba(255,255,255,0.75)',
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    marginTop: '5px'
-                  }}
-                >
-                  Elite Spas
-                </div>
-              </div>
-
-              {/* Floating dark card — bottom-left */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: '22%',
-                  left: '-38px',
-                  background: '#141414',
-                  border: `1px solid ${Gr(0.3)}`,
-                  borderRadius: '16px',
-                  padding: '16px 20px',
-                  boxShadow: '0 16px 40px rgba(0,0,0,0.55)',
-                  zIndex: 2,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px'
-                }}
-              >
-                <div
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '10px',
-                    background: Gr(0.14),
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}
-                >
-                  <ShieldCheck size={16} color={G} />
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: '13px',
-                      fontWeight: 800,
-                      color: '#fff',
-                      lineHeight: 1
-                    }}
-                  >
-                    99.9% Uptime
-                  </div>
-                  <div
-                    style={{
-                      fontSize: '10px',
-                      color: 'rgba(255,255,255,0.35)',
-                      fontWeight: 500,
-                      marginTop: '3px'
-                    }}
-                  >
-                    Enterprise SLA
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            Pricing
+            <br />
+            <span style={{ color: G }}>For</span>{' '}
+            <span style={{ color: AM }}>The</span>
+            <br />
+            Modern Brand.
+          </h1>
         </div>
       </section>
 
@@ -709,34 +173,56 @@ const PricingPage = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '16px',
+            gap: '14px',
             flexWrap: 'wrap'
           }}
         >
-          <div
+          {/* Monthly label */}
+          <span
             style={{
-              display: 'flex',
-              background: '#f8fafc',
-              padding: '4px',
-              borderRadius: '12px',
-              border: '1px solid #f1f5f9'
+              fontSize: '13px',
+              fontWeight: 700,
+              color: billingCycle === 'monthly' ? '#111827' : '#94a3b8',
+              transition: 'color 0.18s',
+              letterSpacing: '0.02em'
             }}
           >
-            {['monthly', 'yearly'].map(c => (
-              <button
-                key={c}
-                className='billing-btn'
-                onClick={() => setBillingCycle(c)}
-                style={{
-                  background: billingCycle === c ? '#111827' : 'transparent',
-                  color: billingCycle === c ? '#fff' : '#94a3b8',
-                  textTransform: 'capitalize'
-                }}
-              >
-                {c.charAt(0).toUpperCase() + c.slice(1)}
-              </button>
-            ))}
+            Monthly
+          </span>
+
+          {/* Toggle */}
+          <div
+            className='toggle-track'
+            style={{ background: billingCycle === 'yearly' ? G : '#d1d5db' }}
+            onClick={() =>
+              setBillingCycle(prev =>
+                prev === 'monthly' ? 'yearly' : 'monthly'
+              )
+            }
+            role='switch'
+            aria-checked={billingCycle === 'yearly'}
+          >
+            <div
+              className={`toggle-thumb${
+                billingCycle === 'yearly' ? ' on' : ''
+              }`}
+            />
           </div>
+
+          {/* Annual label */}
+          <span
+            style={{
+              fontSize: '13px',
+              fontWeight: 700,
+              color: billingCycle === 'yearly' ? '#111827' : '#94a3b8',
+              transition: 'color 0.18s',
+              letterSpacing: '0.02em'
+            }}
+          >
+            Annual
+          </span>
+
+          {/* Save badge */}
           <span
             style={{
               background: Gr(0.08),
@@ -752,6 +238,7 @@ const PricingPage = () => {
           >
             Save 15%
           </span>
+
           <span
             style={{
               fontSize: '11px',
@@ -782,6 +269,8 @@ const PricingPage = () => {
           {plans.map((plan, i) => {
             const isGreen = plan.theme === 'green'
             const isDark = plan.theme === 'dark'
+            const displayPrice = getPrice(plan.monthlyPrice)
+
             return (
               <div
                 key={plan.id}
@@ -817,8 +306,8 @@ const PricingPage = () => {
                       top: '-14px',
                       left: '50%',
                       transform: 'translateX(-50%)',
-                      background: G,
-                      color: '#fff',
+                      background: isDark ? AM : G,
+                      color: isDark ? '#111827' : '#fff',
                       padding: '6px 16px',
                       borderRadius: '99px',
                       fontSize: '9px',
@@ -829,7 +318,9 @@ const PricingPage = () => {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '5px',
-                      boxShadow: `0 8px 20px ${Gr(0.35)}`
+                      boxShadow: isDark
+                        ? `0 8px 20px ${Am(0.4)}`
+                        : `0 8px 20px ${Gr(0.35)}`
                     }}
                   >
                     <Check size={9} strokeWidth={4} /> Industry Standard
@@ -879,6 +370,8 @@ const PricingPage = () => {
                   >
                     {plan.tagline}
                   </p>
+
+                  {/* Price display */}
                   <div
                     style={{
                       display: 'flex',
@@ -898,6 +391,7 @@ const PricingPage = () => {
                       KES
                     </span>
                     <span
+                      className='price-val'
                       style={{
                         fontSize: '42px',
                         fontWeight: 900,
@@ -906,7 +400,7 @@ const PricingPage = () => {
                         lineHeight: 1
                       }}
                     >
-                      {plan.price}
+                      {displayPrice}
                     </span>
                     <span
                       style={{
@@ -918,7 +412,28 @@ const PricingPage = () => {
                       / mo
                     </span>
                   </div>
+
+                  {/* Annual sub-label */}
+                  {billingCycle === 'yearly' && (
+                    <p
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: isDark ? 'rgba(255,255,255,0.3)' : '#94a3b8',
+                        marginTop: '4px',
+                        letterSpacing: '0.02em'
+                      }}
+                    >
+                      Billed annually — KES{' '}
+                      {formatPrice(
+                        Math.round(plan.monthlyPrice * (1 - ANNUAL_DISCOUNT)) *
+                          12
+                      )}{' '}
+                      / yr
+                    </p>
+                  )}
                 </div>
+
                 <div
                   style={{
                     height: '1px',
@@ -982,7 +497,7 @@ const PricingPage = () => {
                   className='plan-btn'
                   style={{
                     background: isDark ? AM : isGreen ? G : '#111827',
-                    color: '#fff'
+                    color: isDark ? '#111827' : '#fff'
                   }}
                 >
                   {plan.buttonText} <ArrowRight size={13} />
@@ -992,795 +507,6 @@ const PricingPage = () => {
           })}
         </div>
       </section>
-
-      {/* ══════════════════════════════════════════════
-          COMPARISON — neutral dark, no green-cast bg
-      ══════════════════════════════════════════════ */}
-      <section
-        style={{
-          background: '#0d0d0f',
-          padding: '96px 5vw',
-          position: 'relative',
-          overflow: 'hidden'
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px)',
-            backgroundSize: '52px 52px',
-            zIndex: 0
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            top: '-140px',
-            right: '12%',
-            width: '500px',
-            height: '500px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${Gr(
-              0.1
-            )} 0%, transparent 65%)`,
-            zIndex: 0
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            bottom: '-80px',
-            left: '4%',
-            width: '340px',
-            height: '340px',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${Am(
-              0.08
-            )} 0%, transparent 65%)`,
-            zIndex: 0
-          }}
-        />
-
-        <div
-          style={{
-            position: 'relative',
-            zIndex: 1,
-            maxWidth: '1600px',
-            margin: '0 auto'
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'space-between',
-              gap: '32px',
-              flexWrap: 'wrap',
-              marginBottom: '48px'
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  marginBottom: '16px'
-                }}
-              >
-                <div style={{ width: '28px', height: '2px', background: G }} />
-                <span
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: 700,
-                    letterSpacing: '0.45em',
-                    textTransform: 'uppercase',
-                    color: G
-                  }}
-                >
-                  Capability Matrix
-                </span>
-              </div>
-              <h2
-                style={{
-                  fontSize: 'clamp(32px, 4vw, 56px)',
-                  fontWeight: 800,
-                  color: '#fff',
-                  letterSpacing: '-0.03em',
-                  lineHeight: 1.04
-                }}
-              >
-                Compare Every
-                <br />
-                Detail of the Craft.
-              </h2>
-            </div>
-            <p
-              style={{
-                fontSize: '13px',
-                color: 'rgba(255,255,255,0.38)',
-                fontWeight: 400,
-                lineHeight: 1.8,
-                maxWidth: '360px'
-              }}
-            >
-              Precision engineering at every tier. Whether you're starting out
-              or scaling globally, our features adapt to your operational
-              rhythms.
-            </p>
-          </div>
-
-          {/* Category Tabs */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '10px',
-              marginBottom: '28px',
-              flexWrap: 'wrap'
-            }}
-          >
-            {comparisonData.map((cat, i) => (
-              <button
-                key={i}
-                onClick={() => setActiveCategory(i)}
-                style={{
-                  padding: '10px 20px',
-                  borderRadius: '99px',
-                  border:
-                    activeCategory === i
-                      ? `1px solid ${G}`
-                      : '1px solid rgba(255,255,255,0.1)',
-                  background:
-                    activeCategory === i ? Gr(0.15) : 'rgba(255,255,255,0.03)',
-                  color: activeCategory === i ? G : 'rgba(255,255,255,0.45)',
-                  fontFamily: "'Poppins', sans-serif",
-                  fontWeight: 700,
-                  fontSize: '11px',
-                  letterSpacing: '0.06em',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '7px'
-                }}
-              >
-                {/* Dot indicator */}
-                <span
-                  style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    background:
-                      activeCategory === i ? G : 'rgba(255,255,255,0.2)',
-                    display: 'inline-block',
-                    flexShrink: 0,
-                    transition: 'background 0.2s'
-                  }}
-                />
-                {cat.category}
-              </button>
-            ))}
-          </div>
-
-          {/* Slide counter */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              marginBottom: '20px'
-            }}
-          >
-            {comparisonData.map((_, i) => (
-              <div
-                key={i}
-                onClick={() => setActiveCategory(i)}
-                style={{
-                  height: '3px',
-                  borderRadius: '99px',
-                  background:
-                    activeCategory === i ? G : 'rgba(255,255,255,0.1)',
-                  width: activeCategory === i ? '28px' : '14px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-              />
-            ))}
-            <span
-              style={{
-                fontSize: '10px',
-                color: 'rgba(255,255,255,0.25)',
-                fontWeight: 600,
-                marginLeft: '8px',
-                letterSpacing: '0.1em'
-              }}
-            >
-              {activeCategory + 1} / {comparisonData.length}
-            </span>
-          </div>
-
-          {/* Table slide — animated */}
-          <div
-            key={activeCategory}
-            style={{
-              borderRadius: '20px',
-              overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.07)',
-              animation: 'slideIn 0.35s ease both'
-            }}
-          >
-            <div style={{ overflowX: 'auto' }}>
-              <table
-                style={{
-                  width: '100%',
-                  borderCollapse: 'collapse',
-                  minWidth: '680px'
-                }}
-              >
-                <thead>
-                  <tr style={{ background: '#18181b' }}>
-                    {/* Category label as column header */}
-                    <th
-                      style={{
-                        padding: '22px 28px',
-                        textAlign: 'left',
-                        fontSize: '10px',
-                        fontWeight: 700,
-                        letterSpacing: '0.3em',
-                        textTransform: 'uppercase',
-                        color: 'rgba(255,255,255,0.2)',
-                        width: '38%',
-                        borderBottom: '1px solid rgba(255,255,255,0.07)'
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px'
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: '3px',
-                            height: '14px',
-                            background: G,
-                            borderRadius: '99px'
-                          }}
-                        />
-                        {comparisonData[activeCategory].category}
-                      </div>
-                    </th>
-                    {/* Starter */}
-                    <th
-                      style={{
-                        padding: '22px 24px',
-                        textAlign: 'center',
-                        borderBottom: '1px solid rgba(255,255,255,0.07)',
-                        borderLeft: '1px solid rgba(255,255,255,0.05)'
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '9px',
-                            background: 'rgba(255,255,255,0.05)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          <Rocket size={14} color='rgba(255,255,255,0.4)' />
-                        </div>
-                        <span
-                          style={{
-                            fontSize: '12px',
-                            fontWeight: 800,
-                            color: 'rgba(255,255,255,0.5)',
-                            letterSpacing: '0.05em'
-                          }}
-                        >
-                          Starter
-                        </span>
-                      </div>
-                    </th>
-                    {/* Growth */}
-                    <th
-                      style={{
-                        padding: '22px 24px',
-                        textAlign: 'center',
-                        background: Gr(0.1),
-                        borderBottom: `1px solid ${Gr(0.22)}`,
-                        borderLeft: `1px solid ${Gr(0.15)}`,
-                        borderRight: `1px solid ${Gr(0.15)}`
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '9px',
-                            background: Gr(0.18),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          <Sparkles size={14} color={G} />
-                        </div>
-                        <span
-                          style={{
-                            fontSize: '12px',
-                            fontWeight: 800,
-                            color: G,
-                            letterSpacing: '0.05em'
-                          }}
-                        >
-                          Growth
-                        </span>
-                        <span
-                          style={{
-                            fontSize: '8px',
-                            fontWeight: 800,
-                            background: G,
-                            color: '#fff',
-                            padding: '2px 8px',
-                            borderRadius: '99px',
-                            letterSpacing: '0.1em',
-                            textTransform: 'uppercase'
-                          }}
-                        >
-                          Popular
-                        </span>
-                      </div>
-                    </th>
-                    {/* Pro */}
-                    <th
-                      style={{
-                        padding: '22px 24px',
-                        textAlign: 'center',
-                        borderBottom: '1px solid rgba(255,255,255,0.07)',
-                        borderLeft: '1px solid rgba(255,255,255,0.05)'
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: 'inline-flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '9px',
-                            background: Am(0.12),
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}
-                        >
-                          <Landmark size={14} color={AM} />
-                        </div>
-                        <span
-                          style={{
-                            fontSize: '12px',
-                            fontWeight: 800,
-                            color: AM,
-                            letterSpacing: '0.05em'
-                          }}
-                        >
-                          Pro
-                        </span>
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonData[activeCategory].features.map((row, ri) => (
-                    <tr
-                      key={ri}
-                      className='cmp-row'
-                      style={{
-                        borderBottom:
-                          ri ===
-                          comparisonData[activeCategory].features.length - 1
-                            ? 'none'
-                            : '1px solid rgba(255,255,255,0.04)'
-                      }}
-                    >
-                      <td
-                        style={{
-                          padding: '18px 28px',
-                          fontSize: '13px',
-                          fontWeight: 500,
-                          color: 'rgba(255,255,255,0.6)'
-                        }}
-                      >
-                        {row.name}
-                        <HelpCircle
-                          size={11}
-                          style={{
-                            display: 'inline',
-                            marginLeft: '5px',
-                            color: 'rgba(255,255,255,0.14)',
-                            verticalAlign: 'middle'
-                          }}
-                        />
-                      </td>
-                      <td
-                        style={{
-                          padding: '18px 24px',
-                          textAlign: 'center',
-                          borderLeft: '1px solid rgba(255,255,255,0.04)'
-                        }}
-                      >
-                        {row.starter === true ? (
-                          <Check
-                            size={16}
-                            strokeWidth={3}
-                            style={{
-                              color: 'rgba(255,255,255,0.38)',
-                              margin: '0 auto',
-                              display: 'block'
-                            }}
-                          />
-                        ) : row.starter === false ? (
-                          <span
-                            style={{
-                              color: 'rgba(255,255,255,0.1)',
-                              fontSize: '20px',
-                              display: 'block',
-                              textAlign: 'center'
-                            }}
-                          >
-                            —
-                          </span>
-                        ) : (
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              fontWeight: 600,
-                              color: 'rgba(255,255,255,0.38)'
-                            }}
-                          >
-                            {row.starter}
-                          </span>
-                        )}
-                      </td>
-                      <td
-                        style={{
-                          padding: '18px 24px',
-                          textAlign: 'center',
-                          background: Gr(0.06),
-                          borderLeft: `1px solid ${Gr(0.1)}`,
-                          borderRight: `1px solid ${Gr(0.1)}`
-                        }}
-                      >
-                        {row.growth === true ? (
-                          <Check
-                            size={16}
-                            strokeWidth={3}
-                            style={{
-                              color: G,
-                              margin: '0 auto',
-                              display: 'block'
-                            }}
-                          />
-                        ) : row.growth === false ? (
-                          <span
-                            style={{
-                              color: 'rgba(255,255,255,0.1)',
-                              fontSize: '20px',
-                              display: 'block',
-                              textAlign: 'center'
-                            }}
-                          >
-                            —
-                          </span>
-                        ) : (
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              fontWeight: 700,
-                              color: G
-                            }}
-                          >
-                            {row.growth}
-                          </span>
-                        )}
-                      </td>
-                      <td
-                        style={{
-                          padding: '18px 24px',
-                          textAlign: 'center',
-                          borderLeft: '1px solid rgba(255,255,255,0.04)'
-                        }}
-                      >
-                        {row.pro === true ? (
-                          <Check
-                            size={16}
-                            strokeWidth={3}
-                            style={{
-                              color: AM,
-                              margin: '0 auto',
-                              display: 'block'
-                            }}
-                          />
-                        ) : row.pro === false ? (
-                          <span
-                            style={{
-                              color: 'rgba(255,255,255,0.1)',
-                              fontSize: '20px',
-                              display: 'block',
-                              textAlign: 'center'
-                            }}
-                          >
-                            —
-                          </span>
-                        ) : (
-                          <span
-                            style={{
-                              fontSize: '11px',
-                              fontWeight: 700,
-                              color: AM
-                            }}
-                          >
-                            {row.pro}
-                          </span>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Prev / Next nav */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: '20px'
-            }}
-          >
-            <button
-              onClick={() => setActiveCategory(prev => Math.max(0, prev - 1))}
-              disabled={activeCategory === 0}
-              style={{
-                background:
-                  activeCategory === 0 ? 'rgba(255,255,255,0.04)' : Gr(0.12),
-                border:
-                  activeCategory === 0
-                    ? '1px solid rgba(255,255,255,0.07)'
-                    : `1px solid ${Gr(0.25)}`,
-                color: activeCategory === 0 ? 'rgba(255,255,255,0.2)' : G,
-                padding: '10px 22px',
-                borderRadius: '10px',
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: 700,
-                fontSize: '11px',
-                letterSpacing: '0.08em',
-                cursor: activeCategory === 0 ? 'not-allowed' : 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              ← Previous
-            </button>
-            <button
-              onClick={() =>
-                setActiveCategory(prev =>
-                  Math.min(comparisonData.length - 1, prev + 1)
-                )
-              }
-              disabled={activeCategory === comparisonData.length - 1}
-              style={{
-                background:
-                  activeCategory === comparisonData.length - 1
-                    ? 'rgba(255,255,255,0.04)'
-                    : Gr(0.12),
-                border:
-                  activeCategory === comparisonData.length - 1
-                    ? '1px solid rgba(255,255,255,0.07)'
-                    : `1px solid ${Gr(0.25)}`,
-                color:
-                  activeCategory === comparisonData.length - 1
-                    ? 'rgba(255,255,255,0.2)'
-                    : G,
-                padding: '10px 22px',
-                borderRadius: '10px',
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: 700,
-                fontSize: '11px',
-                letterSpacing: '0.08em',
-                cursor:
-                  activeCategory === comparisonData.length - 1
-                    ? 'not-allowed'
-                    : 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              Next →
-            </button>
-          </div>
-
-          {/* Enterprise nudge */}
-          <div
-            style={{
-              marginTop: '32px',
-              background: Am(0.06),
-              borderRadius: '18px',
-              border: `1px solid ${Am(0.15)}`,
-              padding: '28px 32px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '24px',
-              flexWrap: 'wrap'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '12px',
-                  background: Am(0.12),
-                  border: `1px solid ${Am(0.2)}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0
-                }}
-              >
-                <HelpCircle size={18} color={AM} />
-              </div>
-              <div>
-                <h4
-                  style={{
-                    fontSize: '14px',
-                    fontWeight: 700,
-                    color: '#fff',
-                    marginBottom: '4px'
-                  }}
-                >
-                  Need a custom report?
-                </h4>
-                <p
-                  style={{
-                    fontSize: '12px',
-                    color: 'rgba(255,255,255,0.38)',
-                    fontWeight: 400
-                  }}
-                >
-                  For franchises with 10+ locations, we offer bespoke analytics
-                  and cloud provisioning.
-                </p>
-              </div>
-            </div>
-            <button
-              style={{
-                background: AM,
-                color: '#fff',
-                border: 'none',
-                padding: '13px 28px',
-                borderRadius: '10px',
-                fontFamily: "'Poppins', sans-serif",
-                fontWeight: 700,
-                fontSize: '11px',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.18s',
-                boxShadow: `0 8px 24px ${Am(0.35)}`
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#c98900')}
-              onMouseLeave={e => (e.currentTarget.style.background = AM)}
-            >
-              Contact Enterprise Sales
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HIGHLIGHTS STRIP ── */}
-      <div
-        style={{
-          padding: '64px 5vw 96px',
-          maxWidth: '1600px',
-          margin: '0 auto'
-        }}
-      >
-        <div className='highlight-strip'>
-          {[
-            {
-              title: 'No Lock-in Ever',
-              desc: 'Your data is yours, always compliant by default.',
-              icon: Shield
-            },
-            {
-              title: 'HR Logic',
-              desc: 'Focuses on item features for booking, staff and reports.',
-              icon: Activity
-            },
-            {
-              title: 'Native Migration',
-              desc: 'Our platform handles the heavy lifting when moving from legacy tools.',
-              icon: BarChart3
-            },
-            {
-              title: 'Global Compliance',
-              desc: 'Bespoke analytics and local infrastructure for multi-location brands.',
-              icon: Globe
-            }
-          ].map((item, i) => (
-            <div key={i}>
-              <div
-                style={{
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: '11px',
-                  background: Gr(0.08),
-                  border: `1px solid ${Gr(0.2)}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '16px'
-                }}
-              >
-                <item.icon size={17} color={G} />
-              </div>
-              <h4
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 800,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  color: '#111827',
-                  marginBottom: '8px'
-                }}
-              >
-                {item.title}
-              </h4>
-              <p
-                style={{
-                  fontSize: '13px',
-                  color: '#94a3b8',
-                  fontWeight: 400,
-                  lineHeight: 1.7
-                }}
-              >
-                {item.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── FINAL CTA ── */}
       <section
@@ -1881,6 +607,7 @@ const PricingPage = () => {
           <button
             className='cta-primary'
             style={{ padding: '18px 48px', fontSize: '13px' }}
+            onClick={() => navigate('/contact')}
           >
             Book a Strategy Session <ArrowRight size={15} />
           </button>

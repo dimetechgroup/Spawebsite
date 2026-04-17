@@ -1,88 +1,15 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Search,
   ArrowRight,
-  Bookmark,
   Clock,
-  User,
-  Sparkles,
-  ArrowUpRight,
-  BarChart3,
   ShieldCheck,
-  Download,
-  ChevronRight,
   TrendingUp,
-  Activity,
-  Inbox,
   Calendar,
   Mail
 } from 'lucide-react'
+import { blogPosts, blogCategories } from '@/data'
 
-const blogPosts = [
-  {
-    id: 1,
-    category: 'ERP',
-    title: 'Spa ERP vs Booking Software: What’s the Difference?',
-    preview:
-      'Understand why professional management requires more than just a calendar. Learn how ERP logic transforms back-of-house operations.',
-    image: '/images/Dash.png',
-    date: 'Oct 12, 2024',
-    readTime: '8 min read'
-  },
-  {
-    id: 2,
-    category: 'Operations',
-    title: 'How to Reduce No-Shows in Your Spa',
-    preview:
-      'Practical systems and automated workflows that ensure your therapists remain productive and your schedule stays full.',
-    image: '/images/Orders.png',
-    date: 'Oct 08, 2024',
-    readTime: '6 min read'
-  },
-  {
-    id: 3,
-    category: 'Inventory',
-    title: 'Inventory Management Best Practices for Spas',
-    preview:
-      'Eliminate waste and optimize retail sales with precision tracking. See how professional inventory modules prevent stock-outs.',
-    image: '/images/modules.png',
-    date: 'Sep 28, 2024',
-    readTime: '10 min read'
-  },
-  {
-    id: 4,
-    category: 'Growth',
-    title: 'How ERP Helps Multi-Branch Spas Scale',
-    preview:
-      'Scaling shouldn’t mean complexity. Explore how unified systems allow owners to manage 10+ locations from a single dashboard.',
-    image: '/images/Acccounting.png',
-    date: 'Sep 15, 2024',
-    readTime: '12 min read'
-  },
-  {
-    id: 5,
-    category: 'Growth',
-    title: '5 Metrics Every Spa Owner Should Monitor Daily',
-    preview:
-      'Move beyond total revenue. Discover the critical performance indicators that signal real business health and sustainability.',
-    image: '/images/image5.png',
-    date: 'Aug 25, 2024',
-    readTime: '7 min read'
-  },
-  {
-    id: 6,
-    category: 'Case Studies',
-    title: 'Case Study: How ERP Increased Spa Revenue by 40%',
-    preview:
-      'A detailed walkthrough of how Zenith Wellness migrated to MySpa and optimized their resource allocation for massive growth.',
-    image: 'images/DSC06632.jpg',
-    date: 'Sep 10, 2024',
-    readTime: '15 min read'
-  }
-]
-
-const categories = ['All', 'ERP', 'Growth', 'Inventory', 'Case Studies']
 const ResourcesPage: React.FC = () => {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('All')
@@ -95,7 +22,7 @@ const ResourcesPage: React.FC = () => {
   return (
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
       {/* HERO SECTION */}
-      <section className='relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden border-b border-gray-50'>
+      <section className='relative pt-32 pb-10 lg:pt-48 lg:pb-12 overflow-hidden border-b border-gray-50'>
         <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
 
         <div className='container mx-auto px-4 md:px-8 text-center relative z-10'>
@@ -108,7 +35,10 @@ const ResourcesPage: React.FC = () => {
               <span className='h-px w-8 bg-[#207D40]/30'></span>
             </div>
 
-            <h1 className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8'>
+            <h1
+              className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8'
+              style={{ fontFamily: '"Playfair Display", serif' }}
+            >
               Insights to Help You <br />
               <span className='text-[#207D40]'>Grow & Manage</span> <br />
               Your Spa Better.
@@ -134,7 +64,7 @@ const ResourcesPage: React.FC = () => {
               Featured Insights
             </h2>
             <div className='flex flex-wrap items-center gap-1.5 p-1 bg-white rounded-xl border border-gray-100 shadow-sm'>
-              {categories.map(cat => (
+              {blogCategories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
@@ -185,7 +115,10 @@ const ResourcesPage: React.FC = () => {
                   <p className='text-gray-400 text-[12px] leading-relaxed mb-6 flex-grow line-clamp-2'>
                     {post.preview}
                   </p>
-                  <button className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] group/btn w-fit'>
+                  <button
+                    onClick={() => navigate(`/resources/${post.slug}`)}
+                    className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] group/btn w-fit'
+                  >
                     Read More{' '}
                     <ArrowRight
                       size={12}
@@ -199,7 +132,6 @@ const ResourcesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* WHY SPA OWNERS TRUST SECTION */}
       <section className='py-20 bg-white overflow-hidden'>
         <div className='container mx-auto px-4 md:px-8'>
           <div className='flex flex-col lg:flex-row items-center gap-16'>
@@ -210,7 +142,10 @@ const ResourcesPage: React.FC = () => {
                   Educational Foundation
                 </span>
               </div>
-              <h2 className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-tight text-[#111827] mb-8'>
+              <h2
+                className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter leading-tight text-[#111827] mb-8'
+                style={{ fontFamily: '"Playfair Display", serif' }}
+              >
                 Why Spa Owners <br /> Trust Our Insights.
               </h2>
               <p className='text-sm text-gray-400 font-medium leading-relaxed mb-10'>

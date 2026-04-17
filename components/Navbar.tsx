@@ -79,7 +79,7 @@ const Navbar: React.FC = () => {
 
         {/* Right side */}
         <div className='flex items-center gap-4'>
-          <button className='bg-[#207D40] hover:bg-[#1a6333] text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'>
+          <button onClick={() => navigate('/contact')} className='bg-[#207D40] hover:bg-[#1a6333] text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'>
             Book Demo
           </button>
           <button

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { values } from '@/data'
 
 import {
   Shield,
@@ -16,43 +17,11 @@ import {
 
 const AboutPage: React.FC = () => {
   const navigate = useNavigate()
-  const values = [
-    {
-      title: 'Innovation',
-      desc: 'Pushing boundaries with cutting-edge ERP logic to future-proof your business in an evolving market.',
-      icon: Lightbulb,
-      bgColor: 'bg-white'
-    },
-    {
-      title: 'Reliability',
-      desc: '99.9% uptime guaranteed for your business continuity, ensuring your spa never stops serving.',
-      icon: Shield,
-      bgColor: 'bg-[#F0FDF4]'
-    },
-    {
-      title: 'Customer Success',
-      desc: 'Your growth is our ultimate metric. We succeed only when your revenue and efficiency hit new heights.',
-      icon: Target,
-      bgColor: 'bg-white'
-    },
-    {
-      title: 'Simplicity',
-      desc: 'Complex backend logic delivered through an effortlessly intuitive interface for your staff.',
-      icon: Zap,
-      bgColor: 'bg-white'
-    },
-    {
-      title: 'Long-term Partnerships',
-      desc: "We don't just sell software; we invest in your journey with persistent local support and upgrades.",
-      icon: Heart,
-      bgColor: 'bg-white'
-    }
-  ]
 
   return (
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
       {/* SECTION 1: HERO */}
-      <section className='relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>
+      <section className='relative pt-24 pb-12 lg:pt-32 lg:pb-16 overflow-hidden'>
         <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
 
         <div className='container mx-auto px-4 md:px-8 relative z-10'>
@@ -64,7 +33,10 @@ const AboutPage: React.FC = () => {
                   Corporate Pedigree
                 </span>
               </div>
-              <h1 className='text-4xl md:text-5xl lg:text-6xl font-black text-[#111827] leading-[1.1] tracking-tighter mb-8'>
+              <h1
+                className='text-4xl md:text-5xl lg:text-6xl font-black text-[#111827] leading-[1.1] tracking-tighter mb-8'
+                style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
+              >
                 Built by ERP Experts. <br />
                 <span className='text-[#207D40]'>Designed</span>{' '}
                 <span className='text-[#F7A300]'>Specifically</span> <br />
@@ -74,17 +46,11 @@ const AboutPage: React.FC = () => {
                 Dimetech Group has over a decade of experience building
                 industry-specific ERP solutions across Africa. After working
                 closely with service-based businesses, we recognized that spas
-                require more than appointment tools — they require structured,
+                require more than appointment tools they require structured,
                 scalable business systems.
               </p>
 
               <div className='flex flex-col sm:flex-row items-center gap-4'>
-                <button
-                  onClick={() => navigate('/contact')}
-                  className='w-full sm:w-auto bg-[#207D40] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-[#1a6333] transition-all active:scale-95 shadow-lg shadow-[#207D40]/10'
-                >
-                  Meet Our Team
-                </button>
                 <button
                   onClick={() => navigate('/contact')}
                   className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-[#F7A300]/10'
@@ -114,7 +80,14 @@ const AboutPage: React.FC = () => {
                         Parent Company
                       </p>
                       <p className='font-black text-[#111827] text-xs leading-tight'>
-                        Dimetech Group Ltd
+                        <a
+                          href='https://dimetechgroup.com/'
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='hover:text-[#207D40] underline underline-offset-2 transition-colors duration-200'
+                        >
+                          Dimetech Group Ltd
+                        </a>
                       </p>
                     </div>
                   </div>
@@ -131,11 +104,14 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* SECTION 2: STORY & EXPERTISE */}
-      <section className='py-20 bg-white'>
+      <section className='py-10 bg-white'>
         <div className='container mx-auto px-4 md:px-8'>
-          <div className='flex flex-col lg:flex-row gap-12 items-start border-t border-gray-100 pt-16'>
+          <div className='flex flex-col lg:flex-row gap-12 items-start border-t border-gray-100 pt-10'>
             <div className='lg:w-1/2'>
-              <h2 className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter mb-8 leading-tight'>
+              <h2
+                className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter mb-8 leading-tight'
+                style={{ fontFamily: '"Playfair Display", serif' }}
+              >
                 Over a Decade of <br />
                 ERP Excellence{' '}
                 <span className='text-[#207D40]'>Across Africa</span>
@@ -203,9 +179,9 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* SECTION 3: OUR VALUES */}
-      <section className='py-20 bg-white'>
+      <section className='py-10 bg-white'>
         <div className='container mx-auto px-4 md:px-8'>
-          <div className='mb-16'>
+          <div className='mb-8'>
             <h2 className='text-2xl md:text-3xl lg:text-4xl font-black tracking-tighter mb-4 leading-tight'>
               Our Values
             </h2>
@@ -238,7 +214,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* SECTION 4: LOCAL SUPPORT */}
-      <section className='py-20 bg-white'>
+      <section className='py-10 bg-white'>
         <div className='container mx-auto px-4 md:px-8'>
           <div className='bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-xl flex flex-col lg:flex-row'>
             <div className='lg:w-2/5 min-h-[400px]'>
@@ -283,7 +259,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* SECTION 5: FINAL CTA */}
-      <section className='relative py-32 overflow-hidden flex items-center justify-center'>
+      <section className='relative py-20 overflow-hidden flex items-center justify-center'>
         <div className='absolute inset-0 z-0'>
           <img
             src='\images\cta.jpeg'
@@ -310,12 +286,6 @@ const AboutPage: React.FC = () => {
                 size={18}
                 className='group-hover:translate-x-1 transition-transform'
               />
-            </button>
-            <button
-              onClick={() => navigate('/contact')}
-              className='w-full sm:w-auto bg-transparent border-2 border-white/20 text-white px-8 py-3.5 rounded-xl font-black text-base hover:bg-white/10 transition-all'
-            >
-              Meet Our Team
             </button>
           </div>
         </div>

@@ -1,5 +1,5 @@
-import React, { useState, lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { useState, lazy, Suspense, useEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
@@ -14,8 +14,17 @@ const FeaturesPage = lazy(() => import('./components/FeaturesPage'))
 const PricingPage = lazy(() => import('./components/PricingPage'))
 const AboutPage = lazy(() => import('./components/AboutPage'))
 const ResourcesPage = lazy(() => import('./components/ResourcesPage'))
+const ArticlePage = lazy(() => import('./components/ArticlePage'))
 const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
+
+const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+  return null
+}
 
 const BRAND = {
   green: '#2E8B35',
@@ -87,7 +96,7 @@ const InnovationSection: React.FC = () => {
 
             <h2
               className='text-4xl md:text-5xl lg:text-[3.4rem] font-bold leading-[1.08] tracking-[-0.025em] text-white mb-6'
-              style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
+              style={{ fontFamily: '"Poppins", sans-serif' }}
             >
               Experience <br />
               the{' '}
@@ -112,7 +121,7 @@ const InnovationSection: React.FC = () => {
             >
               We've unified the clinical precision of enterprise ERP with the
               deep tranquility of a world-class spa. It's not just management
-              software — it's the evolution of wellness.
+              software it's the evolution of wellness.
             </p>
 
             <div className='flex flex-col sm:flex-row items-start gap-4 mb-14'>
@@ -124,7 +133,7 @@ const InnovationSection: React.FC = () => {
                   fontFamily: '"DM Sans", sans-serif'
                 }}
               >
-                See the Future
+                Get Started
                 <ArrowRight size={15} />
               </button>
 
@@ -309,6 +318,7 @@ const HomePage: React.FC = () => (
 const App: React.FC = () => {
   return (
     <div className='min-h-screen bg-[#FDFAF6] text-[#0d1f0d] overflow-x-hidden'>
+      <ScrollToTop />
       <Navbar />
       <main>
         <Suspense
@@ -335,6 +345,7 @@ const App: React.FC = () => {
             <Route path='/pricing' element={<PricingPage />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/resources' element={<ResourcesPage />} />
+            <Route path='/resources/:slug' element={<ArticlePage />} />
             <Route path='/faq' element={<FAQPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='*' element={<HomePage />} />
