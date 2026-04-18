@@ -165,28 +165,6 @@ const ContactPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              <div className='bg-[#207D40] p-10 rounded-[2.5rem] text-white overflow-hidden relative group'>
-                <div className='absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl transition-transform group-hover:scale-110'></div>
-                <h3 className='text-base font-black mb-4 relative z-10'>
-                  Regional Support
-                </h3>
-                <p className='text-white/80 text-xs font-medium leading-relaxed mb-8 relative z-10'>
-                  We provide localized, hands-on support for multi-branch brands
-                  across East Africa.
-                </p>
-                <div className='flex gap-4 relative z-10'>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Kenya
-                  </div>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Uganda
-                  </div>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Tanzania
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* RIGHT: CONTACT FORM */}

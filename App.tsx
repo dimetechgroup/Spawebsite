@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
@@ -19,10 +19,17 @@ const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
 
 const ScrollToTop: React.FC = () => {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    if (hash) {
+      const el = document.querySelector(hash)
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100)
+      }
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, hash])
   return null
 }
 
@@ -36,6 +43,7 @@ const BRAND = {
 
 const InnovationSection: React.FC = () => {
   const [videoHovered, setVideoHovered] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <section
@@ -145,6 +153,7 @@ const InnovationSection: React.FC = () => {
                   color: 'rgba(255,255,255,0.75)',
                   fontFamily: '"DM Sans", sans-serif'
                 }}
+                onClick={() => navigate('/features#demo-video')}
               >
                 <span
                   className='w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0'

@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { values } from '@/data'
 
 import {
-  Shield,
-  Lightbulb,
   Target,
   ArrowRight,
-  Zap,
   Building2,
-  Heart,
   CheckCircle2,
   Globe,
   Settings
@@ -43,11 +39,19 @@ const AboutPage: React.FC = () => {
                 for Spas.
               </h1>
               <p className='text-sm md:text-base text-gray-500 font-medium max-w-lg leading-relaxed mb-10'>
-                Dimetech Group has over a decade of experience building
-                industry-specific ERP solutions across Africa. After working
-                closely with service-based businesses, we recognized that spas
-                require more than appointment tools they require structured,
-                scalable business systems.
+                <a
+                  href='https://dimetechgroup.com/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-green-700 font-semibold hover:underline'
+                >
+                  Dimetech Group
+                </a>{' '}
+                has over a decade of experience building industry-specific ERP
+                solutions across Africa. After working closely with
+                service-based businesses, we recognized that spas require more
+                than appointment tools they require structured, scalable
+                business systems.
               </p>
 
               <div className='flex flex-col sm:flex-row items-center gap-4'>
@@ -219,7 +223,7 @@ const AboutPage: React.FC = () => {
           <div className='bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-xl flex flex-col lg:flex-row'>
             <div className='lg:w-2/5 min-h-[400px]'>
               <img
-                src='\images\supportteam.jpeg'
+                src='/images/supportteam.jpeg'
                 alt='Spa Treatment in Action'
                 className='w-full h-full object-cover block'
               />
@@ -262,7 +266,7 @@ const AboutPage: React.FC = () => {
       <section className='relative py-20 overflow-hidden flex items-center justify-center'>
         <div className='absolute inset-0 z-0'>
           <img
-            src='\images\cta.jpeg'
+            src='/images/cta.jpeg'
             className='w-full h-full object-cover'
             alt='Zen Spa Treatment'
           />
@@ -270,10 +274,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className='container mx-auto px-4 md:px-8 relative z-10 text-center text-white'>
-          <h2 className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter mb-8 leading-tight'>
-            Let's Build a Smarter <br /> Spa Together.
-          </h2>
-          <p className='text-sm md:text-base text-gray-300 font-medium mb-10 opacity-80'>
+          <p className='text-base md:text-lg text-gray-300 font-medium mb-10 max-w-xl mx-auto leading-relaxed'>
             Join the future of wellness management with global ERP standards.
           </p>
           <div className='flex flex-col sm:flex-row items-center justify-center gap-4'>
@@ -281,7 +282,7 @@ const AboutPage: React.FC = () => {
               onClick={() => navigate('/contact')}
               className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-black text-base hover:bg-orange-600 transition-all flex items-center justify-center gap-2 group'
             >
-              Let’s Grow Together
+              Let's Grow Together
               <ArrowRight
                 size={18}
                 className='group-hover:translate-x-1 transition-transform'

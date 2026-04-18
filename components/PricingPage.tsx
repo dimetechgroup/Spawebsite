@@ -8,7 +8,7 @@ const AM = '#F5A800'
 const Gr = (a: number) => `rgba(46,139,53,${a})`
 const Am = (a: number) => `rgba(245,168,0,${a})`
 
-const ANNUAL_DISCOUNT = 0.15
+const ANNUAL_DISCOUNT = 0.1
 
 function formatPrice (n: number) {
   return n.toLocaleString('en-KE')
@@ -22,7 +22,7 @@ const PricingPage = () => {
 
   const getPrice = (monthlyPrice: number) => {
     if (billingCycle === 'yearly') {
-      return formatPrice(Math.round(monthlyPrice * (1 - ANNUAL_DISCOUNT)))
+      return formatPrice(Math.round(monthlyPrice * 12 * (1 - ANNUAL_DISCOUNT)))
     }
     return formatPrice(monthlyPrice)
   }
@@ -236,7 +236,7 @@ const PricingPage = () => {
               textTransform: 'uppercase'
             }}
           >
-            Save 15%
+            Save 10%
           </span>
 
           <span
@@ -409,11 +409,11 @@ const PricingPage = () => {
                         color: isDark ? 'rgba(255,255,255,0.25)' : '#cbd5e1'
                       }}
                     >
-                      / mo
+                      {billingCycle === 'yearly' ? '/ yr' : '/ mo'}
                     </span>
                   </div>
 
-                  {/* Annual sub-label */}
+                  {/* Annual sub-label — monthly equivalent */}
                   {billingCycle === 'yearly' && (
                     <p
                       style={{
@@ -424,12 +424,11 @@ const PricingPage = () => {
                         letterSpacing: '0.02em'
                       }}
                     >
-                      Billed annually — KES{' '}
+                      KES{' '}
                       {formatPrice(
-                        Math.round(plan.monthlyPrice * (1 - ANNUAL_DISCOUNT)) *
-                          12
+                        Math.round(plan.monthlyPrice * (1 - ANNUAL_DISCOUNT))
                       )}{' '}
-                      / yr
+                      / mo · billed annually
                     </p>
                   )}
                 </div>
@@ -531,7 +530,7 @@ const PricingPage = () => {
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'rgba(2,4,6,0.88)'
+              background: 'rgba(2,4,6,0.65)'
             }}
           />
           <div
