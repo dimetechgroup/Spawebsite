@@ -361,9 +361,9 @@ const PricingPage = () => {
                   </h2>
                   <p
                     style={{
-                      fontSize: '13px',
-                      fontWeight: 500,
-                      color: isDark ? 'rgba(255,255,255,0.45)' : '#94a3b8',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: isDark ? 'rgba(255,255,255,0.7)' : '#94a3b8',
                       marginBottom: '24px',
                       lineHeight: 1.5
                     }}
@@ -381,9 +381,9 @@ const PricingPage = () => {
                   >
                     <span
                       style={{
-                        fontSize: '11px',
+                        fontSize: '12px',
                         fontWeight: 700,
-                        color: isDark ? 'rgba(255,255,255,0.3)' : '#cbd5e1',
+                        color: isDark ? 'rgba(255,255,255,0.6)' : '#94a3b8',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em'
                       }}
@@ -406,7 +406,7 @@ const PricingPage = () => {
                       style={{
                         fontSize: '13px',
                         fontWeight: 600,
-                        color: isDark ? 'rgba(255,255,255,0.25)' : '#cbd5e1'
+                        color: isDark ? 'rgba(255,255,255,0.5)' : '#64748b'
                       }}
                     >
                       {billingCycle === 'yearly' ? '/ yr' : '/ mo'}
@@ -530,7 +530,7 @@ const PricingPage = () => {
             style={{
               position: 'absolute',
               inset: 0,
-              background: 'rgba(2,4,6,0.65)'
+              background: 'rgba(2,4,6,0.45)'
             }}
           />
           <div

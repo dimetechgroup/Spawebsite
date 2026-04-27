@@ -253,37 +253,6 @@ const FAQPage = () => {
               Everything you need to know about MySpa from getting started to
               scaling your wellness business.
             </p>
-            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-              {[
-                { num: '13+', label: 'Topics Covered' },
-                { num: '24/7', label: 'Expert Support' },
-                { num: '< 5 min', label: 'Avg. Setup' }
-              ].map((s, i) => (
-                <div key={i} className='stat-pill'>
-                  <span
-                    style={{
-                      fontSize: '22px',
-                      fontWeight: 800,
-                      color: '#fff',
-                      lineHeight: 1
-                    }}
-                  >
-                    {s.num}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      fontWeight: 600,
-                      color: 'rgba(255,255,255,0.4)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.1em'
-                    }}
-                  >
-                    {s.label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

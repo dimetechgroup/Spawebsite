@@ -229,9 +229,6 @@ const AboutPage: React.FC = () => {
               />
             </div>
             <div className='lg:w-3/5 p-10 lg:p-16'>
-              <div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-[#F7A300] text-[10px] font-black uppercase tracking-[0.3em] mb-8'>
-                <Globe size={12} /> Global Standards, Local Expertise
-              </div>
               <h3 className='text-2xl md:text-3xl lg:text-4xl font-black text-[#111827] tracking-tighter mb-6 leading-tight'>
                 Dedicated Local <br />
                 <span className='text-[#F7A300]'>Support in Kenya</span>

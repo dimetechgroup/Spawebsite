@@ -153,35 +153,6 @@ const ResourcesPage: React.FC = () => {
                 across Africa. Every guide reflects practical systems designed
                 to increase revenue and support growth.
               </p>
-
-              <div className='grid grid-cols-2 gap-6'>
-                <div className='flex items-center gap-3'>
-                  <div className='w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-[#207D40]'>
-                    <ShieldCheck size={16} />
-                  </div>
-                  <div>
-                    <h4 className='text-[11px] font-black uppercase'>
-                      Practical Systems
-                    </h4>
-                    <p className='text-[10px] text-gray-400 font-bold'>
-                      Built for real-world owners
-                    </p>
-                  </div>
-                </div>
-                <div className='flex items-center gap-3'>
-                  <div className='w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center text-[#F7A300]'>
-                    <TrendingUp size={16} />
-                  </div>
-                  <div>
-                    <h4 className='text-[11px] font-black uppercase'>
-                      Growth Focused
-                    </h4>
-                    <p className='text-[10px] text-gray-400 font-bold'>
-                      KPI and ROI focused
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className='lg:w-1/2 relative'>

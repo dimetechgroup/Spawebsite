@@ -141,49 +141,6 @@ const AboutSection: React.FC = () => {
             </div>
 
             {/* Stat cards */}
-            <div className='absolute bottom-10 left-8 right-8 grid grid-cols-2 gap-3'>
-              {[
-                {
-                  icon: Award,
-                  value: '#1 Rated',
-                  label: 'Global SaaS 2024',
-                  color: '#F5A800'
-                },
-                {
-                  icon: CheckCircle2,
-                  value: '99.9%',
-                  label: 'Uptime Record',
-                  color: '#2E8B35'
-                }
-              ].map((stat, i) => (
-                <div
-                  key={i}
-                  className='p-4 rounded-2xl'
-                  style={{
-                    background: 'rgba(255,255,255,0.07)',
-                    backdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255,255,255,0.12)'
-                  }}
-                >
-                  <stat.icon
-                    size={18}
-                    style={{ color: stat.color, marginBottom: 8 }}
-                  />
-                  <div
-                    className='text-2xl font-bold text-white leading-none'
-                    style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    className='text-[10px] font-bold uppercase tracking-[0.15em] mt-1.5 opacity-50 text-white'
-                    style={{ fontFamily: '"DM Sans", sans-serif' }}
-                  >
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* ── Right: modules panel ── */}
