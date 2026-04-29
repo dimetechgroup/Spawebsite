@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Features from './components/Features'
@@ -19,10 +19,17 @@ const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
 
 const ScrollToTop: React.FC = () => {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    if (hash) {
+      const el = document.querySelector(hash)
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100)
+      }
+    } else {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, hash])
   return null
 }
 
@@ -36,6 +43,7 @@ const BRAND = {
 
 const InnovationSection: React.FC = () => {
   const [videoHovered, setVideoHovered] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <section
@@ -81,19 +89,6 @@ const InnovationSection: React.FC = () => {
       <div className='relative z-20 max-w-screen-2xl mx-auto px-6 lg:px-16 py-32'>
         <div className='grid lg:grid-cols-2 gap-16 items-center'>
           <div>
-            <div
-              className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] mb-8'
-              style={{
-                borderColor: `${BRAND.green}40`,
-                background: `${BRAND.green}12`,
-                color: 'white',
-                fontFamily: '"DM Sans", sans-serif'
-              }}
-            >
-              <Activity size={9} className='animate-pulse' /> The Precision of
-              Serenity
-            </div>
-
             <h2
               className='text-4xl md:text-5xl lg:text-[3.4rem] font-bold leading-[1.08] tracking-[-0.025em] text-white mb-6'
               style={{ fontFamily: '"Poppins", sans-serif' }}
@@ -145,6 +140,7 @@ const InnovationSection: React.FC = () => {
                   color: 'rgba(255,255,255,0.75)',
                   fontFamily: '"DM Sans", sans-serif'
                 }}
+                onClick={() => navigate('/features#demo-video')}
               >
                 <span
                   className='w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0'
@@ -154,32 +150,6 @@ const InnovationSection: React.FC = () => {
                 </span>
                 Watch Demo
               </button>
-            </div>
-
-            <div className='flex items-center gap-8'>
-              {[
-                { value: '1,200+', label: 'Luxury Venues' },
-                { value: '98%', label: 'Satisfaction Rate' },
-                { value: '4 min', label: 'Avg. Setup Time' }
-              ].map((stat, i) => (
-                <div key={i} className='flex flex-col'>
-                  <span
-                    className='text-2xl font-bold text-white leading-none'
-                    style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
-                  >
-                    {stat.value}
-                  </span>
-                  <span
-                    className='text-[10px] font-bold uppercase tracking-[0.15em] mt-1.5'
-                    style={{
-                      color: '#3a5a3a',
-                      fontFamily: '"DM Sans", sans-serif'
-                    }}
-                  >
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
             </div>
           </div>
 

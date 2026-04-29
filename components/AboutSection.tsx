@@ -54,17 +54,7 @@ const AboutSection: React.FC = () => {
           className='flex flex-col lg:flex-row items-end justify-between gap-8 mb-16'
         >
           <div className='lg:w-3/5'>
-            <div
-              className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] mb-6'
-              style={{
-                borderColor: 'rgba(46,139,53,0.3)',
-                background: 'rgba(46,139,53,0.07)',
-                color: '#2E8B35',
-                fontFamily: '"DM Sans", sans-serif'
-              }}
-            >
-              <Trophy size={9} /> Enterprise Spa ERP
-            </div>
+
 
             <h2
               className='text-4xl md:text-5xl lg:text-[3.2rem] font-bold leading-[1.1] tracking-[-0.025em] text-[#0d1f0d]'
@@ -141,49 +131,6 @@ const AboutSection: React.FC = () => {
             </div>
 
             {/* Stat cards */}
-            <div className='absolute bottom-10 left-8 right-8 grid grid-cols-2 gap-3'>
-              {[
-                {
-                  icon: Award,
-                  value: '#1 Rated',
-                  label: 'Global SaaS 2024',
-                  color: '#F5A800'
-                },
-                {
-                  icon: CheckCircle2,
-                  value: '99.9%',
-                  label: 'Uptime Record',
-                  color: '#2E8B35'
-                }
-              ].map((stat, i) => (
-                <div
-                  key={i}
-                  className='p-4 rounded-2xl'
-                  style={{
-                    background: 'rgba(255,255,255,0.07)',
-                    backdropFilter: 'blur(16px)',
-                    border: '1px solid rgba(255,255,255,0.12)'
-                  }}
-                >
-                  <stat.icon
-                    size={18}
-                    style={{ color: stat.color, marginBottom: 8 }}
-                  />
-                  <div
-                    className='text-2xl font-bold text-white leading-none'
-                    style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div
-                    className='text-[10px] font-bold uppercase tracking-[0.15em] mt-1.5 opacity-50 text-white'
-                    style={{ fontFamily: '"DM Sans", sans-serif' }}
-                  >
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* ── Right: modules panel ── */}
@@ -227,9 +174,8 @@ const AboutSection: React.FC = () => {
                   style={{
                     background:
                       hoveredIdx === idx ? `${item.accent}08` : 'transparent',
-                    border: `1px solid ${
-                      hoveredIdx === idx ? item.accent + '25' : 'transparent'
-                    }`
+                    border: `1px solid ${hoveredIdx === idx ? item.accent + '25' : 'transparent'
+                      }`
                   }}
                 >
                   {/* Icon */}

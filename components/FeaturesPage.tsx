@@ -731,8 +731,11 @@ const FeaturesPage: React.FC = () => {
           )}
         </div>
       </section>
-      {/* EXPLAINER VIDEO SECTION */};
-      <section className='py-24 bg-black relative overflow-hidden'>
+      {/* EXPLAINER VIDEO SECTION */}
+      <section
+        id='demo-video'
+        className='py-24 bg-black relative overflow-hidden'
+      >
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#F7A300]/5 blur-[120px] rounded-full pointer-events-none'></div>
 
         <div className='container mx-auto px-4 md:px-8 relative z-10'>
@@ -803,12 +806,7 @@ const FeaturesPage: React.FC = () => {
             <div className='lg:w-full flex flex-col gap-8'>
               {/* Heading & Subheading */}
               <div className='text-center lg:sticky lg:top-40 h-fit'>
-                <div className='flex justify-center items-center gap-3 mb-4'>
-                  <div className='w-2 h-2 rounded-full bg-[#F7A300]'></div>
-                  <h2 className='text-[11px] font-black uppercase tracking-[0.4em] text-[#111827]'>
-                    Utility Suite
-                  </h2>
-                </div>
+                <div className='flex justify-center items-center gap-3 mb-4'></div>
 
                 <h3 className='text-3xl md:text-4xl font-black text-[#111827] tracking-tighter mb-6 leading-tight'>
                   Precision Tools for Every Touchpoint.

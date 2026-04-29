@@ -285,32 +285,6 @@ const Testimonials: React.FC = () => {
                     </div>
 
                     {/* Stat badge */}
-                    <div
-                      className='px-6 py-4 rounded-2xl'
-                      style={{
-                        background: 'rgba(245,168,0,0.08)',
-                        border: '1px solid rgba(245,168,0,0.2)'
-                      }}
-                    >
-                      <p
-                        className='text-3xl font-bold leading-none'
-                        style={{
-                          color: 'white',
-                          fontFamily: '"Playfair Display", Georgia, serif'
-                        }}
-                      >
-                        {t.stat.value}
-                      </p>
-                      <p
-                        className='text-[10px] font-bold uppercase tracking-[0.15em] mt-1.5'
-                        style={{
-                          color: 'white',
-                          fontFamily: '"DM Sans", sans-serif'
-                        }}
-                      >
-                        {t.stat.label}
-                      </p>
-                    </div>
                   </div>
                 </div>
 
@@ -398,29 +372,6 @@ const Testimonials: React.FC = () => {
             ))}
 
             {/* Total count */}
-            <div
-              className='mt-3 rounded-2xl p-4 text-center'
-              style={{
-                background: 'rgba(46,139,53,0.05)',
-                border: '1px solid rgba(46,139,53,0.1)'
-              }}
-            >
-              <p
-                className='text-2xl font-bold text-[#0d1f0d]'
-                style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
-              >
-                250+
-              </p>
-              <p
-                className='text-[10px] font-bold uppercase tracking-[0.15em] mt-1'
-                style={{
-                  color: '#2E8B35',
-                  fontFamily: '"DM Sans", sans-serif'
-                }}
-              >
-                Spa Owners Trust Us
-              </p>
-            </div>
           </div>
         </div>
       </div>

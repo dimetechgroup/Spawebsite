@@ -65,19 +65,6 @@ const CTASection: React.FC = () => {
           <div className='relative z-10 grid lg:grid-cols-[1fr_420px] items-stretch'>
             {/* ── LEFT: copy ── */}
             <div className='p-10 md:p-14 lg:p-16 flex flex-col justify-center'>
-              {/* Eyebrow */}
-              <div
-                className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full w-fit text-[10px] font-bold uppercase tracking-[0.2em] mb-7'
-                style={{
-                  background: 'rgba(247,163,0,0.2)',
-                  border: '1px solid rgba(247,163,0,0.4)',
-                  color: '#F7A300',
-                  fontFamily: '"DM Sans", sans-serif'
-                }}
-              >
-                Ready to Scale?
-              </div>
-
               {/* Headline */}
               <h2
                 className='text-4xl md:text-5xl lg:text-[3.2rem] font-bold leading-[1.08] tracking-[-0.025em] text-white mb-5'
@@ -178,71 +165,6 @@ const CTASection: React.FC = () => {
                 alt='MySpa Analytics Preview'
                 className='absolute inset-0 w-full h-full object-cover'
               />
-
-              {/* Overlays: left fade into green card + amber tint */}
-              <div
-                className='absolute inset-0'
-                style={{
-                  background:
-                    'linear-gradient(90deg, #185e30 0%, transparent 35%)'
-                }}
-              />
-              <div
-                className='absolute inset-0'
-                style={{
-                  background:
-                    'linear-gradient(180deg, rgba(15,64,32,0.4) 0%, transparent 40%, rgba(15,64,32,0.6) 100%)'
-                }}
-              />
-              {/* Subtle amber tint top-right */}
-              <div
-                className='absolute -top-10 -right-10 w-64 h-64 rounded-full opacity-20 pointer-events-none'
-                style={{
-                  background:
-                    'radial-gradient(circle, #F7A300, transparent 70%)',
-                  filter: 'blur(40px)'
-                }}
-              />
-
-              {/* Floating stat badge — top */}
-              <motion.div
-                initial={{ opacity: 0, y: -12, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.45, duration: 0.5, ease: 'backOut' }}
-                className='absolute top-8 right-6 p-4 rounded-2xl'
-                style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  backdropFilter: 'blur(16px)',
-                  border: '1px solid rgba(247,163,0,0.3)',
-                  boxShadow: '0 12px 32px rgba(0,0,0,0.2)'
-                }}
-              >
-                <p
-                  className='text-[10px] font-bold uppercase tracking-[0.14em] mb-1.5'
-                  style={{
-                    color: 'rgba(255,255,255,0.45)',
-                    fontFamily: '"DM Sans", sans-serif'
-                  }}
-                >
-                  Revenue Uplift
-                </p>
-                <p
-                  className='text-3xl font-bold leading-none text-white'
-                  style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
-                >
-                  +31<span style={{ color: '#F7A300' }}>%</span>
-                </p>
-                <p
-                  className='text-[10px] mt-1.5 font-medium'
-                  style={{
-                    color: 'rgba(255,255,255,0.35)',
-                    fontFamily: '"DM Sans", sans-serif'
-                  }}
-                >
-                  in first 90 days
-                </p>
-              </motion.div>
 
               {/* Floating booking badge — bottom */}
               <motion.div

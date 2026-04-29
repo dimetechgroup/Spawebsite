@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { values } from '@/data'
 
 import {
-  Shield,
-  Lightbulb,
   Target,
   ArrowRight,
-  Zap,
   Building2,
-  Heart,
   CheckCircle2,
   Globe,
   Settings
@@ -43,11 +39,19 @@ const AboutPage: React.FC = () => {
                 for Spas.
               </h1>
               <p className='text-sm md:text-base text-gray-500 font-medium max-w-lg leading-relaxed mb-10'>
-                Dimetech Group has over a decade of experience building
-                industry-specific ERP solutions across Africa. After working
-                closely with service-based businesses, we recognized that spas
-                require more than appointment tools they require structured,
-                scalable business systems.
+                <a
+                  href='https://dimetechgroup.com/'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-green-700 font-semibold hover:underline'
+                >
+                  Dimetech Group
+                </a>{' '}
+                has over a decade of experience building industry-specific ERP
+                solutions across Africa. After working closely with
+                service-based businesses, we recognized that spas require more
+                than appointment tools they require structured, scalable
+                business systems.
               </p>
 
               <div className='flex flex-col sm:flex-row items-center gap-4'>
@@ -116,30 +120,6 @@ const AboutPage: React.FC = () => {
                 ERP Excellence{' '}
                 <span className='text-[#207D40]'>Across Africa</span>
               </h2>
-              <div className='flex gap-10'>
-                <div className='flex-1'>
-                  <div className='h-1 w-full bg-gray-100 rounded-full mb-3'>
-                    <div className='h-full w-2/3 bg-[#207D40] rounded-full'></div>
-                  </div>
-                  <p className='text-2xl font-black text-[#111827] mb-0.5'>
-                    10+
-                  </p>
-                  <p className='text-[11px] font-black text-gray-400 uppercase tracking-widest'>
-                    Years Experience
-                  </p>
-                </div>
-                <div className='flex-1'>
-                  <div className='h-1 w-full bg-gray-100 rounded-full mb-3'>
-                    <div className='h-full w-full bg-[#F7A300] rounded-full'></div>
-                  </div>
-                  <p className='text-2xl font-black text-[#111827] mb-0.5'>
-                    100%
-                  </p>
-                  <p className='text-[11px] font-black text-gray-400 uppercase tracking-widest'>
-                    African Built
-                  </p>
-                </div>
-              </div>
             </div>
 
             <div className='lg:w-1/2 grid gap-8'>
@@ -219,15 +199,12 @@ const AboutPage: React.FC = () => {
           <div className='bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-xl flex flex-col lg:flex-row'>
             <div className='lg:w-2/5 min-h-[400px]'>
               <img
-                src='\images\supportteam.jpeg'
+                src='/images/supportteam.jpeg'
                 alt='Spa Treatment in Action'
                 className='w-full h-full object-cover block'
               />
             </div>
             <div className='lg:w-3/5 p-10 lg:p-16'>
-              <div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-[#F7A300] text-[10px] font-black uppercase tracking-[0.3em] mb-8'>
-                <Globe size={12} /> Global Standards, Local Expertise
-              </div>
               <h3 className='text-2xl md:text-3xl lg:text-4xl font-black text-[#111827] tracking-tighter mb-6 leading-tight'>
                 Dedicated Local <br />
                 <span className='text-[#F7A300]'>Support in Kenya</span>
@@ -262,7 +239,7 @@ const AboutPage: React.FC = () => {
       <section className='relative py-20 overflow-hidden flex items-center justify-center'>
         <div className='absolute inset-0 z-0'>
           <img
-            src='\images\cta.jpeg'
+            src='/images/cta.jpeg'
             className='w-full h-full object-cover'
             alt='Zen Spa Treatment'
           />
@@ -270,10 +247,7 @@ const AboutPage: React.FC = () => {
         </div>
 
         <div className='container mx-auto px-4 md:px-8 relative z-10 text-center text-white'>
-          <h2 className='text-3xl md:text-4xl lg:text-5xl font-black tracking-tighter mb-8 leading-tight'>
-            Let's Build a Smarter <br /> Spa Together.
-          </h2>
-          <p className='text-sm md:text-base text-gray-300 font-medium mb-10 opacity-80'>
+          <p className='text-base md:text-lg text-gray-300 font-medium mb-10 max-w-xl mx-auto leading-relaxed'>
             Join the future of wellness management with global ERP standards.
           </p>
           <div className='flex flex-col sm:flex-row items-center justify-center gap-4'>
@@ -281,7 +255,7 @@ const AboutPage: React.FC = () => {
               onClick={() => navigate('/contact')}
               className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-black text-base hover:bg-orange-600 transition-all flex items-center justify-center gap-2 group'
             >
-              Let’s Grow Together
+              Let's Grow Together
               <ArrowRight
                 size={18}
                 className='group-hover:translate-x-1 transition-transform'

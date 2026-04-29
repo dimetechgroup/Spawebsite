@@ -33,6 +33,8 @@ import {
   Wallet,
   Zap
 } from 'lucide-react'
+import { Buildings } from '@phosphor-icons/react'
+
 
 import type {
   FeatureGroup,
@@ -482,7 +484,7 @@ export const plans: Plan[] = [
   {
     id: 'standard',
     name: 'Standard',
-    icon: Sparkles,
+    icon: Buildings,
     monthlyPrice: 5000,
     tagline: 'Designed for growing medium to high-end businesses.',
     features: [

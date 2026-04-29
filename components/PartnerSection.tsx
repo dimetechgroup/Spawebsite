@@ -106,21 +106,6 @@ const PartnerSection: React.FC = () => {
           }}
           className='mb-20 max-w-4xl mx-auto'
         >
-          {/* Eyebrow */}
-          <div className='flex items-center gap-3 mb-6'>
-            <div
-              className='flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em]'
-              style={{
-                borderColor: 'rgba(32,125,64,0.4)',
-                background: 'rgba(32,125,64,0.1)',
-                color: '#A8C5A0',
-                fontFamily: '"DM Sans", sans-serif'
-              }}
-            >
-              <Sparkles size={9} />
-              Trusted Excellence
-            </div>
-          </div>
 
           {/* Headline */}
           <h2

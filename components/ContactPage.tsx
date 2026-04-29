@@ -32,7 +32,10 @@ const ContactPage: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8' style={{ fontFamily: '"Playfair Display", serif' }}>
+              <h1
+                className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8'
+                style={{ fontFamily: '"Playfair Display", serif' }}
+              >
                 Get in Touch <br />
                 <span className='text-[#F7A300]'>with</span>{' '}
                 <span className='text-[#207D40]'>MySpa.</span>
@@ -165,32 +168,10 @@ const ContactPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-
-              <div className='bg-[#207D40] p-10 rounded-[2.5rem] text-white overflow-hidden relative group'>
-                <div className='absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl transition-transform group-hover:scale-110'></div>
-                <h3 className='text-base font-black mb-4 relative z-10'>
-                  Regional Support
-                </h3>
-                <p className='text-white/80 text-xs font-medium leading-relaxed mb-8 relative z-10'>
-                  We provide localized, hands-on support for multi-branch brands
-                  across East Africa.
-                </p>
-                <div className='flex gap-4 relative z-10'>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Kenya
-                  </div>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Uganda
-                  </div>
-                  <div className='px-3 py-1 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest border border-white/20'>
-                    Tanzania
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* RIGHT: CONTACT FORM */}
-            <div className='bg-white p-10 lg:p-14 rounded-[3rem] border border-gray-100 shadow-2xl'>
+            <div className='bg-white p-10 lg:p-14 rounded-[3rem] border border-gray-100 shadow-2xl h-full flex flex-col'>
               <div className='mb-10'>
                 <h3 className='text-lg font-black text-[#111827] mb-2 tracking-tight'>
                   Send a Message
@@ -200,7 +181,7 @@ const ContactPage: React.FC = () => {
                 </p>
               </div>
 
-              <form className='space-y-6'>
+              <form className='space-y-6 flex flex-col flex-1'>
                 <div className='grid sm:grid-cols-2 gap-6'>
                   <div className='space-y-2'>
                     <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
@@ -223,7 +204,6 @@ const ContactPage: React.FC = () => {
                     />
                   </div>
                 </div>
-
                 <div className='space-y-2'>
                   <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
                     Interested Tier
@@ -236,17 +216,16 @@ const ContactPage: React.FC = () => {
                   </select>
                 </div>
 
-                <div className='space-y-2'>
+                <div className='space-y-2 flex-1 flex flex-col'>
                   <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
                     Message
                   </label>
                   <textarea
                     rows={4}
-                    className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium resize-none'
+                    className='flex-1 w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium resize-none'
                     placeholder='Tell us about your brand vision...'
                   />
                 </div>
-
                 <button className='w-full bg-[#111827] hover:bg-[#207D40] text-white py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 group active:scale-[0.98] shadow-xl'>
                   Send Inquiry{' '}
                   <Send
@@ -263,15 +242,10 @@ const ContactPage: React.FC = () => {
       <section className='py-14 bg-gray-50/50'>
         <div className='container mx-auto px-4 md:px-8 text-center'>
           <div className='max-w-xl mx-auto'>
-            <MessageSquare size={32} className='mx-auto text-[#F7A300] mb-6' />
-            <h3 className='text-base font-black text-[#111827] mb-2 tracking-tight'>
-              Prefer to solve it yourself?
-            </h3>
-            <p className='text-xs text-gray-400 font-medium leading-relaxed mb-8'>
-              Explore our comprehensive knowledge base for quick answers to
-              common technical and billing questions.
-            </p>
-            <button onClick={() => navigate('/faq')} className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'>
+            <button
+              onClick={() => navigate('/faq')}
+              className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'
+            >
               Go to FAQ Center
             </button>
           </div>
