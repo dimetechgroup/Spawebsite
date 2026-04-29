@@ -120,30 +120,6 @@ const AboutPage: React.FC = () => {
                 ERP Excellence{' '}
                 <span className='text-[#207D40]'>Across Africa</span>
               </h2>
-              <div className='flex gap-10'>
-                <div className='flex-1'>
-                  <div className='h-1 w-full bg-gray-100 rounded-full mb-3'>
-                    <div className='h-full w-2/3 bg-[#207D40] rounded-full'></div>
-                  </div>
-                  <p className='text-2xl font-black text-[#111827] mb-0.5'>
-                    10+
-                  </p>
-                  <p className='text-[11px] font-black text-gray-400 uppercase tracking-widest'>
-                    Years Experience
-                  </p>
-                </div>
-                <div className='flex-1'>
-                  <div className='h-1 w-full bg-gray-100 rounded-full mb-3'>
-                    <div className='h-full w-full bg-[#F7A300] rounded-full'></div>
-                  </div>
-                  <p className='text-2xl font-black text-[#111827] mb-0.5'>
-                    100%
-                  </p>
-                  <p className='text-[11px] font-black text-gray-400 uppercase tracking-widest'>
-                    African Built
-                  </p>
-                </div>
-              </div>
             </div>
 
             <div className='lg:w-1/2 grid gap-8'>

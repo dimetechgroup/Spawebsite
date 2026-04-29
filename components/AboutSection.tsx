@@ -54,17 +54,7 @@ const AboutSection: React.FC = () => {
           className='flex flex-col lg:flex-row items-end justify-between gap-8 mb-16'
         >
           <div className='lg:w-3/5'>
-            <div
-              className='inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-[0.2em] mb-6'
-              style={{
-                borderColor: 'rgba(46,139,53,0.3)',
-                background: 'rgba(46,139,53,0.07)',
-                color: '#2E8B35',
-                fontFamily: '"DM Sans", sans-serif'
-              }}
-            >
-              <Trophy size={9} /> Enterprise Spa ERP
-            </div>
+
 
             <h2
               className='text-4xl md:text-5xl lg:text-[3.2rem] font-bold leading-[1.1] tracking-[-0.025em] text-[#0d1f0d]'
@@ -184,9 +174,8 @@ const AboutSection: React.FC = () => {
                   style={{
                     background:
                       hoveredIdx === idx ? `${item.accent}08` : 'transparent',
-                    border: `1px solid ${
-                      hoveredIdx === idx ? item.accent + '25' : 'transparent'
-                    }`
+                    border: `1px solid ${hoveredIdx === idx ? item.accent + '25' : 'transparent'
+                      }`
                   }}
                 >
                   {/* Icon */}

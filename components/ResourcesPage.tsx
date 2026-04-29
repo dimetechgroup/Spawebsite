@@ -218,11 +218,11 @@ const ResourcesPage: React.FC = () => {
                 </button>
               </div>
 
-              <div className='flex justify-center gap-10'>
-                <button className='text-[11px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-[#F7A300] transition-colors border-b border-white/10 pb-1'>
-                  Download Guides
-                </button>
-                <button className='text-[11px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-[#207D40] transition-colors border-b border-white/10 pb-1'>
+              <div className='flex justify-center '>
+                <button
+                  className='text-[11px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-[#207D40] transition-colors border-b border-white/10 pb-1'
+                  onClick={() => navigate('/contact')}
+                >
                   Book a Demo
                 </button>
               </div>

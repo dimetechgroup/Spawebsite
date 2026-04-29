@@ -165,6 +165,52 @@ const CTASection: React.FC = () => {
                 alt='MySpa Analytics Preview'
                 className='absolute inset-0 w-full h-full object-cover'
               />
+
+              {/* Floating booking badge — bottom */}
+              <motion.div
+                initial={{ opacity: 0, y: 12, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.5, ease: 'backOut' }}
+                className='absolute bottom-8 left-6 right-6 p-4 rounded-2xl flex items-center gap-4'
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  backdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  boxShadow: '0 12px 32px rgba(0,0,0,0.2)'
+                }}
+              >
+                <div className='flex -space-x-2'>
+                  {['#A8C5A0', '#F7A300', '#207D40'].map((c, i) => (
+                    <div
+                      key={i}
+                      className='w-8 h-8 rounded-full border-2 flex-shrink-0'
+                      style={{
+                        background: c,
+                        borderColor: '#185e30',
+                        zIndex: 3 - i
+                      }}
+                    />
+                  ))}
+                </div>
+                <div>
+                  <p
+                    className='text-sm font-bold text-white leading-none'
+                    style={{ fontFamily: '"DM Sans", sans-serif' }}
+                  >
+                    250+ Spa Owners
+                  </p>
+                  <p
+                    className='text-[11px] font-semibold mt-1'
+                    style={{
+                      color: '#F7A300',
+                      fontFamily: '"DM Sans", sans-serif'
+                    }}
+                  >
+                    already scaling with MySpa
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>

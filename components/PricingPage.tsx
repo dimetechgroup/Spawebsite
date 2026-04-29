@@ -10,7 +10,7 @@ const Am = (a: number) => `rgba(245,168,0,${a})`
 
 const ANNUAL_DISCOUNT = 0.1
 
-function formatPrice (n: number) {
+function formatPrice(n: number) {
   return n.toLocaleString('en-KE')
 }
 
@@ -203,9 +203,8 @@ const PricingPage = () => {
             aria-checked={billingCycle === 'yearly'}
           >
             <div
-              className={`toggle-thumb${
-                billingCycle === 'yearly' ? ' on' : ''
-              }`}
+              className={`toggle-thumb${billingCycle === 'yearly' ? ' on' : ''
+                }`}
             />
           </div>
 
@@ -284,18 +283,18 @@ const PricingPage = () => {
                   background: isDark
                     ? '#111827'
                     : isGreen
-                    ? Gr(0.05)
-                    : '#f8fafc',
+                      ? Gr(0.05)
+                      : '#f8fafc',
                   border: isGreen
                     ? `1.5px solid ${Gr(0.25)}`
                     : isDark
-                    ? `1.5px solid ${Am(0.2)}`
-                    : '1.5px solid #f1f5f9',
+                      ? `1.5px solid ${Am(0.2)}`
+                      : '1.5px solid #f1f5f9',
                   boxShadow: isGreen
                     ? `0 20px 60px ${Gr(0.1)}`
                     : isDark
-                    ? '0 20px 60px rgba(0,0,0,0.2)'
-                    : '0 4px 24px rgba(0,0,0,0.04)',
+                      ? '0 20px 60px rgba(0,0,0,0.2)'
+                      : '0 4px 24px rgba(0,0,0,0.04)',
                   animationDelay: `${i * 0.1}s`
                 }}
               >
@@ -338,8 +337,8 @@ const PricingPage = () => {
                       background: isDark
                         ? Am(0.15)
                         : isGreen
-                        ? Gr(0.12)
-                        : 'rgba(17,24,39,0.06)',
+                          ? Gr(0.12)
+                          : 'rgba(17,24,39,0.06)',
                       marginBottom: '20px'
                     }}
                   >
@@ -383,7 +382,7 @@ const PricingPage = () => {
                       style={{
                         fontSize: '12px',
                         fontWeight: 700,
-                        color: isDark ? 'rgba(255,255,255,0.6)' : '#94a3b8',
+                        color: isDark ? 'rgba(255,255,255,0.6)' : '#64748b',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em'
                       }}
@@ -419,7 +418,7 @@ const PricingPage = () => {
                       style={{
                         fontSize: '11px',
                         fontWeight: 600,
-                        color: isDark ? 'rgba(255,255,255,0.3)' : '#94a3b8',
+                        color: isDark ? 'rgba(255,255,255,0.5)' : '#64748b',
                         marginTop: '4px',
                         letterSpacing: '0.02em'
                       }}
@@ -466,8 +465,8 @@ const PricingPage = () => {
                           background: isDark
                             ? Am(0.15)
                             : isGreen
-                            ? Gr(0.1)
-                            : 'rgba(17,24,39,0.06)',
+                              ? Gr(0.1)
+                              : 'rgba(17,24,39,0.06)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',

@@ -379,38 +379,6 @@ const FAQPage = () => {
           <div style={{ flex: 1 }} />
 
           {/* Trust badge — sits at the very bottom of the full-height aside */}
-          <div
-            style={{
-              padding: '20px 36px',
-              borderTop: '1px solid rgba(255,255,255,0.06)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
-            }}
-          >
-            <div
-              style={{
-                width: '38px',
-                height: '38px',
-                borderRadius: '10px',
-                background: 'rgba(32,125,64,0.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}
-            >
-              <ShieldCheck size={16} color='#4ade80' />
-            </div>
-            <div>
-              <div style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>
-                Enterprise-grade security
-              </div>
-              <div style={{ fontSize: '10px', color: 'white' }}>
-                SOC2 compliant · End-to-end encrypted
-              </div>
-            </div>
-          </div>
         </aside>
 
         {/* RIGHT — FAQ LIST */}
