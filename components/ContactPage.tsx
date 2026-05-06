@@ -5,8 +5,6 @@ import {
   Phone,
   MapPin,
   Send,
-  Globe,
-  MessageSquare,
   ArrowRight,
   ShieldCheck
 } from 'lucide-react'
@@ -206,14 +204,13 @@ const ContactPage: React.FC = () => {
                 </div>
                 <div className='space-y-2'>
                   <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
-                    Interested Tier
+                    Subject
                   </label>
-                  <select className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium appearance-none'>
-                    <option>Starter Plan</option>
-                    <option>Growth Plan</option>
-                    <option>Pro Plan</option>
-                    <option>Enterprise Bespoke</option>
-                  </select>
+                  <input
+                    type='text'
+                    className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
+                    placeholder='e.g. Pricing inquiry, Demo request...'
+                  />
                 </div>
 
                 <div className='space-y-2 flex-1 flex flex-col'>

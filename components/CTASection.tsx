@@ -1,6 +1,7 @@
 import React from 'react'
 import { ArrowRight, Play, Clock, TrendingUp, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 
 const perks = [
   { icon: Clock, text: 'Save 15+ hours per week' },
@@ -9,6 +10,7 @@ const perks = [
 ]
 
 const CTASection: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <section className='py-24 bg-white relative overflow-hidden'>
       <div className='max-w-7xl mx-auto px-6 lg:px-10'>
@@ -127,11 +129,11 @@ const CTASection: React.FC = () => {
                 ))}
               </div>
 
-              {/* CTAs */}
               <div className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   className='flex items-center gap-2 text-sm px-7 py-3.5 rounded-xl font-semibold'
+                  onClick={() => navigate('/contact')}
                   style={{
                     background: '#F7A300',
                     color: '#207D40',

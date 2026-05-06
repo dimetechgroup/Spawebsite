@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Check, ArrowRight, Sparkles, Rocket, Landmark } from 'lucide-react'
+import {
+  Check,
+  ArrowRight,
+  Sparkles,
+  Rocket,
+  Landmark,
+  Clock
+} from 'lucide-react'
 import { plans } from '@/data'
 
 const G = '#2E8B35'
@@ -249,6 +256,68 @@ const PricingPage = () => {
           >
             Annual commitment
           </span>
+        </div>
+      </div>
+
+      {/* ── FREE TRIAL BANNER ── */}
+      <div
+        style={{
+          maxWidth: '1600px',
+          margin: '0 auto',
+          padding: '0 5vw 32px'
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            background: `linear-gradient(135deg, ${Gr(0.04)}, ${Am(0.04)})`,
+            border: `1px solid ${Gr(0.12)}`,
+            borderRadius: '16px',
+            padding: '16px 24px'
+          }}
+        >
+          <div
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '10px',
+              background: Gr(0.1),
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}
+          >
+            <Clock size={16} color={G} />
+          </div>
+          <div>
+            <p
+              style={{
+                fontSize: '14px',
+                fontWeight: 800,
+                color: '#111827',
+                margin: 0,
+                letterSpacing: '-0.01em'
+              }}
+            >
+              Start with a 15-day free trial on any plan.{' '}
+              <span style={{ color: G }}>No credit card required.</span>
+            </p>
+            <p
+              style={{
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#94a3b8',
+                margin: '4px 0 0',
+                lineHeight: 1.5
+              }}
+            >
+              Explore every feature risk-free — upgrade, downgrade, or cancel
+              anytime during your trial.
+            </p>
+          </div>
         </div>
       </div>
 

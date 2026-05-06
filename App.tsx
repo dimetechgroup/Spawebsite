@@ -127,6 +127,7 @@ const InnovationSection: React.FC = () => {
                   boxShadow: `0 12px 32px ${BRAND.green}40`,
                   fontFamily: '"DM Sans", sans-serif'
                 }}
+                onClick={() => navigate('/pricing')}
               >
                 Get Started
                 <ArrowRight size={15} />

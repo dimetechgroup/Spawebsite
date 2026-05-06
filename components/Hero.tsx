@@ -1,15 +1,16 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Play,
   ShieldCheck,
   Star,
   TrendingUp,
   Sparkles,
-  Users
+  Users,
+  X
 } from 'lucide-react'
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
 const fadeUp: import('framer-motion').Variants = {
@@ -27,6 +28,7 @@ const fadeUp: import('framer-motion').Variants = {
 
 const Hero: React.FC = () => {
   const navigate = useNavigate()
+  const [showVideo, setShowVideo] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -48,8 +50,8 @@ const Hero: React.FC = () => {
   }
 
   return (
+    <>
     <section className='relative min-h-screen bg-[#FDFAF6] overflow-hidden flex items-center'>
-      {/* ── Decorative background ── */}
       <div className='pointer-events-none absolute inset-0'>
         <div
           className='absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full opacity-30'
@@ -131,6 +133,7 @@ const Hero: React.FC = () => {
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                onClick={() => navigate('/pricing')}
                 className='relative overflow-hidden text-white text-sm font-semibold px-8 py-3.5 rounded-xl shadow-lg'
                 style={{
                   background:
@@ -145,8 +148,8 @@ const Hero: React.FC = () => {
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
+                onClick={() => setShowVideo(true)}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                onClick={() => navigate('/contact')}
                 className='flex items-center gap-2.5 bg-white border border-[#e2e8e2] text-[#0d1f0d] text-sm font-semibold px-7 py-3.5 rounded-xl shadow-sm'
                 style={{ fontFamily: '"DM Sans", sans-serif' }}
               >
@@ -156,7 +159,7 @@ const Hero: React.FC = () => {
                 >
                   <Play size={9} fill='white' color='white' />
                 </span>
-                Book a Demo
+                How it works
               </motion.button>
             </motion.div>
           </div>
@@ -209,8 +212,6 @@ const Hero: React.FC = () => {
                   }}
                 />
               </div>
-
-              {/* Revenue Badge */}
             </motion.div>
           </motion.div>
         </div>
@@ -230,6 +231,48 @@ const Hero: React.FC = () => {
         </svg>
       </div>
     </section>
+
+      {/* ── VIDEO MODAL ── */}
+      <AnimatePresence>
+        {showVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className='fixed inset-0 z-[9999] flex items-center justify-center p-4'
+            style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(8px)' }}
+            onClick={() => setShowVideo(false)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              className='relative w-full max-w-4xl'
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowVideo(false)}
+                className='absolute -top-12 right-0 flex items-center gap-2 text-white/70 hover:text-white text-sm font-semibold transition-colors'
+                style={{ fontFamily: '"DM Sans", sans-serif' }}
+              >
+                Close <X size={18} />
+              </button>
+              <div className='rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black aspect-video'>
+                <video
+                  src='/images/demo.mp4'
+                  className='w-full h-full object-cover'
+                  autoPlay
+                  controls
+                  playsInline
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
