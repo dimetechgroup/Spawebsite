@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Mail,
@@ -6,14 +6,49 @@ import {
   MapPin,
   Send,
   ArrowRight,
-  ShieldCheck
+  ShieldCheck,
+  CheckCircle,
+  AlertCircle
 } from 'lucide-react'
+import { submitContact } from '../api'
 
 const ContactPage: React.FC = () => {
   const navigate = useNavigate()
+
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  })
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    try {
+      await submitContact(form)
+      setSuccess(true)
+      setForm({ name: '', email: '', subject: '', message: '' })
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className='bg-white min-h-screen'>
-      {/* HERO SECTION */};
+      {/* HERO SECTION */}
       <section className='relative pt-28 pb-10 lg:pt-36 lg:pb-14 overflow-hidden'>
         <div className='absolute inset-0 z-0'>
           <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
@@ -21,7 +56,6 @@ const ContactPage: React.FC = () => {
 
         <div className='container mx-auto px-4 md:px-8 relative z-10'>
           <div className='grid lg:grid-cols-2 gap-16 items-center'>
-            {/* LEFT: Text */}
             <div>
               <div className='flex items-center gap-3 mb-6'>
                 <span className='h-px w-10 bg-[#207D40]'></span>
@@ -29,7 +63,6 @@ const ContactPage: React.FC = () => {
                   Concierge Services
                 </span>
               </div>
-
               <h1
                 className='text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.1] text-[#111827] mb-8'
                 style={{ fontFamily: '"Playfair Display", serif' }}
@@ -38,7 +71,6 @@ const ContactPage: React.FC = () => {
                 <span className='text-[#F7A300]'>with</span>{' '}
                 <span className='text-[#207D40]'>MySpa.</span>
               </h1>
-
               <p className='text-sm md:text-base text-gray-500 font-medium leading-relaxed max-w-xl'>
                 Our experts are ready to help you navigate your digital
                 transformation. Whether you need technical support or a bespoke
@@ -46,21 +78,15 @@ const ContactPage: React.FC = () => {
               </p>
             </div>
 
-            {/* RIGHT: Image */}
             <div className='hidden lg:block relative'>
-              {/* Decorative glow behind image */}
               <div className='absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-[#207D40]/10 to-[#F7A300]/10 blur-2xl scale-105 pointer-events-none' />
-
               <div className='relative rounded-[2.5rem] overflow-hidden border border-gray-100 shadow-2xl shadow-gray-200/60 aspect-[4/3]'>
                 <img
                   src='/images/DSC06623.jpg'
                   alt='MySpa Support Team'
                   className='w-full h-full object-cover'
                 />
-                {/* Bottom fade overlay */}
                 <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent' />
-
-                {/* Floating badge */}
                 <div className='absolute bottom-6 left-6 flex items-center gap-3 bg-white/90 backdrop-blur-md px-4 py-3 rounded-2xl shadow-lg'>
                   <div className='w-8 h-8 rounded-xl bg-[#207D40] flex items-center justify-center flex-shrink-0'>
                     <ShieldCheck size={16} className='text-white' />
@@ -79,6 +105,7 @@ const ContactPage: React.FC = () => {
           </div>
         </div>
       </section>
+
       {/* CONTACT GRID */}
       <section className='pb-16'>
         <div className='container mx-auto px-4 md:px-8'>
@@ -134,8 +161,6 @@ const ContactPage: React.FC = () => {
                       P.O Address - 25733 - 00502 Karen.
                     </p>
                   </div>
-
-                  {/* Map embed */}
                   <div className='rounded-2xl overflow-hidden border border-gray-100 h-48'>
                     <iframe
                       title='Karen Office Park'
@@ -147,7 +172,6 @@ const ContactPage: React.FC = () => {
                       referrerPolicy='no-referrer-when-downgrade'
                     />
                   </div>
-
                   <div className='pt-4 border-t border-gray-50 flex items-center justify-between'>
                     <div className='flex items-center gap-3'>
                       <ShieldCheck size={16} className='text-[#207D40]' />
@@ -155,6 +179,7 @@ const ContactPage: React.FC = () => {
                         Enterprise Ready
                       </span>
                     </div>
+
                     <a
                       href='https://www.google.com/maps/search/Karen+Office+Park,+Karen,+Nairobi,+Kenya'
                       target='_blank'
@@ -163,23 +188,47 @@ const ContactPage: React.FC = () => {
                     >
                       View on Map <ArrowRight size={12} />
                     </a>
-                  </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* RIGHT: CONTACT FORM */}
-            <div className='bg-white p-10 lg:p-14 rounded-[3rem] border border-gray-100 shadow-2xl h-full flex flex-col'>
-              <div className='mb-10'>
-                <h3 className='text-lg font-black text-[#111827] mb-2 tracking-tight'>
-                  Send a Message
-                </h3>
-                <p className='text-[11px] text-gray-400 font-bold uppercase tracking-widest'>
-                  Typical response time: &lt; 2 hours
+          {/* RIGHT: CONTACT FORM */}
+          <div className='bg-white p-10 lg:p-14 rounded-[3rem] border border-gray-100 shadow-2xl h-full flex flex-col'>
+            <div className='mb-10'>
+              <h3 className='text-lg font-black text-[#111827] mb-2 tracking-tight'>
+                Send a Message
+              </h3>
+              <p className='text-[11px] text-gray-400 font-bold uppercase tracking-widest'>
+                Typical response time: &lt; 2 hours
+              </p>
+            </div>
+
+            {/* Success state */}
+            {success ? (
+              <div className='flex-1 flex flex-col items-center justify-center text-center gap-4'>
+                <div className='w-16 h-16 rounded-full bg-[#207D40]/10 flex items-center justify-center'>
+                  <CheckCircle size={32} className='text-[#207D40]' />
+                </div>
+                <h4 className='text-lg font-black text-[#111827]'>Message Sent!</h4>
+                <p className='text-sm text-gray-500 font-medium'>
+                  We'll get back to you within 2 hours.
                 </p>
+                <button
+                  onClick={() => setSuccess(false)}
+                  className='mt-4 text-[11px] font-black uppercase tracking-widest text-[#207D40] border-b-2 border-[#207D40] pb-1'
+                >
+                  Send Another
+                </button>
               </div>
-
-              <form className='space-y-6 flex flex-col flex-1'>
+            ) : (
+              <form onSubmit={handleSubmit} className='space-y-6 flex flex-col flex-1'>
+                {error && (
+                  <div className='flex items-center gap-3 bg-red-50 border border-red-100 rounded-xl px-4 py-3'>
+                    <AlertCircle size={16} className='text-red-500 flex-shrink-0' />
+                    <p className='text-xs font-medium text-red-600'>{error}</p>
+                  </div>
+                )}
                 <div className='grid sm:grid-cols-2 gap-6'>
                   <div className='space-y-2'>
                     <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
@@ -187,6 +236,10 @@ const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type='text'
+                      name='name'
+                      value={form.name}
+                      onChange={handleChange}
+                      required
                       className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
                       placeholder='Jane Doe'
                     />
@@ -197,6 +250,10 @@ const ContactPage: React.FC = () => {
                     </label>
                     <input
                       type='email'
+                      name='email'
+                      value={form.email}
+                      onChange={handleChange}
+                      required
                       className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
                       placeholder='jane@spa.com'
                     />
@@ -208,47 +265,62 @@ const ContactPage: React.FC = () => {
                   </label>
                   <input
                     type='text'
+                    name='subject'
+                    value={form.subject}
+                    onChange={handleChange}
+                    required
                     className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
                     placeholder='e.g. Pricing inquiry, Demo request...'
                   />
                 </div>
-
                 <div className='space-y-2 flex-1 flex flex-col'>
                   <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
                     Message
                   </label>
                   <textarea
                     rows={4}
+                    name='message'
+                    value={form.message}
+                    onChange={handleChange}
+                    required
                     className='flex-1 w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium resize-none'
                     placeholder='Tell us about your brand vision...'
                   />
                 </div>
-                <button className='w-full bg-[#111827] hover:bg-[#207D40] text-white py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 group active:scale-[0.98] shadow-xl'>
-                  Send Inquiry{' '}
-                  <Send
-                    size={14}
-                    className='group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform'
-                  />
+                <button
+                  type='submit'
+                  disabled={loading}
+                  className='w-full bg-[#111827] hover:bg-[#207D40] disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 group active:scale-[0.98] shadow-xl'
+                >
+                  {loading ? 'Sending...' : 'Send Inquiry'}
+                  {!loading && (
+                    <Send
+                      size={14}
+                      className='group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform'
+                    />
+                  )}
                 </button>
               </form>
-            </div>
+            )}
           </div>
         </div>
-      </section>
-      {/* FINAL FAQ REDIRECT */}
-      <section className='py-14 bg-gray-50/50'>
-        <div className='container mx-auto px-4 md:px-8 text-center'>
-          <div className='max-w-xl mx-auto'>
-            <button
-              onClick={() => navigate('/faq')}
-              className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'
-            >
-              Go to FAQ Center
-            </button>
-          </div>
+      </div>
+    </section>
+
+    {/* FINAL FAQ REDIRECT */}
+    <section className='py-14 bg-gray-50/50'>
+      <div className='container mx-auto px-4 md:px-8 text-center'>
+        <div className='max-w-xl mx-auto'>
+          <button
+            onClick={() => navigate('/faq')}
+            className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'
+          >
+            Go to FAQ Center
+          </button>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+  </div>
   )
 }
 

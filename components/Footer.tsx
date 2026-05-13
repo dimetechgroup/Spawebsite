@@ -1,9 +1,59 @@
-import React from 'react'
-import { Phone, Mail, Send } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Phone, Mail, Send, CheckCircle, Loader2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { fetchConfig } from '../api'
+
+const HS_PORTAL = '148419234'
+const HS_FORM = '976c43ef-def8-4e2c-9903-5915a936f952'
 
 const Footer: React.FC = () => {
   const navigate = useNavigate()
+  const [subName, setSubName] = useState('')
+  const [subEmail, setSubEmail] = useState('')
+  const [honeypot, setHoneypot] = useState('')
+  const [subStatus, setSubStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [contactEmail, setContactEmail] = useState('contact@dimetechgroup.com')
+
+  useEffect(() => {
+    fetchConfig()
+      .then(data => {
+        if (data?.contact_email) {
+          setContactEmail(data.contact_email)
+        }
+      })
+      .catch(err => console.error(err))
+  }, [])
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (honeypot) return // bot detected
+    setSubStatus('sending')
+    try {
+      const res = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL}/${HS_FORM}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer REDACTED'
+          },
+          body: JSON.stringify({
+            fields: [
+              { name: 'firstname', value: subName },
+              { name: 'email', value: subEmail }
+            ]
+          })
+        }
+      )
+      if (!res.ok) throw new Error('submit failed')
+      setSubStatus('success')
+      setSubName('')
+      setSubEmail('')
+    } catch {
+      setSubStatus('error')
+      setTimeout(() => setSubStatus('idle'), 4000)
+    }
+  }
 
   const handleNav = (path: string) => {
     navigate(path)
@@ -52,7 +102,7 @@ const Footer: React.FC = () => {
               </li>
               <li className='flex gap-3 items-center'>
                 <Mail size={14} className='text-[#207D40]' />
-                <span>contact@dimetechgroup.com</span>
+                <span>{contactEmail}</span>
               </li>
             </ul>
           </div>
@@ -85,16 +135,55 @@ const Footer: React.FC = () => {
             <h4 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#F7A300] pl-3'>
               Subscribe
             </h4>
-            <div className='flex gap-2'>
-              <input
-                type='email'
-                placeholder='Email Address'
-                className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-[#207D40] text-xs'
-              />
-              <button className='bg-[#207D40] hover:bg-[#1a6333] p-2 rounded-lg transition-colors'>
-                <Send size={14} />
-              </button>
-            </div>
+            {subStatus === 'success' ? (
+              <div className='flex items-center gap-2 text-[#207D40] text-xs font-bold'>
+                <CheckCircle size={14} /> You're subscribed!
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className='space-y-2'>
+                {/* Honeypot — hidden from real users */}
+                <input
+                  type='text'
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
+                  tabIndex={-1}
+                  autoComplete='off'
+                  style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+                />
+                <input
+                  type='text'
+                  placeholder='Your Name'
+                  value={subName}
+                  onChange={e => setSubName(e.target.value)}
+                  required
+                  className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-[#207D40] text-xs'
+                />
+                <div className='flex gap-2'>
+                  <input
+                    type='email'
+                    placeholder='Email Address'
+                    value={subEmail}
+                    onChange={e => setSubEmail(e.target.value)}
+                    required
+                    className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-[#207D40] text-xs'
+                  />
+                  <button
+                    type='submit'
+                    disabled={subStatus === 'sending'}
+                    className='bg-[#207D40] hover:bg-[#1a6333] disabled:opacity-50 p-2 rounded-lg transition-colors'
+                  >
+                    {subStatus === 'sending' ? (
+                      <Loader2 size={14} className='animate-spin' />
+                    ) : (
+                      <Send size={14} />
+                    )}
+                  </button>
+                </div>
+                {subStatus === 'error' && (
+                  <p className='text-red-400 text-[10px] font-bold'>Something went wrong. Try again.</p>
+                )}
+              </form>
+            )}
           </div>
         </div>
 
