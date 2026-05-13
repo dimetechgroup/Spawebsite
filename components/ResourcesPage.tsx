@@ -6,13 +6,35 @@ import {
   ShieldCheck,
   TrendingUp,
   Calendar,
-  Mail
+  Mail,
+  CheckCircle,
+  Loader2
 } from 'lucide-react'
 import { blogPosts, blogCategories } from '@/data'
+import { subscribeNewsletter } from '../api'
 
 const ResourcesPage: React.FC = () => {
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('All')
+  const [subName, setSubName] = useState('')
+  const [subEmail, setSubEmail] = useState('')
+  const [honeypot, setHoneypot] = useState('')
+  const [subStatus, setSubStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (honeypot) return // bot detected
+    setSubStatus('sending')
+    try {
+      await subscribeNewsletter({ firstname: subName, email: subEmail })
+      setSubStatus('success')
+      setSubName('')
+      setSubEmail('')
+    } catch {
+      setSubStatus('error')
+      setTimeout(() => setSubStatus('idle'), 4000)
+    }
+  }
 
   const filteredPosts =
     activeCategory === 'All'
@@ -49,7 +71,10 @@ const ResourcesPage: React.FC = () => {
               decisions, improve operations, and grow sustainably.
             </p>
 
-            <button className='bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-black text-xs hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/10 active:scale-95'>
+            <button
+              onClick={() => document.getElementById('subscription-area')?.scrollIntoView({ behavior: 'smooth' })}
+              className='bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-black text-xs hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/10 active:scale-95'
+            >
               Subscribe for Spa Growth Insights
             </button>
           </div>
@@ -169,7 +194,7 @@ const ResourcesPage: React.FC = () => {
       </section>
 
       {/* STAY AHEAD SUBSCRIPTION SECTION */}
-      <section className='relative py-24 overflow-hidden'>
+      <section id='subscription-area' className='relative py-24 overflow-hidden'>
         {/* Section-wide Background Image */}
         <div className='absolute inset-0 z-0'>
           <img
@@ -207,15 +232,55 @@ const ResourcesPage: React.FC = () => {
                 strategies delivered to your salon every month.
               </p>
 
-              <div className='flex flex-col sm:flex-row gap-3 mb-10'>
-                <input
-                  type='email'
-                  placeholder='Professional email'
-                  className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-sm transition-all'
-                />
-                <button className='bg-[#F7A300] hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95 whitespace-nowrap'>
-                  Subscribe
-                </button>
+              <div className='flex flex-col w-full mb-10'>
+                {subStatus === 'success' ? (
+                  <div className='flex items-center justify-center gap-2 text-white bg-white/10 backdrop-blur-sm py-4 rounded-2xl border border-[#207D40]/30 shadow-2xl'>
+                    <CheckCircle size={20} className='text-[#207D40]' /> <span className='font-bold text-sm'>You're subscribed!</span>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubscribe} className='flex flex-col w-full gap-3'>
+                    <div className='flex flex-col sm:flex-row gap-3'>
+                      <input
+                        type='text'
+                        value={honeypot}
+                        onChange={e => setHoneypot(e.target.value)}
+                        tabIndex={-1}
+                        autoComplete='off'
+                        style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+                      />
+                      <input
+                        type='text'
+                        placeholder='Your Name'
+                        value={subName}
+                        onChange={e => setSubName(e.target.value)}
+                        required
+                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-sm transition-all text-[#111827]'
+                      />
+                      <input
+                        type='email'
+                        placeholder='Professional email'
+                        value={subEmail}
+                        onChange={e => setSubEmail(e.target.value)}
+                        required
+                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-sm transition-all text-[#111827]'
+                      />
+                      <button
+                        type='submit'
+                        disabled={subStatus === 'sending'}
+                        className='bg-[#F7A300] hover:bg-orange-600 disabled:opacity-50 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95 whitespace-nowrap flex items-center justify-center'
+                      >
+                        {subStatus === 'sending' ? (
+                          <Loader2 size={16} className='animate-spin' />
+                        ) : (
+                          'Subscribe'
+                        )}
+                      </button>
+                    </div>
+                    {subStatus === 'error' && (
+                      <p className='text-red-400 text-[12px] font-bold text-center mt-2'>Something went wrong. Try again.</p>
+                    )}
+                  </form>
+                )}
               </div>
 
               <div className='flex justify-center '>
