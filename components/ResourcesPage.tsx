@@ -11,9 +11,7 @@ import {
   Loader2
 } from 'lucide-react'
 import { blogPosts, blogCategories } from '@/data'
-
-const HS_PORTAL = '148419234'
-const HS_FORM = '976c43ef-def8-4e2c-9903-5915a936f952'
+import { subscribeNewsletter } from '../api'
 
 const ResourcesPage: React.FC = () => {
   const navigate = useNavigate()
@@ -28,23 +26,7 @@ const ResourcesPage: React.FC = () => {
     if (honeypot) return // bot detected
     setSubStatus('sending')
     try {
-      const res = await fetch(
-        `https://api.hsforms.com/submissions/v3/integration/submit/${HS_PORTAL}/${HS_FORM}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer REDACTED'
-          },
-          body: JSON.stringify({
-            fields: [
-              { name: 'firstname', value: subName },
-              { name: 'email', value: subEmail }
-            ]
-          })
-        }
-      )
-      if (!res.ok) throw new Error('submit failed')
+      await subscribeNewsletter({ firstname: subName, email: subEmail })
       setSubStatus('success')
       setSubName('')
       setSubEmail('')

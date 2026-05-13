@@ -45,3 +45,16 @@ export async function fetchConfig () {
   }
   return res.json()
 }
+
+export async function subscribeNewsletter(data: { firstname: string; email: string }) {
+  const res = await fetch(`${BASE_URL}/subscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  if (!res.ok) {
+    const err = await res.json()
+    throw new Error(err.message || 'Failed to subscribe')
+  }
+  return res.json()
+}
