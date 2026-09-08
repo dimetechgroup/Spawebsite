@@ -1,0 +1,69 @@
+# Local-only Directus CMS for MySpa article content.
+#
+# Directus is a BUILD dependency, not a runtime one: scripts/fetch-content.mjs
+# reads from it at build time and writes data/generated/articles.json, which is
+# what ships. Nothing a visitor loads ever contacts this stack, so it stays
+# bound to localhost and needs no TLS, no public DNS and no CORS config.
+#
+# Usage (from this directory):
+#   cp .env.example .env    # then fill in the three secrets
+#   docker compose up -d
+#   open http://localhost:8055
+services:
+  database:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    # Loopback-only. Exposed at all purely so you can run psql/pg_dump from the
+    # host for backups; Directus itself reaches it over the compose network.
+    ports:
+      - '127.0.0.1:5433:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: directus
+      POSTGRES_USER: directus
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in directus/.env}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U directus -d directus']
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  directus:
+    image: directus/directus:12.3.1
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:8055:8055'
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      # Bind mounts rather than named volumes so uploaded article images and
+      # committed schema snapshots are visible on the host.
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+      - ./snapshots:/directus/snapshots
+    environment:
+      SECRET: ${SECRET:?set SECRET in directus/.env}
+      PUBLIC_URL: http://localhost:8055
+
+      DB_CLIENT: pg
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_DATABASE: directus
+      DB_USER: directus
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      # Only used to bootstrap the first admin on an empty database. Changing
+      # these later has no effect; change the password in the admin UI instead.
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?set ADMIN_EMAIL in directus/.env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?set ADMIN_PASSWORD in directus/.env}
+
+      # Local single-user instance: caching and realtime add moving parts
+      # without buying anything here.
+      CACHE_ENABLED: 'false'
+      WEBSOCKETS_ENABLED: 'false'
+      TELEMETRY: 'false'
+
+volumes:
+  db-data:

@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prerender.mjs",
+    "content": "node scripts/fetch-content.mjs",
+    "build": "node scripts/fetch-content.mjs && vite build && node scripts/prerender.mjs",
+    "build:ci": "node scripts/fetch-content.mjs --require-cms && vite build && node scripts/prerender.mjs",
     "build:only": "vite build",
     "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview"
