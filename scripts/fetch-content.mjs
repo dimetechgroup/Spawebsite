@@ -37,6 +37,24 @@ const IMAGE_URL_BASE = '/images/articles'
 const WPM = 220
 const REQUIRE_CMS = process.argv.includes('--require-cms')
 
+/**
+ * Minimum characters of article prose (intro, headings, bodies, bullets).
+ *
+ * scripts/prerender.mjs refuses to snapshot any page rendering under
+ * DEFAULT_MIN_TEXT (1000) characters of text, as a guard against capturing a
+ * spinner instead of content. An article page's own chrome (category pill, read
+ * time, back link, CTA block, the More Insights cards) contributes roughly 460
+ * characters on top of the prose, measured on a 311-character test article that
+ * rendered at 771.
+ *
+ * Catching a thin article here rather than there matters operationally: the
+ * prerenderer fails 45 seconds into the build with a message aimed at whoever
+ * runs the deploy, whereas this fails in seconds and can name the article and
+ * say what to do about it. Either way the deploy is correctly blocked, because
+ * silently dropping an article someone chose to publish would be worse.
+ */
+const MIN_ARTICLE_TEXT = 700
+
 const log = (...args) => console.log('[content]', ...args)
 
 // Node reads .env natively; absent file is fine since env vars may come from CI.
@@ -227,6 +245,24 @@ const validate = articles => {
       errors.push(`${where}: date_modified (${a.dateModified}) precedes date_published`)
     }
     if (!a.sections?.length) errors.push(`${where}: no sections, the page would be empty`)
+
+    // Thin articles are blocked here so the failure is fast and legible. See
+    // MIN_ARTICLE_TEXT: the prerenderer would reject the page anyway, later and
+    // more cryptically, and one thin article blocks every other pending change.
+    const prose = [
+      a.intro ?? '',
+      ...(a.sections ?? []).flatMap(s => [s.heading ?? '', s.body ?? '', ...(s.bullets ?? [])])
+    ]
+      .join(' ')
+      .trim()
+    if (a.sections?.length && prose.length < MIN_ARTICLE_TEXT) {
+      errors.push(
+        `${where}: only ${prose.length} characters of text, at least ` +
+          `${MIN_ARTICLE_TEXT} are needed (roughly ${Math.ceil(MIN_ARTICLE_TEXT / 6)} words). ` +
+          `Short pages are treated as thin content and the prerenderer refuses ` +
+          `to publish them. Expand the article, or set it back to draft.`
+      )
+    }
 
     for (const [i, s] of (a.sections ?? []).entries()) {
       if (!s.heading && !s.body && !s.bullets) {

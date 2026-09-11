@@ -45,7 +45,16 @@ services:
       - ./snapshots:/directus/snapshots
     environment:
       SECRET: ${SECRET:?set SECRET in directus/.env}
-      PUBLIC_URL: http://localhost:8055
+      # Local default; the server sets PUBLIC_URL=https://cms.myspa.co.ke in its
+      # own .env so one compose file serves both environments.
+      PUBLIC_URL: ${PUBLIC_URL:-http://localhost:8055}
+
+      # Behind Apache in production. Harmless locally.
+      RATE_LIMITER_ENABLED: ${RATE_LIMITER_ENABLED:-false}
+      RATE_LIMITER_POINTS: ${RATE_LIMITER_POINTS:-50}
+      RATE_LIMITER_DURATION: ${RATE_LIMITER_DURATION:-1}
+      # Directus sits behind one reverse proxy, so trust exactly one hop.
+      IP_TRUST_PROXY: ${IP_TRUST_PROXY:-false}
 
       DB_CLIENT: pg
       DB_HOST: database
