@@ -423,7 +423,6 @@ export const plans: Plan[] = [
     monthlyPrice: 3000,
     tagline: 'Perfect for small businesses starting out.',
     features: [
-      'One-off Onboarding: KES 30,000',
       '1–3 Users Management',
       'Unlimited Appointment Scheduling',
       'Lead Management',
@@ -446,7 +445,6 @@ export const plans: Plan[] = [
     monthlyPrice: 5000,
     tagline: 'Designed for growing medium to high-end businesses.',
     features: [
-      'One-off Onboarding: KES 40,000',
       '4–20 Users Management',
       'Unlimited Appointment Scheduling',
       'Lead Management',
@@ -470,7 +468,6 @@ export const plans: Plan[] = [
     monthlyPrice: 10000,
     tagline: 'Built for high-end spa businesses at scale.',
     features: [
-      'One-off Onboarding: KES 50,000',
       'Unlimited Users Management',
       'Unlimited Appointment Scheduling',
       'Lead Management',
