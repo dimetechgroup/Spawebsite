@@ -26,10 +26,7 @@ export interface SeoProps {
 const JSONLD_MARK = 'data-seo-jsonld'
 
 /** Finds a head tag by selector, or creates it. Never duplicates. */
-const upsert = (
-  selector: string,
-  create: () => HTMLElement
-): HTMLElement => {
+const upsert = (selector: string, create: () => HTMLElement): HTMLElement => {
   const existing = document.head.querySelector<HTMLElement>(selector)
   if (existing) return existing
   const created = create()
@@ -54,13 +51,6 @@ const removeMeta = (keyAttr: 'name' | 'property', key: string) => {
   document.head.querySelector(`meta[${keyAttr}="${key}"]`)?.remove()
 }
 
-/**
- * Writes per-route SEO tags straight into <head>.
- *
- * Deliberately not react-helmet: scripts/prerender.mjs snapshots the DOM after
- * JS has run, so direct head writes are captured in the static HTML exactly as
- * a helmet library's would be, with no dependency and no React 19 compat risk.
- */
 const Seo: React.FC<SeoProps> = ({
   path,
   title,
@@ -112,11 +102,13 @@ const Seo: React.FC<SeoProps> = ({
     setMeta('name', 'twitter:description', resolvedDescription)
     setMeta('name', 'twitter:image', resolvedImage)
 
-    // Article-only tags: clear them on non-article routes so a client-side
-    // navigation away from a post does not leave them behind.
     if (resolvedType === 'article' && publishedTime) {
       setMeta('property', 'article:published_time', publishedTime)
-      setMeta('property', 'article:modified_time', modifiedTime ?? publishedTime)
+      setMeta(
+        'property',
+        'article:modified_time',
+        modifiedTime ?? publishedTime
+      )
     } else {
       removeMeta('property', 'article:published_time')
       removeMeta('property', 'article:modified_time')
