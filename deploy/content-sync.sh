@@ -24,6 +24,9 @@ log() { printf '%s  %s\n' "$(date -u '+%Y-%m-%d %H:%M:%SZ')" "$*"; }
 
 cd "$REPO"
 
+# shellcheck source=./content-checksum.sh
+source "$REPO/deploy/content-checksum.sh"
+
 # A deploy in flight will publish whatever is current when it finishes, so there
 # is nothing to do and nothing to report.
 if [[ -f "$STATE/deploy.lock" ]] && ! flock -n "$STATE/deploy.lock" true 2>/dev/null; then
@@ -39,7 +42,7 @@ if ! OUTPUT=$(node scripts/fetch-content.mjs --require-cms 2>&1); then
   exit 1
 fi
 
-NEW_SHA=$(sha256sum data/generated/articles.json | cut -d' ' -f1)
+NEW_SHA=$(checksum_content)
 OLD_SHA=$(cat "$STATE/content.sha" 2>/dev/null || echo "none")
 
 if [[ "$NEW_SHA" == "$OLD_SHA" ]]; then

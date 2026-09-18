@@ -11,6 +11,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { submitContact } from '../api'
+import { contactDetails } from '@/data'
 import Seo from './Seo'
 import { graph, organizationSchema } from '@/seo/schema'
 
@@ -138,7 +139,7 @@ const ContactPage: React.FC = () => {
                     Call Sales
                   </h4>
                   <p className='text-sm font-black text-[#111827]'>
-                    +254 708 178 500
+                    {contactDetails.salesPhone}
                   </p>
                 </div>
                 <div className='p-8 rounded-[2rem] bg-[#F8FAFC] border border-gray-100 group hover:border-[#F7A300]/20 transition-all'>
@@ -149,7 +150,7 @@ const ContactPage: React.FC = () => {
                     Email Us
                   </h4>
                   <p className='text-sm font-black text-[#111827] leading-none'>
-                    contact@dimetechgroup.com
+                    {contactDetails.salesEmail}
                   </p>
                 </div>
               </div>

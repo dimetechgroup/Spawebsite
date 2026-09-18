@@ -6,11 +6,14 @@ article reach `myspa.co.ke` on its own.
 ## How publishing works
 
 ```
-editor sets an article to Published in Directus
+editor publishes an article, testimonial, image or marquee label in Directus
         |
         |  cron, every 5 minutes
         v
 deploy/content-sync.sh    fetches content, compares a checksum
+        |                 (deploy/content-checksum.sh, shared with deploy.sh,
+        |                  covers every generated file AND every downloaded
+        |                  image, so a swapped photo publishes too)
         |                 exits silently if nothing changed
         v
 deploy/deploy.sh          pnpm build:ci  (fetch -> vite -> prerender)
@@ -245,9 +248,13 @@ export MYSPA_BACKUP_RSYNC_TARGET="user@backup-host:/srv/myspa-backups/"
 The script warns on every run until this is set.
 
 There is a third copy of the content that needs no restore at all:
-`data/generated/articles.json` and `public/images/articles/` are committed to
-git and human-readable. Losing the entire CMS costs you the editing interface,
-not the articles.
+`data/generated/` and both image directories (`public/images/articles/` and
+`public/images/cms/`) are committed to git and human-readable. Losing the entire
+CMS costs you the editing interface, not the content.
+
+**The demo video is the exception.** It is gitignored, so the CMS database and
+its uploads directory are its only copies. That is what the nightly uploads tar
+is for, and it is the strongest reason to set `MYSPA_BACKUP_RSYNC_TARGET`.
 
 **Restore drill**, worth doing once:
 
@@ -279,9 +286,12 @@ The clean answer is a `noindex` preview route that fetches from Directus at
 runtime, which is the one place a runtime fetch belongs.
 
 **Nothing writes back to git.** The server fetches content into its working
-copy but never commits, so `data/generated/articles.json` in git drifts behind
-production over time. Refresh it deliberately from a development machine:
+copy but never commits, so `data/generated/` in git drifts behind production
+over time. Refresh it deliberately from a development machine:
 
 ```bash
-pnpm content && git add data/generated public/images/articles && git commit
+pnpm content && git add data/generated public/images/articles public/images/cms && git commit
 ```
+
+`public/video/` is deliberately absent from that list: the demo video is
+gitignored and lives only in the CMS and on whichever machines have built.

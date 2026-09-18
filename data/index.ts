@@ -9,7 +9,6 @@ import {
   Gift,
   Globe,
   Heart,
-  HelpCircle,
   LayoutGrid,
   Landmark,
   Lightbulb,
@@ -33,6 +32,7 @@ import {
   Wallet,
   Zap
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Buildings } from '@phosphor-icons/react'
 
 
@@ -50,10 +50,23 @@ import type {
   FAQCategoryColorMap,
   Module,
   Article,
-  ArticleCategoryColorMap
+  ArticleCategoryColorMap,
+  CmsImage,
+  ModulesImage,
+  DemoVideo,
+  ContactDetails
 } from '../types'
 
 import contentJson from './generated/articles.json'
+import homeHeroImageJson from './generated/home-hero-image.json'
+import modulesImageJson from './generated/modules-image.json'
+import testimonialsJson from './generated/testimonials.json'
+import modulesMarqueeJson from './generated/modules-marquee.json'
+import featuresHeroImageJson from './generated/features-hero-image.json'
+import demoVideoJson from './generated/demo-video.json'
+import anchorFeaturesJson from './generated/anchor-features.json'
+import faqsJson from './generated/faqs.json'
+import contactDetailsJson from './generated/contact-details.json'
 
 /** Shape of generated/articles.json, written by scripts/fetch-content.mjs. */
 interface GeneratedContent {
@@ -70,6 +83,24 @@ interface GeneratedContent {
  * rather than merely asserted.
  */
 const content = contentJson as unknown as GeneratedContent
+
+// ── ContactPage.tsx, Footer.tsx, seo/schema.ts ──────────────────
+
+/**
+ * The sales phone number and email. Edited in Directus under "Contact Details",
+ * and the single source for all three places they appear: the cards on
+ * /contact, the footer of every page, and the Organization contactPoint in the
+ * structured data. The phone and mail icons beside them stay in the components.
+ */
+export const contactDetails: ContactDetails = contactDetailsJson
+
+// ── Hero.tsx ────────────────────────────────────────────────────
+
+/**
+ * The product screenshot beside the hero headline. Edited in Directus under
+ * "Home Hero Image"; the headline and buttons around it are still hardcoded.
+ */
+export const homeHeroImage: CmsImage = homeHeroImageJson
 
 // ── Features.tsx ────────────────────────────────────────────────
 
@@ -140,63 +171,31 @@ export const featureGroups: FeatureGroup[] = [
   }
 ]
 
+/**
+ * The scrolling capability strip under the feature grid. Edited in Directus
+ * under "Modules Marquee".
+ *
+ * The list is doubled here rather than in the CMS. Features.tsx animates it
+ * from 0% to -50%, so the loop is only seamless if the second half repeats the
+ * first exactly, and asking an editor to type every label twice would make a
+ * missed one look like a rendering bug. The dot colours alternate on index in
+ * the component, so they stay correct at any length.
+ */
 export const featuresMarqueeItems: string[] = [
-  'Market Intelligence',
-  'Branded Solutions',
-  'ERP Management',
-  'Automated Planning',
-  '24/7 Availability',
-  'Always-on Analytics',
-  'ERP Integration',
-  'Market Intelligence',
-  'Branded Solutions',
-  'ERP Management',
-  'Automated Planning',
-  '24/7 Availability',
-  'Always-on Analytics',
-  'ERP Integration'
+  ...modulesMarqueeJson.labels,
+  ...modulesMarqueeJson.labels
 ]
 
 // ── Testimonials.tsx ────────────────────────────────────────────
 
-export const testimonials: Testimonial[] = [
-  {
-    name: 'Elena Wambui',
-    role: 'Founder, Azure Wellness Spa',
-    location: 'Uganda',
-    content:
-      'MySpa has completely transformed the way we manage our multi-location brand. The intuitive ERP modules and real-time analytics have been total game-changers for our bottom line.',
-    img: '/images/photo1.jpg',
-    stat: { value: '+38%', label: 'Revenue Growth' }
-  },
-  {
-    name: 'Mercy Nyakio',
-    role: 'Managing Director, Zenith Retreats',
-    location: 'Nairobi, Kenya',
-    content:
-      'Managing 15 locations across the coast was a nightmare before MySpa. Now I have a unified command center that handles everything from HR to high-precision inventory tracking.',
-    img: '/images/photo 2.avif',
-    stat: { value: '15×', label: 'Locations Managed' }
-  },
-  {
-    name: 'Dr. Samuel Gitonga',
-    role: 'Director, Holistic Medical Spa',
-    location: 'Mombasa, Kenya',
-    content:
-      'The level of detail in the client management system is unparalleled. We track preferences and medical history with the security and precision our clinic demands.',
-    img: '/images/photo 3.webp',
-    stat: { value: '100%', label: 'Compliance Rate' }
-  },
-  {
-    name: 'Sarah Wahome',
-    role: 'CEO, Luminos Day Spa Group',
-    location: 'Tanzania',
-    content:
-      "Switching to MySpa was the best operational decision we've made. Booking rates are up, staff scheduling is seamless, and clients consistently remark on the improved experience.",
-    img: '/images/photo 4.webp',
-    stat: { value: '+52%', label: 'Booking Rate' }
-  }
-]
+/**
+ * Quote carousel on the home page. Edited in Directus under "Testimonials",
+ * ordered by its sort field, and only rows set to published are built in.
+ *
+ * Testimonials.tsx wraps the quote in its own quotation marks, so the stored
+ * text must not carry any; scripts/fetch-content.mjs fails the build if it does.
+ */
+export const testimonials: Testimonial[] = testimonialsJson.testimonials
 
 // ── PartnerSection.tsx ──────────────────────────────────────────
 
@@ -284,64 +283,53 @@ export const blogCategories: string[] = [
 
 // ── FeaturesPage.tsx ────────────────────────────────────────────
 
-export const anchorFeatures: AnchorFeature[] = [
-  {
-    name: 'Dashboard',
-    icon: LayoutGrid,
-    desc: "Your spa's command center. Get a real-time overview of revenue, customers, payments, orders and inventory, all in one intuitive dashboard.",
-    size: 'lg',
-    color: 'bg-[#207D40]',
-    img: '/images/Dashboard.png'
-  },
-  {
-    name: 'CRM',
-    icon: Users,
-    desc: 'Manage client profiles, preferences, and history. Build loyalty programs, track visits, and personalize experiences.',
-    size: 'sm',
-    color: 'bg-[#F7A300]',
-    img: '/images/CRM.png'
-  },
-  {
-    name: 'Orders & Invoices',
-    icon: Receipt,
-    desc: 'Simplify billing with automated invoices, order tracking, and payment integration for smooth transactions.',
-    size: 'sm',
-    color: 'bg-[#207D40]',
-    img: '/images/Orders.png'
-  },
-  {
-    name: 'Accounting',
-    icon: Wallet,
-    desc: 'Stay on top of finances with integrated accounting tools. Track expenses, revenue, and profitability with ease. Generate reports for smarter decisions.',
-    size: 'md',
-    color: 'bg-[#F7A300]',
-    img: '/images/Accounts.png'
-  },
-  {
-    name: 'Stock & Inventory',
-    icon: Package,
-    desc: 'Track product usage, supplier orders, and stock levels in real time to minimize waste and optimize costs.',
-    color: 'bg-[#207D40]',
-    img: '/images/Stocks.png',
-    hidden: true
-  },
-  {
-    name: 'Reports & Analytics',
-    icon: BarChart3,
-    desc: 'Turn raw data into actionable insight. Generate detailed reports on revenue, staff performance, and client trends.',
-    color: 'bg-[#F7A300]',
-    img: '/images/Report.png',
-    hidden: true
-  },
-  {
-    name: 'HR Management',
-    icon: UserCheck,
-    desc: 'Manage staff schedules, attendance, payroll, and performance, tailored for the unique rhythms of spa operations.',
-    color: 'bg-[#207D40]',
-    img: '/images/HR.png',
-    hidden: true
-  }
-]
+/**
+ * The screenshot at the top of /features. Edited in Directus under "Features
+ * Hero Image"; the headline and the Request a Demo button stay here in code.
+ */
+export const featuresHeroImage: CmsImage = featuresHeroImageJson
+
+/**
+ * The product demo, shown in the "One Unified Ecosystem" section and in the
+ * home page hero pop-up. One record in Directus feeds both.
+ */
+export const demoVideo: DemoVideo = demoVideoJson
+
+/**
+ * Icon, colour and grid size for each module card, keyed by the `key` field on
+ * the matching row in Directus.
+ *
+ * None of these three can live in the CMS. `icon` is a live Lucide component
+ * reference, and `color` is a Tailwind class: Tailwind builds its stylesheet by
+ * scanning source files, so `bg-[#207D40]` arriving from Postgres would appear
+ * in no source file, compile to no CSS rule, and leave the card unstyled with
+ * no error anywhere. `size` is layout, not content.
+ *
+ * scripts/fetch-content.mjs parses the keys out of this object and fails the
+ * build if Directus holds a published card whose key is missing here, so a new
+ * module can never be published before the code that styles it exists.
+ */
+const anchorFeatureStyles: Record<
+  string,
+  { icon: LucideIcon; color: string; size?: string }
+> = {
+  dashboard: { icon: LayoutGrid, color: 'bg-[#207D40]', size: 'lg' },
+  crm: { icon: Users, color: 'bg-[#F7A300]', size: 'sm' },
+  'orders-invoices': { icon: Receipt, color: 'bg-[#207D40]', size: 'sm' },
+  accounting: { icon: Wallet, color: 'bg-[#F7A300]', size: 'md' },
+  'stock-inventory': { icon: Package, color: 'bg-[#207D40]' },
+  'reports-analytics': { icon: BarChart3, color: 'bg-[#F7A300]' },
+  'hr-management': { icon: UserCheck, color: 'bg-[#207D40]' }
+}
+
+/**
+ * Module cards on /features, in CMS sort order. The first four that are not
+ * hidden fill the four fixed positions in the bento grid, so their order is
+ * load-bearing; the rest appear behind "See the List".
+ */
+export const anchorFeatures: AnchorFeature[] = anchorFeaturesJson.features.map(
+  feature => ({ ...feature, ...anchorFeatureStyles[feature.key] })
+) as AnchorFeature[]
 
 export const utilityFeatures: UtilityFeature[] = [
   {
@@ -487,113 +475,40 @@ export const plans: Plan[] = [
 
 // ── FAQPage.tsx ─────────────────────────────────────────────────
 
-export const faqs: FAQ[] = [
-  {
-    question: 'What is Myspa ERP System?',
-    answer:
-      'MySpa ERP System is a cloud-based Spa Management Software designed exclusively for spas. It is a complete Spa ERP solution that integrates bookings, client management, accounting, HR, inventory, billing, reporting, and gift vouchers into one unified platform. Unlike basic booking tools, it provides full operational visibility and business control.',
-    icon: Sparkles,
-    category: 'General',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  },
-  {
-    question: 'How do I get started with Myspa?',
-    answer:
-      'To get started with MySpa ERP System, request a demo, select a suitable subscription plan, and complete onboarding with our support team. Since MySpa is cloud-based, no installation is required. You can access your Spa ERP system securely from any device with internet access.',
-    icon: Zap,
-    category: 'Getting Started'
-  },
-  {
-    question: 'How much does Myspa ERP System cost?',
-    answer:
-      "The cost of MySpa ERP System depends on the number of users, branches, and required modules. Pricing is subscription-based and tailored to your spa's size and operational needs. Contact us for a customized quote based on your business structure.",
-    icon: CreditCard,
-    category: 'Pricing'
-  },
-  {
-    question: 'Can I cancel my subscription at any time?',
-    answer:
-      'Yes, MySpa ERP System operates on a subscription model. You may cancel according to your agreed billing terms. We prioritize flexibility while building long-term partnerships with spa businesses.',
-    icon: HelpCircle,
-    category: 'Billing'
-  },
-  {
-    question: 'Is Myspa ERP System secure?',
-    answer:
-      'Yes, MySpa ERP System is built on secure cloud infrastructure with encrypted data storage, role-based access control, secure authentication, and regular system updates. Your client data, financial records, and operational information remain protected at all times.',
-    icon: ShieldCheck,
-    category: 'Security'
-  },
-  {
-    question: 'How does the Myspa ERP dashboard work?',
-    answer:
-      'The MySpa ERP dashboard provides real-time visibility into revenue, client visits, payments, inventory levels, staff activity, and profitability. It acts as a centralized command center, helping spa owners make data-driven decisions using live performance analytics.',
-    icon: Sparkles,
-    category: 'Features'
-  },
-  {
-    question: 'How does the Client Module work?',
-    answer:
-      'The Client Module helps you manage customer profiles, visit history, preferences, and loyalty information in one place. You get a complete 360° view of every client, enabling personalized service and stronger retention.',
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How are customer orders created?',
-    answer:
-      'Customer orders are created, managed, and linked to billing and inventory inside the MySpa ERP system seamlessly. From service selection to payment, the entire order lifecycle is tracked in real time.',
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How does the Stock & Inventory Module work?',
-    answer:
-      "MySpa tracks product usage, monitors stock levels, manages suppliers, and prevents shortages through smart inventory control. You'll receive alerts before stock runs out and can generate purchase orders directly from the system.",
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How do gift cards and vouchers work?',
-    answer:
-      'You can create, sell, and redeem gift cards and vouchers to increase spa revenue and customer engagement. The system tracks redemption history and balances automatically, making it effortless to run promotions.',
-    icon: Gift,
-    category: 'Features'
-  },
-  {
-    question: 'How does the HR Management Module work?',
-    answer:
-      'MySpa manages staff schedules, attendance, payroll tracking, and performance incentives in one integrated HR system. Team leads get full visibility into workforce productivity without juggling spreadsheets.',
-    icon: Users,
-    category: 'Features'
-  },
-  {
-    question: 'How does Myspa help manage daily spa operations?',
-    answer:
-      'MySpa ERP System centralizes bookings, billing, HR, inventory, accounting, and reporting into one integrated Spa Operations System. This eliminates disconnected tools and improves workflow efficiency across your entire spa business.',
-    icon: Zap,
-    category: 'Operations'
-  },
-  {
-    question: 'How does Myspa improve business performance?',
-    answer:
-      'MySpa improves business performance by providing real-time data, financial visibility, and structured reporting. Spa owners can identify profitable services, reduce inefficiencies, improve staff productivity, and scale confidently using actionable insights.',
-    icon: Sparkles,
-    category: 'Growth'
-  }
-]
+/**
+ * Questions on /faq, in CMS sort order. Edited in Directus under "FAQs".
+ *
+ * These feed faqPageSchema() in seo/schema.ts as well as the page itself, so
+ * every published question also becomes a schema.org Question that Google can
+ * show as a rich result. scripts/fetch-content.mjs enforces the rules that
+ * follow from that, including that a question ends in a question mark and that
+ * an answer is long enough to stand on its own.
+ */
+export const faqs: FAQ[] = faqsJson.faqs
 
-export const faqCategoryColors: FAQCategoryColorMap = {
-  General: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  'Getting Started': { bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe' },
-  Pricing: { bg: '#fefce8', color: '#d97706', border: '#fde68a' },
-  Billing: { bg: '#fdf4ff', color: '#9333ea', border: '#e9d5ff' },
-  Security: { bg: '#fff1f2', color: '#e11d48', border: '#fecdd3' },
-  Features: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  Operations: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
-  Growth: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' }
-}
+/**
+ * Pill colours, keyed by category name and sourced from the CMS, so adding a
+ * category no longer needs a code change.
+ *
+ * These are hex values rather than Tailwind class names, which is the only
+ * reason they can live in a database at all: a class that appears in no source
+ * file is never compiled, and the pill would render unstyled.
+ */
+export const faqCategoryColors: FAQCategoryColorMap = Object.fromEntries(
+  faqsJson.categories.map(category => [
+    category.name,
+    { bg: category.colorBg, color: category.colorText, border: category.colorBorder }
+  ])
+)
 
 // ── AboutSection.tsx ────────────────────────────────────────────
+
+/**
+ * The photo in the left panel of the modules section, and the text of the badge
+ * over it. Edited in Directus under "Modules Image". The badge's icon and the
+ * module tiles below stay hardcoded, because both carry Lucide components.
+ */
+export const modulesImage: ModulesImage = modulesImageJson
 
 export const modules: Module[] = [
   {

@@ -14,7 +14,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { modules } from '@/data'
+import { modules, modulesImage } from '@/data'
 
 const containerVariants = {
   hidden: {},
@@ -109,8 +109,8 @@ const AboutSection: React.FC = () => {
             style={{ background: '#0d1f0d' }}
           >
             <img
-              src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop'
-              alt='MySpa Platform'
+              src={modulesImage.src}
+              alt={modulesImage.alt}
               className='absolute inset-0 w-full h-full object-cover'
             />
 
@@ -126,7 +126,7 @@ const AboutSection: React.FC = () => {
                   boxShadow: '0 4px 16px rgba(46,139,53,0.3)'
                 }}
               >
-                <LayoutGrid size={11} /> Modular Infrastructure
+                <LayoutGrid size={11} /> {modulesImage.badge}
               </div>
             </div>
 

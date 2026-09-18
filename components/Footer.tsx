@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Phone, Mail, Send, CheckCircle, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { fetchConfig, subscribeNewsletter } from '../api'
+import { subscribeNewsletter } from '../api'
+import { contactDetails } from '@/data'
 import { footerRoutes } from '@/seo/routes'
 
 const Footer: React.FC = () => {
@@ -9,17 +10,6 @@ const Footer: React.FC = () => {
   const [subEmail, setSubEmail] = useState('')
   const [honeypot, setHoneypot] = useState('')
   const [subStatus, setSubStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-  const [contactEmail, setContactEmail] = useState('contact@dimetechgroup.com')
-
-  useEffect(() => {
-    fetchConfig()
-      .then(data => {
-        if (data?.contact_email) {
-          setContactEmail(data.contact_email)
-        }
-      })
-      .catch(err => console.error(err))
-  }, [])
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,11 +66,11 @@ const Footer: React.FC = () => {
             <ul className='space-y-4 text-gray-400 text-xs font-bold'>
               <li className='flex gap-3 items-center'>
                 <Phone size={14} className='text-[#207D40]' />
-                <span>+254 708 178 500</span>
+                <span>{contactDetails.salesPhone}</span>
               </li>
               <li className='flex gap-3 items-center'>
                 <Mail size={14} className='text-[#207D40]' />
-                <span>{contactEmail}</span>
+                <span>{contactDetails.salesEmail}</span>
               </li>
             </ul>
           </div>

@@ -7,9 +7,16 @@ const API_BASE_URL =
 
 export const isApiConfigured = (): boolean => API_BASE_URL !== ''
 
-/** Runtime overrides returned by GET /config. All fields are optional. */
+/**
+ * Runtime overrides returned by GET /config. All fields are optional.
+ *
+ * `contact_email` used to be here and was applied by Footer.tsx after mount.
+ * The address now comes from the CMS at build time, so it is prerendered and
+ * visible to crawlers; keeping the runtime override would have let a stale
+ * value from this endpoint silently replace the CMS one for visitors only.
+ * The backend may still send the field, it is simply no longer read.
+ */
 export interface AppConfig {
-  contact_email?: string
   /** Plan id (see `plans` in data/index.ts) to monthly price. */
   pricing?: Record<string, number>
 }

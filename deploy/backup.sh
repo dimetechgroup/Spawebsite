@@ -3,11 +3,13 @@
 # Nightly backup of everything the CMS holds that is not already in git.
 #
 # Two things are backed up: the Postgres database (articles, sections,
-# categories, users, permissions) and the uploads directory (the original image
-# files). Restoring both reconstructs the CMS exactly.
+# categories, testimonials, faqs, marquee labels, module cards, users and
+# permissions) and the uploads directory (the original image files, and the
+# demo video). Restoring both reconstructs the CMS exactly.
 #
-# The site content itself has a third copy in git as data/generated/articles.json
-# plus public/images/articles/, which is readable without restoring anything.
+# The site content itself has a third copy in git as data/generated/ plus
+# public/images/articles/ and public/images/cms/, readable without restoring
+# anything.
 #
 # Install (03:15 daily):
 #   15 3 * * * /var/www/myspa/repo/deploy/backup.sh >> /var/www/myspa/state/backup.log 2>&1

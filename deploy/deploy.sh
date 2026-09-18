@@ -100,6 +100,10 @@ if [[ "$(find "$RELEASES" -mindepth 1 -maxdepth 1 -type d | wc -l)" -gt "$KEEP_R
 fi
 
 # Record what is live, so content-sync.sh can tell whether the CMS has moved on.
-sha256sum "$REPO/data/generated/articles.json" | cut -d' ' -f1 > "$STATE/content.sha"
+# Both sides read the same function, because a disagreement here would make
+# every cron run believe the content changed and rebuild the site forever.
+# shellcheck source=./content-checksum.sh
+source "$REPO/deploy/content-checksum.sh"
+checksum_content > "$STATE/content.sha"
 
 log "── deploy done in $(( $(date +%s) - START ))s ──"

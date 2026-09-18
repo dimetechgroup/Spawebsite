@@ -22,7 +22,9 @@ import {
 import {
   anchorFeatures,
   utilityFeatures,
-  featuresPageMarqueeItems
+  featuresPageMarqueeItems,
+  featuresHeroImage,
+  demoVideo
 } from '@/data'
 
 const FeaturesPage: React.FC = () => {
@@ -80,8 +82,8 @@ const FeaturesPage: React.FC = () => {
               <div className='relative'>
                 <div className='relative rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white  group hover:rotate-0 transition-transform duration-1000 max-w-[700px] ml-auto'>
                   <img
-                    src='/images/Dashboard.png'
-                    alt='Artisan Spa Experience'
+                    src={featuresHeroImage.src}
+                    alt={featuresHeroImage.alt}
                     className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000'
                   />
 
@@ -200,7 +202,7 @@ const FeaturesPage: React.FC = () => {
             >
               <img
                 src={anchorFeatures[0].img}
-                alt={anchorFeatures[0].name}
+                alt={anchorFeatures[0].imgAlt}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -286,7 +288,7 @@ const FeaturesPage: React.FC = () => {
             >
               <img
                 src={anchorFeatures[1].img}
-                alt={anchorFeatures[1].name}
+                alt={anchorFeatures[1].imgAlt}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -371,7 +373,7 @@ const FeaturesPage: React.FC = () => {
             >
               <img
                 src={anchorFeatures[2].img}
-                alt={anchorFeatures[2].name}
+                alt={anchorFeatures[2].imgAlt}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -456,7 +458,7 @@ const FeaturesPage: React.FC = () => {
             >
               <img
                 src={anchorFeatures[3].img}
-                alt={anchorFeatures[3].name}
+                alt={anchorFeatures[3].imgAlt}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -665,7 +667,7 @@ const FeaturesPage: React.FC = () => {
                 >
                   <img
                     src={feature.img}
-                    alt={feature.name}
+                    alt={feature.imgAlt}
                     style={{
                       position: 'absolute',
                       inset: 0,
@@ -770,7 +772,8 @@ const FeaturesPage: React.FC = () => {
             >
               {playing ? (
                 <video
-                  src='/images/demo.mp4'
+                  src={demoVideo.src}
+                  poster={demoVideo.poster.src}
                   className='w-full h-full object-cover'
                   autoPlay
                   controls
@@ -779,8 +782,8 @@ const FeaturesPage: React.FC = () => {
               ) : (
                 <>
                   <img
-                    src='https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop'
-                    alt='System Integration Demo'
+                    src={demoVideo.poster.src}
+                    alt={demoVideo.poster.alt}
                     className='w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000'
                   />
                   <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent' />

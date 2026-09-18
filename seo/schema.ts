@@ -1,4 +1,4 @@
-import { articles, faqs, plans } from '@/data'
+import { articles, contactDetails, faqs, plans } from '@/data'
 import type { Article } from '@/types'
 import { SITE_NAME, SITE_URL, absoluteUrl } from './routes'
 
@@ -39,7 +39,11 @@ export const organizationSchema = () => ({
   ],
   contactPoint: {
     '@type': 'ContactPoint',
-    telephone: '+254708178500',
+    // E.164, which is what schema.org expects. Derived from the single number
+    // in the CMS rather than written out again, so the number search engines
+    // publish can never drift from the one on the page.
+    telephone: contactDetails.salesPhoneE164,
+    email: contactDetails.salesEmail,
     contactType: 'sales',
     areaServed: 'KE',
     availableLanguage: ['en']
