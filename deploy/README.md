@@ -50,6 +50,43 @@ Everything is overridable with `MYSPA_BASE`, `MYSPA_REPO`, `MYSPA_BACKUP_DIR`.
 
 ---
 
+## If the server runs cPanel, read this first
+
+The steps below assume a plain Ubuntu VPS where you own Apache. On a cPanel or
+cPanel/WHM box most of it still holds, but three things change, and following
+the steps literally will cost you your Apache config.
+
+**Apache config is regenerated.** cPanel rebuilds `httpd.conf` from its own
+templates, so anything written into a vhost, or into `/etc/apache2/sites-available`,
+is silently wiped on the next EasyApache rebuild, domain change or account edit.
+Every `a2ensite` line below is therefore wrong on cPanel. The two files in
+`deploy/apache/` become reference configs rather than drop-in ones: copy their
+directives into the per-domain userdata include tree instead,
+
+```
+/etc/apache2/conf.d/userdata/std/2_4/<cpuser>/<domain>/myspa.conf
+/etc/apache2/conf.d/userdata/ssl/2_4/<cpuser>/<domain>/myspa.conf
+```
+
+then `/scripts/ensure_vhost_includes --user=<cpuser>` and
+`/scripts/restartsrv_httpd`. Confirm those paths against your cPanel version.
+
+**Certificates come from AutoSSL.** Skip every `certbot` line below and issue
+certificates through WHM once the vhosts answer.
+
+**CSF can break Docker.** cPanel boxes usually run CSF, which interferes with
+Docker's bridge networking. Nothing here needs a port open to the internet:
+Directus binds to `127.0.0.1:8055` and Postgres to `127.0.0.1:5433`. But
+Docker's own interface may need allowing.
+
+Package names also differ: the `apt` lines in step 1 become `yum`/`dnf` on
+CentOS, AlmaLinux or CloudLinux, which is what most cPanel boxes run.
+
+Where the document root goes is a real decision on cPanel, and it is covered in
+step 5.
+
+---
+
 ## Step 1: DNS and packages
 
 Point an A record for `cms.myspa.co.ke` at the server, alongside the existing
@@ -112,13 +149,36 @@ sudo a2ensite cms.myspa.co.ke
 sudo certbot --apache -d cms.myspa.co.ke
 ```
 
+> **On cPanel** the last three lines do not apply. Copy the directives into the
+> userdata include tree and use AutoSSL, as described above.
+
+Two directives in that vhost are load-bearing and easy to lose in a rewrite.
+`LimitRequestBody 536870912` is sized for the demo video, not the images: at the
+previous 50 MB cap, replacing the ~100 MB video failed with a bare 413 from
+Apache that never reached Directus, so the admin UI showed an upload that simply
+stopped. `Options -Indexes` stops the subdomain serving a directory listing
+before the proxy is configured.
+
 Then log in at `https://cms.myspa.co.ke` and **turn on two-factor auth for every
 account**. This is an internet-facing admin panel now.
 
 ## Step 3: Move the content across
 
-Dump locally and restore on the server. This carries articles, sections,
-categories, users, and the Editor policy together, so nothing is rebuilt by hand.
+Dump locally and restore on the server. This carries all thirteen content
+tables, the users and the Editor policy together, so nothing is rebuilt by hand.
+
+Two things to be clear about before you start.
+
+**The dump is PostgreSQL.** It restores into the Postgres container Directus
+runs alongside, and nothing else. On a cPanel box in particular, phpMyAdmin and
+the MySQL Databases tool cannot read it and will fail with syntax errors.
+
+**The uploads are not optional.** Every image and the ~100 MB demo video live in
+`directus/uploads/`, and the video is gitignored, so the database and that
+directory are its only copies. Restore the database without the uploads and
+Directus holds rows pointing at files that do not exist, so the first build
+stops with `failed to download the demo video: HTTP 404`. It fails loudly rather
+than publishing a broken page, but it is a blocked deploy either way.
 
 ```bash
 # on your machine
@@ -159,11 +219,24 @@ Set in `.env`:
 ```ini
 DIRECTUS_URL=http://localhost:8055
 DIRECTUS_TOKEN=<the rotated admin static token>
+VITE_API_BASE_URL=<the backend that receives contact form submissions>
 ```
 
 `DIRECTUS_URL` is the **loopback** address, not the public one. The build runs on
 this machine, so it has no reason to leave it, and the token never crosses the
 network.
+
+`VITE_API_BASE_URL` is baked into the bundle at build time and is easy to miss,
+because leaving it unset breaks the contact form **silently**. `api.ts` guards
+every call with `isApiConfigured()`, so an unset value makes submissions no-op
+rather than error. Worse, a wrong value ships: the build currently live on
+myspa.co.ke has `http://localhost:8000/api` compiled in, which means every
+submission has been posting to the visitor's own machine and no enquiry has ever
+arrived. Check this before the first deploy, then submit the form once and
+confirm the enquiry lands.
+
+The newsletter is separate and unaffected: it posts to `VITE_NEWSLETTER_URL`,
+which defaults to `https://api.myspa.co.ke/newsletter/subscribe`.
 
 Verify by hand before automating anything:
 
@@ -192,6 +265,29 @@ sudo systemctl reload apache2
 contains the loading spinner, or has no article pages, so a broken build leaves
 the previous release serving.
 
+### Where the document root points
+
+On a plain VPS the answer is the layout above: DocumentRoot is
+`/var/www/myspa/current`, and the atomic symlink flip is what makes a deploy
+invisible to visitors and a rollback instant.
+
+cPanel expects the document root at `/home/<cpuser>/public_html`, so pick one:
+
+| Approach | Trade-off |
+| --- | --- |
+| Point DocumentRoot at `/var/www/myspa/current` via the userdata include | keeps the atomic flip and instant rollback; cPanel's own tooling will not understand the path |
+| `rsync -a --delete current/ /home/<cpuser>/public_html/` after each deploy | stays inside cPanel's conventions; loses atomicity, so there is a brief window mid-rsync |
+
+Prefer the first unless something else on the account needs `public_html`. If
+you take the second, add the rsync to the end of `deploy.sh` so it cannot be
+forgotten.
+
+Either way `public/.htaccess` ships inside the build and handles clean URLs, the
+real 404 and cache headers. Do not add rewrite rules on top of it. In
+particular there is deliberately **no** SPA catch-all: a blanket rewrite to
+`index.html` makes every mistyped URL return 200 with the homepage, which Google
+treats as a soft 404 and which can generate unlimited duplicate URLs.
+
 **Rollback** is a symlink flip:
 
 ```bash
@@ -219,6 +315,26 @@ MAILTO=you@dimetechgroup.com
 fails validation, so `MAILTO` turns those into mail. Set it to an address you
 actually read, otherwise a silently stuck pipeline looks identical to a quiet
 week.
+
+### Verify the first deploy actually replaced the old site
+
+Three checks, all of which fail against the stale pre-SEO build that was live
+before this pipeline existed. Run them before trusting anything else:
+
+```bash
+# real XML, not the SPA shell being served for every path
+curl -sI https://myspa.co.ke/sitemap.xml | grep -i content-type    # application/xml
+
+# the Tailwind play CDN is a dev-only script and must not be in a built page
+curl -s https://myspa.co.ke/ | grep -c cdn.tailwindcss.com         # 0
+
+# an article page must be prerendered HTML, not a 2 KB shell
+curl -s https://myspa.co.ke/resources/how-to-reduce-no-shows | wc -c   # thousands
+```
+
+The Tailwind one matters beyond correctness: the play CDN made Firefox prompt
+every visitor for permission to "access other apps and services on this device",
+which reads like malware to a spa owner.
 
 ### Verify the loop
 
