@@ -35,72 +35,15 @@ import {
 import type { LucideIcon } from 'lucide-react'
 import { Buildings } from '@phosphor-icons/react'
 
-
 import type {
   FeatureGroup,
-  Testimonial,
   Partner,
   Value,
-  BlogPost,
-  AnchorFeature,
   UtilityFeature,
   FeaturesPageMarqueeItem,
   Plan,
-  FAQ,
-  FAQCategoryColorMap,
-  Module,
-  Article,
-  ArticleCategoryColorMap,
-  CmsImage,
-  ModulesImage,
-  DemoVideo,
-  ContactDetails
+  Module
 } from '../types'
-
-import contentJson from './generated/articles.json'
-import homeHeroImageJson from './generated/home-hero-image.json'
-import modulesImageJson from './generated/modules-image.json'
-import testimonialsJson from './generated/testimonials.json'
-import modulesMarqueeJson from './generated/modules-marquee.json'
-import featuresHeroImageJson from './generated/features-hero-image.json'
-import demoVideoJson from './generated/demo-video.json'
-import anchorFeaturesJson from './generated/anchor-features.json'
-import faqsJson from './generated/faqs.json'
-import contactDetailsJson from './generated/contact-details.json'
-
-/** Shape of generated/articles.json, written by scripts/fetch-content.mjs. */
-interface GeneratedContent {
-  /** Newest dateModified across all articles, not a build timestamp. */
-  generatedAt: string
-  categories: { name: string; colorBg: string; colorText: string }[]
-  articles: Article[]
-}
-
-/**
- * The cast is needed because TypeScript infers a structural union from the JSON
- * literal rather than the `Article` interface. scripts/fetch-content.mjs
- * validates the shape before writing the file, so this is checked at build time
- * rather than merely asserted.
- */
-const content = contentJson as unknown as GeneratedContent
-
-// ── ContactPage.tsx, Footer.tsx, seo/schema.ts ──────────────────
-
-/**
- * The sales phone number and email. Edited in Directus under "Contact Details",
- * and the single source for all three places they appear: the cards on
- * /contact, the footer of every page, and the Organization contactPoint in the
- * structured data. The phone and mail icons beside them stay in the components.
- */
-export const contactDetails: ContactDetails = contactDetailsJson
-
-// ── Hero.tsx ────────────────────────────────────────────────────
-
-/**
- * The product screenshot beside the hero headline. Edited in Directus under
- * "Home Hero Image"; the headline and buttons around it are still hardcoded.
- */
-export const homeHeroImage: CmsImage = homeHeroImageJson
 
 // ── Features.tsx ────────────────────────────────────────────────
 
@@ -171,32 +114,6 @@ export const featureGroups: FeatureGroup[] = [
   }
 ]
 
-/**
- * The scrolling capability strip under the feature grid. Edited in Directus
- * under "Modules Marquee".
- *
- * The list is doubled here rather than in the CMS. Features.tsx animates it
- * from 0% to -50%, so the loop is only seamless if the second half repeats the
- * first exactly, and asking an editor to type every label twice would make a
- * missed one look like a rendering bug. The dot colours alternate on index in
- * the component, so they stay correct at any length.
- */
-export const featuresMarqueeItems: string[] = [
-  ...modulesMarqueeJson.labels,
-  ...modulesMarqueeJson.labels
-]
-
-// ── Testimonials.tsx ────────────────────────────────────────────
-
-/**
- * Quote carousel on the home page. Edited in Directus under "Testimonials",
- * ordered by its sort field, and only rows set to published are built in.
- *
- * Testimonials.tsx wraps the quote in its own quotation marks, so the stored
- * text must not carry any; scripts/fetch-content.mjs fails the build if it does.
- */
-export const testimonials: Testimonial[] = testimonialsJson.testimonials
-
 // ── PartnerSection.tsx ──────────────────────────────────────────
 
 export const partners: Partner[] = [
@@ -262,54 +179,22 @@ export const values: Value[] = [
   }
 ]
 
-// ── ResourcesPage.tsx ───────────────────────────────────────────
-
-// `blogPosts` (the /resources cards) is derived from `articles` at the bottom
-// of this file. One source of truth, so a card can never drift from the
-// article it links to.
-
-/**
- * Filter row on /resources. Comes from the CMS category list, in the sort order
- * set there, and lists only categories that actually have a published article,
- * so archiving the last post in a category removes its tab rather than leaving
- * a filter that yields an empty grid.
- */
-export const blogCategories: string[] = [
-  'All',
-  ...content.categories
-    .map(category => category.name)
-    .filter(name => content.articles.some(article => article.category === name))
-]
-
 // ── FeaturesPage.tsx ────────────────────────────────────────────
 
 /**
- * The screenshot at the top of /features. Edited in Directus under "Features
- * Hero Image"; the headline and the Request a Demo button stay here in code.
- */
-export const featuresHeroImage: CmsImage = featuresHeroImageJson
-
-/**
- * The product demo, shown in the "One Unified Ecosystem" section and in the
- * home page hero pop-up. One record in Directus feeds both.
- */
-export const demoVideo: DemoVideo = demoVideoJson
-
-/**
  * Icon, colour and grid size for each module card, keyed by the `key` field on
- * the matching row in Directus.
+ * the matching item in Cockpit. cms/content.ts joins these onto the cards.
  *
  * None of these three can live in the CMS. `icon` is a live Lucide component
  * reference, and `color` is a Tailwind class: Tailwind builds its stylesheet by
- * scanning source files, so `bg-[#207D40]` arriving from Postgres would appear
+ * scanning source files, so `bg-[#207D40]` arriving from the CMS would appear
  * in no source file, compile to no CSS rule, and leave the card unstyled with
  * no error anywhere. `size` is layout, not content.
  *
- * scripts/fetch-content.mjs parses the keys out of this object and fails the
- * build if Directus holds a published card whose key is missing here, so a new
- * module can never be published before the code that styles it exists.
+ * A card published in Cockpit with a key missing here is left off the page, so
+ * add its entry before publishing a new module.
  */
-const anchorFeatureStyles: Record<
+export const anchorFeatureStyles: Record<
   string,
   { icon: LucideIcon; color: string; size?: string }
 > = {
@@ -321,15 +206,6 @@ const anchorFeatureStyles: Record<
   'reports-analytics': { icon: BarChart3, color: 'bg-[#F7A300]' },
   'hr-management': { icon: UserCheck, color: 'bg-[#207D40]' }
 }
-
-/**
- * Module cards on /features, in CMS sort order. The first four that are not
- * hidden fill the four fixed positions in the bento grid, so their order is
- * load-bearing; the rest appear behind "See the List".
- */
-export const anchorFeatures: AnchorFeature[] = anchorFeaturesJson.features.map(
-  feature => ({ ...feature, ...anchorFeatureStyles[feature.key] })
-) as AnchorFeature[]
 
 export const utilityFeatures: UtilityFeature[] = [
   {
@@ -473,42 +349,7 @@ export const plans: Plan[] = [
   }
 ]
 
-// ── FAQPage.tsx ─────────────────────────────────────────────────
-
-/**
- * Questions on /faq, in CMS sort order. Edited in Directus under "FAQs".
- *
- * These feed faqPageSchema() in seo/schema.ts as well as the page itself, so
- * every published question also becomes a schema.org Question that Google can
- * show as a rich result. scripts/fetch-content.mjs enforces the rules that
- * follow from that, including that a question ends in a question mark and that
- * an answer is long enough to stand on its own.
- */
-export const faqs: FAQ[] = faqsJson.faqs
-
-/**
- * Pill colours, keyed by category name and sourced from the CMS, so adding a
- * category no longer needs a code change.
- *
- * These are hex values rather than Tailwind class names, which is the only
- * reason they can live in a database at all: a class that appears in no source
- * file is never compiled, and the pill would render unstyled.
- */
-export const faqCategoryColors: FAQCategoryColorMap = Object.fromEntries(
-  faqsJson.categories.map(category => [
-    category.name,
-    { bg: category.colorBg, color: category.colorText, border: category.colorBorder }
-  ])
-)
-
 // ── AboutSection.tsx ────────────────────────────────────────────
-
-/**
- * The photo in the left panel of the modules section, and the text of the badge
- * over it. Edited in Directus under "Modules Image". The badge's icon and the
- * module tiles below stay hardcoded, because both carry Lucide components.
- */
-export const modulesImage: ModulesImage = modulesImageJson
 
 export const modules: Module[] = [
   {
@@ -560,47 +401,3 @@ export const modules: Module[] = [
     accent: '#F5A800'
   }
 ]
-
-// ── ArticlePage.tsx ─────────────────────────────────────────────
-
-/**
- * Articles are authored in Directus and pulled in at build time by
- * scripts/fetch-content.mjs, which writes generated/articles.json. That file is
- * committed, so the build never depends on the CMS being reachable, and the
- * article list is available synchronously at module init, which is what
- * seo/routes.ts and scripts/prerender.mjs both require.
- *
- * Do not edit generated/articles.json by hand. Edit the article in Directus and
- * run `pnpm content`. See directus/README.md.
- */
-export const articles: Article[] = content.articles
-
-/**
- * Category pill colours, keyed by category name. Sourced from the CMS so adding
- * a category no longer needs a code change.
- */
-export const articleCategoryColors: ArticleCategoryColorMap = Object.fromEntries(
-  content.categories.map(category => [
-    category.name,
-    { bg: category.colorBg, color: category.colorText }
-  ])
-)
-
-// ── ResourcesPage.tsx ───────────────────────────────────────────
-
-/**
- * Cards for the /resources grid, derived from `articles` so slug, title, date
- * and image can never diverge from the article they link to. Newest first.
- */
-export const blogPosts: BlogPost[] = [...articles]
-  .sort((a, b) => b.datePublished.localeCompare(a.datePublished))
-  .map((article, i) => ({
-    id: i + 1,
-    slug: article.slug,
-    category: article.category,
-    title: article.title,
-    preview: article.preview ?? article.intro,
-    image: article.image,
-    date: article.date,
-    readTime: article.readTime
-  }))

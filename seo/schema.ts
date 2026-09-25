@@ -1,12 +1,16 @@
-import { articles, contactDetails, faqs, plans } from '@/data'
-import type { Article } from '@/types'
+import { plans } from '@/data'
+import type { Article, ContactDetails, FAQ } from '@/types'
 import { SITE_NAME, SITE_URL, absoluteUrl } from './routes'
 
 const ORG_ID = `${SITE_URL}/#organization`
 const SITE_ID = `${SITE_URL}/#website`
 const SOFTWARE_ID = `${SITE_URL}/#software`
 
-export const organizationSchema = () => ({
+/**
+ * The contact point comes from the CMS, so it is added once Site Settings has
+ * loaded. Pages pass it when they have it; without it the rest still stands.
+ */
+export const organizationSchema = (contact?: ContactDetails | null) => ({
   '@type': 'Organization',
   '@id': ORG_ID,
   name: SITE_NAME,
@@ -37,17 +41,19 @@ export const organizationSchema = () => ({
     { '@type': 'Country', name: 'Uganda' },
     { '@type': 'Country', name: 'Tanzania' }
   ],
-  contactPoint: {
-    '@type': 'ContactPoint',
-    // E.164, which is what schema.org expects. Derived from the single number
-    // in the CMS rather than written out again, so the number search engines
-    // publish can never drift from the one on the page.
-    telephone: contactDetails.salesPhoneE164,
-    email: contactDetails.salesEmail,
-    contactType: 'sales',
-    areaServed: 'KE',
-    availableLanguage: ['en']
-  }
+  ...(contact?.salesPhoneE164 && {
+    contactPoint: {
+      '@type': 'ContactPoint',
+      // E.164, which is what schema.org expects. Derived from the single number
+      // in the CMS rather than written out again, so the number search engines
+      // publish can never drift from the one on the page.
+      telephone: contact.salesPhoneE164,
+      email: contact.salesEmail,
+      contactType: 'sales',
+      areaServed: 'KE',
+      availableLanguage: ['en']
+    }
+  })
 })
 
 export const websiteSchema = () => ({
@@ -115,7 +121,7 @@ export const pricingSchema = () => ({
   offers: planOffers()
 })
 
-export const faqPageSchema = () => ({
+export const faqPageSchema = (faqs: FAQ[]) => ({
   '@type': 'FAQPage',
   mainEntity: faqs.map(faq => ({
     '@type': 'Question',
@@ -155,7 +161,7 @@ export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
 })
 
 /** Blog index: an ItemList of every published article. */
-export const blogListSchema = () => ({
+export const blogListSchema = (articles: Article[]) => ({
   '@type': 'Blog',
   '@id': `${SITE_URL}/resources#blog`,
   name: 'MySpa Resources',

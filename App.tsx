@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials'
 import CTASection from './components/CTASection'
 import Footer from './components/Footer'
 import Seo from './components/Seo'
+import { useSiteSettings } from './cms/hooks'
 import {
   graph,
   organizationSchema,
@@ -284,12 +285,14 @@ const InnovationSection: React.FC = () => {
 }
 
 // ── Home page: all sections together ──
-const HomePage: React.FC = () => (
+const HomePage: React.FC = () => {
+  const contactDetails = useSiteSettings().data?.contactDetails
+  return (
   <>
     <Seo
       path='/'
       jsonLd={graph(
-        organizationSchema(),
+        organizationSchema(contactDetails),
         websiteSchema(),
         softwareApplicationSchema()
       )}
@@ -302,7 +305,8 @@ const HomePage: React.FC = () => (
     <InnovationSection />
     <CTASection />
   </>
-)
+  )
+}
 
 const App: React.FC = () => {
   return (

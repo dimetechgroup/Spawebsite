@@ -1,4 +1,4 @@
-import { articles } from '@/data'
+import type { Article } from '@/types'
 
 /**
  * Canonical origin. MUST match the host that public/.htaccess 301-redirects to,
@@ -132,22 +132,22 @@ export const staticRoutes: RouteMeta[] = [
   }
 ]
 
-/** One route per article, derived from `articles` so the two cannot drift. */
-export const articleRoutes = (): RouteMeta[] =>
-  articles.map(article => ({
-    path: `/resources/${article.slug}`,
-    title: article.metaTitle ?? article.title,
-    description: article.metaDescription ?? article.intro.slice(0, 155),
-    ogImage: article.image,
-    ogType: 'article' as const,
-    priority: 0.6,
-    changefreq: 'yearly' as const,
-    lastmod: article.dateModified
-  }))
+/** The route metadata for one article: its title, description and share image. */
+export const articleRouteMeta = (article: Article): RouteMeta => ({
+  path: `/resources/${article.slug}`,
+  title: article.metaTitle ?? article.title,
+  description: article.metaDescription ?? article.intro.slice(0, 155),
+  ogImage: article.image,
+  ogType: 'article',
+  priority: 0.6,
+  changefreq: 'yearly',
+  lastmod: article.dateModified
+})
 
-export const allRoutes = (): RouteMeta[] => [
+/** Every route, for the prerender and sitemap. Articles come from the CMS. */
+export const allRoutes = (articles: Article[] = []): RouteMeta[] => [
   ...staticRoutes,
-  ...articleRoutes()
+  ...articles.map(articleRouteMeta)
 ]
 
 /** Navbar entries, in declaration order. */
@@ -166,5 +166,6 @@ export const absoluteUrl = (path: string): string => {
   return clean === '/' ? `${SITE_URL}/` : `${SITE_URL}${clean.replace(/\/$/, '')}`
 }
 
+/** Metadata for a static route. Article pages pass theirs to <Seo> directly. */
 export const routeMetaFor = (path: string): RouteMeta | undefined =>
-  allRoutes().find(route => route.path === path)
+  staticRoutes.find(route => route.path === path)

@@ -3,12 +3,8 @@ import type { LucideIcon } from 'lucide-react'
 // ── CMS-managed images ──────────────────────────────────────────
 
 /**
- * An image authored in Directus. `src` points at a copy that
- * scripts/fetch-content.mjs downloaded into public/images/cms/ at build time,
- * never at the CMS itself, so the live site has no runtime dependency on it.
- *
- * `alt` is required rather than optional: the fetch script refuses to build
- * without it, and an image that reaches this type has already been checked.
+ * An image authored in Cockpit. `src` is the asset's URL on cms.myspa.co.ke,
+ * loaded by cms/content.ts at runtime.
  */
 export interface CmsImage {
   src: string
@@ -24,18 +20,17 @@ export interface ModulesImage extends CmsImage {
 /**
  * The product demo, used by both FeaturesPage.tsx and the Hero.tsx pop-up.
  *
- * Unlike every other CMS asset the video file is NOT committed, because each
- * version would add its full size to git permanently. It is downloaded on the
- * machine that builds, so a build with no CMS access renders the player with
- * no source rather than failing.
+ * The video itself is hosted externally (Cloudinary) and played in an iframe,
+ * so only its player URL comes from the CMS. The poster is downloaded like
+ * every other CMS image.
  */
 export interface DemoVideo {
-  src: string
+  embedUrl: string
   poster: CmsImage
 }
 
 /**
- * The sales phone number and email, edited in Directus as one record and used
+ * The sales phone number and email, edited in Cockpit (Site Settings) and used
  * in three places: the cards on /contact, the footer of every page, and the
  * Organization contactPoint in seo/schema.ts.
  *
@@ -112,7 +107,7 @@ export interface BlogPost {
  * One module card in the /features grid.
  *
  * Split across two sources on purpose. `name`, `desc`, `img`, `imgAlt` and
- * `hidden` are authored in Directus; `icon`, `color` and `size` come from the
+ * `hidden` are authored in Cockpit; `icon`, `color` and `size` come from the
  * hardcoded map in data/index.ts, joined on `key`. An icon is a live component
  * reference and `color` is a Tailwind class, and a Tailwind class loaded from a
  * database is never compiled, so neither can be stored as content.
@@ -156,7 +151,7 @@ export interface Plan {
 
 // ── FAQPage.tsx ─────────────────────────────────────────────────
 /**
- * One question on /faq, authored in Directus.
+ * One question on /faq, authored in Cockpit.
  *
  * No icon: the leading icon was removed from the design so this could be pure
  * content, which is what lets an editor add a question without a developer.
