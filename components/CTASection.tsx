@@ -168,7 +168,7 @@ const CTASection: React.FC = () => {
                 className='absolute inset-0 w-full h-full object-cover'
               />
 
-              {/* Floating booking badge — bottom */}
+              {/* Floating booking badge: bottom */}
               <motion.div
                 initial={{ opacity: 0, y: 12, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}

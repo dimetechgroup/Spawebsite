@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   ArrowRight,
   Clock,
@@ -12,6 +12,8 @@ import {
 } from 'lucide-react'
 import { blogPosts, blogCategories } from '@/data'
 import { subscribeNewsletter } from '../api'
+import Seo from './Seo'
+import { blogListSchema, graph, organizationSchema } from '@/seo/schema'
 
 const ResourcesPage: React.FC = () => {
   const navigate = useNavigate()
@@ -43,6 +45,10 @@ const ResourcesPage: React.FC = () => {
 
   return (
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
+      <Seo
+        path='/resources'
+        jsonLd={graph(blogListSchema(), organizationSchema())}
+      />
       {/* HERO SECTION */}
       <section className='relative pt-32 pb-10 lg:pt-48 lg:pb-12 overflow-hidden border-b border-gray-50'>
         <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
@@ -107,14 +113,16 @@ const ResourcesPage: React.FC = () => {
 
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {filteredPosts.map(post => (
-              <div
+              <Link
                 key={post.id}
+                to={`/resources/${post.slug}`}
                 className='group bg-white rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col'
               >
                 <div className='relative aspect-[16/10] overflow-hidden'>
                   <img
                     src={post.image}
                     alt={post.title}
+                    loading='lazy'
                     className='w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 block'
                   />
                   <div className='absolute top-4 left-4'>
@@ -140,18 +148,15 @@ const ResourcesPage: React.FC = () => {
                   <p className='text-gray-400 text-[12px] leading-relaxed mb-6 flex-grow line-clamp-2'>
                     {post.preview}
                   </p>
-                  <button
-                    onClick={() => navigate(`/resources/${post.slug}`)}
-                    className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] group/btn w-fit'
-                  >
+                  <span className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] group/btn w-fit'>
                     Read More{' '}
                     <ArrowRight
                       size={12}
                       className='group-hover/btn:translate-x-1 transition-transform'
                     />
-                  </button>
+                  </span>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

@@ -22,3 +22,32 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets. .env.example files are committed; real .env files never are.
+.env
+.env.*
+!.env.example
+
+# Directus: local CMS state. The schema snapshot in directus/snapshots/ IS
+# committed (it is how the collections get rebuilt), but uploads, extensions
+# and Postgres data are local-only.
+directus/uploads/*
+!directus/uploads/.gitkeep
+directus/extensions/*
+!directus/extensions/.gitkeep
+
+# The demo video, downloaded from the CMS by scripts/fetch-content.mjs.
+#
+# The one CMS asset that is NOT committed. At roughly 100 MB, every version
+# would live in git history permanently and could only be removed by rewriting
+# history for everyone. Whichever machine builds the site downloads it, so the
+# live site still serves its own copy; a build with no CMS access renders an
+# empty player, which is the accepted cost. Everything else the fetch script
+# writes IS committed, so the rest of the build stays hermetic.
+public/video/
+
+# The pre-CMS copy of the same video, now superseded by public/video/ above.
+# Untracked rather than deleted: it is the file that was uploaded into Directus,
+# and it stays on disk in case that upload ever needs redoing. Its blob remains
+# in git history, so this shrinks new checkouts, not the repository.
+public/images/demo.mp4

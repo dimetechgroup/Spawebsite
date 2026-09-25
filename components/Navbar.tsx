@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { navRoutes } from '@/seo/routes'
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const navigate = useNavigate()
   const location = useLocation()
 
   useEffect(() => {
@@ -16,22 +16,11 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Features', path: '/features' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'FAQ', path: '/faq' },
-    { name: 'Resources', path: '/resources' },
-    { name: 'Contact Us', path: '/contact' },
-    { name: 'About Us', path: '/about' }
-  ]
-
-  const handleLinkClick = (path: string, e: React.MouseEvent) => {
-    e.preventDefault()
-    navigate(path)
-    setMobileMenuOpen(false)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
+  // Derived from seo/routes.ts so the nav, sitemap and prerender list agree.
+  const navLinks = navRoutes().map(route => ({
+    name: route.navLabel as string,
+    path: route.path
+  }))
 
   return (
     <nav
@@ -43,24 +32,22 @@ const Navbar: React.FC = () => {
     >
       <div className='container mx-auto px-4 md:px-8 flex items-center justify-between'>
         {/* Logo */}
-        <div
-          className='flex items-center gap-2 cursor-pointer'
-          onClick={() => navigate('/')}
-        >
+        <Link to='/' className='flex items-center gap-2' aria-label='MySpa home'>
           <img
             src='/images/MYSPA.png'
-            alt='MySpa Logo'
+            alt='MySpa, spa and salon management software'
             className='h-12 w-auto object-contain'
+            width={877}
+            height={297}
           />
-        </div>
+        </Link>
 
         {/* Desktop Links */}
         <div className='hidden lg:flex items-center gap-6 text-xs font-black uppercase tracking-widest text-gray-600'>
           {navLinks.map(link => (
-            <a
+            <Link
               key={link.path}
-              href='#'
-              onClick={e => handleLinkClick(link.path, e)}
+              to={link.path}
               className={`transition-colors relative group ${
                 location.pathname === link.path
                   ? 'text-[#207D40]'
@@ -73,7 +60,7 @@ const Navbar: React.FC = () => {
                   location.pathname === link.path ? 'w-full' : 'w-0'
                 }`}
               />
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -81,11 +68,12 @@ const Navbar: React.FC = () => {
         <div className='flex items-center gap-4'>
           <a
             href='https://app.myspa.co.ke/login'
+            rel='noopener'
             className='hidden lg:inline-block text-[11px] font-black uppercase tracking-widest text-[#F7A300] hover:text-[#d98c00] transition-colors'
           >
             Login
           </a>
-          <a href='https://app.myspa.co.ke/register' className='hidden lg:inline-block bg-[#207D40] hover:bg-[#1a6333] text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'>
+          <a href='https://app.myspa.co.ke/register' rel='noopener' className='hidden lg:inline-block bg-[#207D40] hover:bg-[#1a6333] text-white px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'>
             Sign Up
           </a>
           <button
@@ -105,24 +93,26 @@ const Navbar: React.FC = () => {
       >
         <div className='flex flex-col p-6 gap-6'>
           {navLinks.map(link => (
-            <a
+            <Link
               key={link.path}
-              href='#'
-              onClick={e => handleLinkClick(link.path, e)}
+              to={link.path}
+              onClick={() => setMobileMenuOpen(false)}
               className='text-sm font-black uppercase tracking-widest text-gray-800 hover:text-[#207D40]'
             >
               {link.name}
-            </a>
+            </Link>
           ))}
           <div className='pt-4 border-t border-gray-100 flex flex-col gap-4'>
             <a
               href='https://app.myspa.co.ke/login'
+              rel='noopener'
               className='text-left font-black uppercase tracking-widest text-[#F7A300]'
             >
               Login
             </a>
             <a
               href='https://app.myspa.co.ke/register'
+              rel='noopener'
               className='bg-[#207D40] hover:bg-[#1a6333] text-white text-center px-6 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'
             >
               Sign Up

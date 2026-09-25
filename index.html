@@ -4,72 +4,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MySpa | Ultimate Salon & Spa Management Software</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Defaults. Per-route values are upserted at runtime by components/Seo.tsx
+       and baked into each prerendered page by scripts/prerender.mjs. -->
+  <title>Spa Management Software in Kenya | MySpa</title>
+  <meta name="description"
+    content="MySpa is all-in-one spa and salon management software for Kenyan businesses. Run bookings, POS, inventory, CRM and reports from one system. From KES 3,000/month." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://myspa.co.ke/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MySpa" />
+  <meta property="og:locale" content="en_KE" />
+  <meta property="og:title" content="Spa Management Software in Kenya | MySpa" />
+  <meta property="og:description"
+    content="All-in-one spa and salon management software for Kenyan businesses. Run bookings, POS, inventory, CRM and reports from one system." />
+  <meta property="og:image" content="https://myspa.co.ke/images/Dashboard.png" />
+  <meta property="og:url" content="https://myspa.co.ke/" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Spa Management Software in Kenya | MySpa" />
+  <meta name="twitter:description"
+    content="All-in-one spa and salon management software for Kenyan businesses. Run bookings, POS, inventory, CRM and reports from one system." />
+  <meta name="twitter:image" content="https://myspa.co.ke/images/Dashboard.png" />
+
+  <!-- Browser-tab icons, generated from the brand mark in /images/MYSPA.png.
+       The full wordmark is 877x297, so it is unreadable in a ~16px tab slot;
+       these are cropped to the face-and-dots mark and padded square.
+       Regenerate with `bash scripts/generate-favicons.sh` if the logo changes. -->
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#207D40" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <style>
-    html {
-      font-size: 17px;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      scroll-behavior: smooth;
-    }
-
-    .gradient-bg {
-      background: linear-gradient(135deg, #f0fdf4 0%, #fffbf0 100%);
-    }
-
-    .green-orange-gradient {
-      background: linear-gradient(to right, #207D40, #F7A300);
-    }
-
-    .text-gradient {
-      background: linear-gradient(to right, #207D40, #F7A300);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* Custom Scrollbar Styling - BRAND COLORS */
-    ::-webkit-scrollbar {
-      width: 12px;
-      height: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #f1f5f9;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(to bottom, #207D40, #F7A300);
-      border-radius: 10px;
-      border: 3px solid #f1f5f9;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(to bottom, #1a6333, #d98f00);
-    }
-
-    /* Firefox Support */
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #207D40 #f1f5f9;
-    }
-  </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "lucide-react": "https://esm.sh/lucide-react@^0.564.0"
-  }
-}
-</script>
-  <link rel="stylesheet" href="/index.css">
 </head>
 
 <body>

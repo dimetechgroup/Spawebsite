@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "content": "node scripts/fetch-content.mjs",
+    "build": "node scripts/fetch-content.mjs && vite build && node scripts/prerender.mjs",
+    "build:ci": "node scripts/fetch-content.mjs --require-cms && vite build && node scripts/prerender.mjs",
+    "build:only": "vite build",
+    "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +25,11 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.2.0",
+    "autoprefixer": "^10.5.4",
+    "postcss": "^8.5.26",
+    "puppeteer": "^25.7.0",
+    "sirv": "^3.0.2",
+    "tailwindcss": "^3.4.19",
     "typescript": "~5.8.3",
     "vite": "^6.4.2"
   }

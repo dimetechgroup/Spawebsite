@@ -11,6 +11,9 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { submitContact } from '../api'
+import { contactDetails } from '@/data'
+import Seo from './Seo'
+import { graph, organizationSchema } from '@/seo/schema'
 
 const ContactPage: React.FC = () => {
   const navigate = useNavigate()
@@ -61,6 +64,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className='bg-white min-h-screen'>
+      <Seo path='/contact' jsonLd={graph(organizationSchema())} />
       <section className='relative pt-28 pb-10 lg:pt-36 lg:pb-14 overflow-hidden'>
         <div className='absolute inset-0 z-0'>
           <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
@@ -96,6 +100,8 @@ const ContactPage: React.FC = () => {
                 <img
                   src='/images/DSC06623.jpg'
                   alt='MySpa Support Team'
+                  loading='lazy'
+                  decoding='async'
                   className='w-full h-full object-cover'
                 />
                 <div className='absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent' />
@@ -133,7 +139,7 @@ const ContactPage: React.FC = () => {
                     Call Sales
                   </h4>
                   <p className='text-sm font-black text-[#111827]'>
-                    +254 708 178 500
+                    {contactDetails.salesPhone}
                   </p>
                 </div>
                 <div className='p-8 rounded-[2rem] bg-[#F8FAFC] border border-gray-100 group hover:border-[#F7A300]/20 transition-all'>
@@ -144,7 +150,7 @@ const ContactPage: React.FC = () => {
                     Email Us
                   </h4>
                   <p className='text-sm font-black text-[#111827] leading-none'>
-                    contact@dimetechgroup.com
+                    {contactDetails.salesEmail}
                   </p>
                 </div>
               </div>

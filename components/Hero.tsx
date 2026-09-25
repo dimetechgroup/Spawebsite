@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { homeHeroImage, demoVideo } from '../data'
 
 const fadeUp: import('framer-motion').Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -199,8 +200,8 @@ const Hero: React.FC = () => {
               >
                 <div className='rounded-[1.6rem] overflow-hidden border border-white/60'>
                   <img
-                    src='/images/Dashboard.png'
-                    alt='Spa Dashboard Analytics'
+                    src={homeHeroImage.src}
+                    alt={homeHeroImage.alt}
                     className='w-[480px] lg:w-[560px] xl:w-[620px] h-auto block'
                   />
                 </div>
@@ -261,7 +262,8 @@ const Hero: React.FC = () => {
               </button>
               <div className='rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black aspect-video'>
                 <video
-                  src='/images/demo.mp4'
+                  src={demoVideo.src}
+                  poster={demoVideo.poster.src}
                   className='w-full h-full object-cover'
                   autoPlay
                   controls

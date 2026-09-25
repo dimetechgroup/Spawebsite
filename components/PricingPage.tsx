@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Check, ArrowRight, Clock } from 'lucide-react'
 import { plans } from '@/data'
 import { fetchConfig } from '../api'
+import Seo from './Seo'
+import { graph, organizationSchema, pricingSchema } from '@/seo/schema'
 
 const G = '#2E8B35'
 const AM = '#F5A800'
@@ -58,8 +60,12 @@ const PricingPage = () => {
         minHeight: '100vh'
       }}
     >
+      <Seo
+        path='/pricing'
+        jsonLd={graph(pricingSchema(), organizationSchema())}
+      />
+      {/* Poppins is loaded globally in index.html, so no @import is needed here. */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         .pricing-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
         .pricing-card:hover { transform: translateY(-6px); }

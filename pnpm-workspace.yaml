@@ -1,2 +1,6 @@
 allowBuilds:
   esbuild: true
+  # Needed so `pnpm install` downloads the pinned Chrome build that
+  # scripts/prerender.mjs drives. Set PUPPETEER_EXECUTABLE_PATH to reuse an
+  # existing browser instead.
+  puppeteer: true

@@ -8,6 +8,13 @@ import PartnerSection from './components/PartnerSection'
 import Testimonials from './components/Testimonials'
 import CTASection from './components/CTASection'
 import Footer from './components/Footer'
+import Seo from './components/Seo'
+import {
+  graph,
+  organizationSchema,
+  softwareApplicationSchema,
+  websiteSchema
+} from './seo/schema'
 import { Activity, Sparkles, ArrowRight, Play } from 'lucide-react'
 
 const FeaturesPage = lazy(() => import('./components/FeaturesPage'))
@@ -17,6 +24,7 @@ const ResourcesPage = lazy(() => import('./components/ResourcesPage'))
 const ArticlePage = lazy(() => import('./components/ArticlePage'))
 const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
+const NotFound = lazy(() => import('./components/NotFound'))
 
 const ScrollToTop: React.FC = () => {
   const { pathname, hash } = useLocation()
@@ -61,6 +69,8 @@ const InnovationSection: React.FC = () => {
         <img
           src='/images/DSC06620.jpg'
           alt='Luxury Spa Architecture'
+          loading='lazy'
+          decoding='async'
           className='w-full h-full object-cover'
           style={{
             opacity: 0.18,
@@ -174,7 +184,7 @@ const InnovationSection: React.FC = () => {
                 {
                   icon: Activity,
                   title: 'Real-Time Operations',
-                  desc: 'Live dashboards across all locations — bookings, staff, and stock in one view.',
+                  desc: 'Live dashboards across all locations: bookings, staff, and stock in one view.',
                   accent: BRAND.amber,
                   accentLight: BRAND.amberLight,
                   featured: true
@@ -273,9 +283,17 @@ const InnovationSection: React.FC = () => {
   )
 }
 
-// ── Home page — all sections together ──
+// ── Home page: all sections together ──
 const HomePage: React.FC = () => (
   <>
+    <Seo
+      path='/'
+      jsonLd={graph(
+        organizationSchema(),
+        websiteSchema(),
+        softwareApplicationSchema()
+      )}
+    />
     <Hero />
     <Features />
     <AboutSection />
@@ -319,7 +337,9 @@ const App: React.FC = () => {
             <Route path='/resources/:slug' element={<ArticlePage />} />
             <Route path='/faq' element={<FAQPage />} />
             <Route path='/contact' element={<ContactPage />} />
-            <Route path='*' element={<HomePage />} />
+            {/* Prerendered to dist/404.html and served by .htaccess ErrorDocument. */}
+            <Route path='/404' element={<NotFound />} />
+            <Route path='*' element={<NotFound />} />
           </Routes>
         </Suspense>
       </main>

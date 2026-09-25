@@ -263,7 +263,7 @@ const Features: React.FC = () => {
                   }}
                 />
 
-                {/* Feature items — clean list */}
+                {/* Feature items: clean list */}
                 <div className='flex flex-col gap-4'>
                   {group.items.map((item, idx) => (
                     <div

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://myspa.co.ke/sitemap.xml

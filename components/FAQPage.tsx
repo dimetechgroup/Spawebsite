@@ -1,29 +1,16 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ChevronDown,
-  HelpCircle,
-  ShieldCheck,
-  Zap,
-  CreditCard,
-  Sparkles,
-  Gift,
-  Users,
-  ArrowRight,
-  MessageCircle
-} from 'lucide-react'
+import { ChevronDown, ArrowRight, MessageCircle } from 'lucide-react'
 import { faqs, faqCategoryColors } from '@/data'
+import Seo from './Seo'
+import { faqPageSchema, graph, organizationSchema } from '@/seo/schema'
 
-const categoryColors = {
-  General: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  'Getting Started': { bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe' },
-  Pricing: { bg: '#fefce8', color: '#d97706', border: '#fde68a' },
-  Billing: { bg: '#fdf4ff', color: '#9333ea', border: '#e9d5ff' },
-  Security: { bg: '#fff1f2', color: '#e11d48', border: '#fecdd3' },
-  Features: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  Operations: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
-  Growth: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' }
-}
+/**
+ * Fallback for a question whose category has no colours, which the content
+ * fetch already refuses to publish. Kept so a hand-edited generated file
+ * degrades to a neutral pill rather than crashing on undefined.
+ */
+const FALLBACK_TAG = { bg: '#f1f5f9', color: '#475569', border: '#e2e8f0' }
 
 const FAQPage = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
@@ -37,8 +24,9 @@ const FAQPage = () => {
         minHeight: '100vh'
       }}
     >
+      <Seo path='/faq' jsonLd={graph(faqPageSchema(), organizationSchema())} />
+      {/* Poppins is loaded globally in index.html, so no @import is needed here. */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
         * { box-sizing: border-box; }
 
         .faq-row {
@@ -126,13 +114,6 @@ const FAQPage = () => {
           transition: all 0.18s;
         }
         .outline-btn:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
-
-        .icon-box {
-          width: 46px; height: 46px; flex-shrink: 0;
-          border-radius: 13px;
-          display: flex; align-items: center; justify-content: center;
-          transition: all 0.2s;
-        }
 
         .chevron-box {
           width: 36px; height: 36px; flex-shrink: 0;
@@ -274,7 +255,7 @@ const FAQPage = () => {
             flexDirection: 'column'
           }}
         >
-          {/* Sticky panel — takes up all space above the badge */}
+          {/* Sticky panel: takes up all space above the badge */}
           <div
             style={{
               position: 'sticky',
@@ -378,10 +359,10 @@ const FAQPage = () => {
           {/* Spacer pushes badge to bottom of section */}
           <div style={{ flex: 1 }} />
 
-          {/* Trust badge — sits at the very bottom of the full-height aside */}
+          {/* Trust badge: sits at the very bottom of the full-height aside */}
         </aside>
 
-        {/* RIGHT — FAQ LIST */}
+        {/* RIGHT: FAQ LIST */}
         <main
           style={{
             background: '#f8fafc',
@@ -415,9 +396,7 @@ const FAQPage = () => {
             >
               {faqs.map((faq, idx) => {
                 const isOpen = openIndex === idx
-                const tag =
-                  categoryColors[faq.category as keyof typeof categoryColors] ||
-                  categoryColors.General
+                const tag = faqCategoryColors[faq.category] ?? FALLBACK_TAG
                 return (
                   <div
                     key={idx}
@@ -442,16 +421,6 @@ const FAQPage = () => {
                           minWidth: 0
                         }}
                       >
-                        <div
-                          className='icon-box'
-                          style={{ background: isOpen ? '#207D40' : '#f1f5f9' }}
-                        >
-                          <faq.icon
-                            size={20}
-                            strokeWidth={2}
-                            color={isOpen ? '#fff' : '#94a3b8'}
-                          />
-                        </div>
                         <div style={{ minWidth: 0 }}>
                           <span
                             className='cat-tag'

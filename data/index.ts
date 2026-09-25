@@ -9,7 +9,6 @@ import {
   Gift,
   Globe,
   Heart,
-  HelpCircle,
   LayoutGrid,
   Landmark,
   Lightbulb,
@@ -33,6 +32,7 @@ import {
   Wallet,
   Zap
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Buildings } from '@phosphor-icons/react'
 
 
@@ -50,8 +50,57 @@ import type {
   FAQCategoryColorMap,
   Module,
   Article,
-  ArticleCategoryColorMap
+  ArticleCategoryColorMap,
+  CmsImage,
+  ModulesImage,
+  DemoVideo,
+  ContactDetails
 } from '../types'
+
+import contentJson from './generated/articles.json'
+import homeHeroImageJson from './generated/home-hero-image.json'
+import modulesImageJson from './generated/modules-image.json'
+import testimonialsJson from './generated/testimonials.json'
+import modulesMarqueeJson from './generated/modules-marquee.json'
+import featuresHeroImageJson from './generated/features-hero-image.json'
+import demoVideoJson from './generated/demo-video.json'
+import anchorFeaturesJson from './generated/anchor-features.json'
+import faqsJson from './generated/faqs.json'
+import contactDetailsJson from './generated/contact-details.json'
+
+/** Shape of generated/articles.json, written by scripts/fetch-content.mjs. */
+interface GeneratedContent {
+  /** Newest dateModified across all articles, not a build timestamp. */
+  generatedAt: string
+  categories: { name: string; colorBg: string; colorText: string }[]
+  articles: Article[]
+}
+
+/**
+ * The cast is needed because TypeScript infers a structural union from the JSON
+ * literal rather than the `Article` interface. scripts/fetch-content.mjs
+ * validates the shape before writing the file, so this is checked at build time
+ * rather than merely asserted.
+ */
+const content = contentJson as unknown as GeneratedContent
+
+// ── ContactPage.tsx, Footer.tsx, seo/schema.ts ──────────────────
+
+/**
+ * The sales phone number and email. Edited in Directus under "Contact Details",
+ * and the single source for all three places they appear: the cards on
+ * /contact, the footer of every page, and the Organization contactPoint in the
+ * structured data. The phone and mail icons beside them stay in the components.
+ */
+export const contactDetails: ContactDetails = contactDetailsJson
+
+// ── Hero.tsx ────────────────────────────────────────────────────
+
+/**
+ * The product screenshot beside the hero headline. Edited in Directus under
+ * "Home Hero Image"; the headline and buttons around it are still hardcoded.
+ */
+export const homeHeroImage: CmsImage = homeHeroImageJson
 
 // ── Features.tsx ────────────────────────────────────────────────
 
@@ -122,63 +171,31 @@ export const featureGroups: FeatureGroup[] = [
   }
 ]
 
+/**
+ * The scrolling capability strip under the feature grid. Edited in Directus
+ * under "Modules Marquee".
+ *
+ * The list is doubled here rather than in the CMS. Features.tsx animates it
+ * from 0% to -50%, so the loop is only seamless if the second half repeats the
+ * first exactly, and asking an editor to type every label twice would make a
+ * missed one look like a rendering bug. The dot colours alternate on index in
+ * the component, so they stay correct at any length.
+ */
 export const featuresMarqueeItems: string[] = [
-  'Market Intelligence',
-  'Branded Solutions',
-  'ERP Management',
-  'Automated Planning',
-  '24/7 Availability',
-  'Always-on Analytics',
-  'ERP Integration',
-  'Market Intelligence',
-  'Branded Solutions',
-  'ERP Management',
-  'Automated Planning',
-  '24/7 Availability',
-  'Always-on Analytics',
-  'ERP Integration'
+  ...modulesMarqueeJson.labels,
+  ...modulesMarqueeJson.labels
 ]
 
 // ── Testimonials.tsx ────────────────────────────────────────────
 
-export const testimonials: Testimonial[] = [
-  {
-    name: 'Elena Wambui',
-    role: 'Founder, Azure Wellness Spa',
-    location: 'Uganda',
-    content:
-      'MySpa has completely transformed the way we manage our multi-location brand. The intuitive ERP modules and real-time analytics have been total game-changers for our bottom line.',
-    img: '/images/photo1.jpg',
-    stat: { value: '+38%', label: 'Revenue Growth' }
-  },
-  {
-    name: 'Mercy Nyakio',
-    role: 'Managing Director, Zenith Retreats',
-    location: 'Nairobi, Kenya',
-    content:
-      'Managing 15 locations across the coast was a nightmare before MySpa. Now I have a unified command center that handles everything from HR to high-precision inventory tracking.',
-    img: '/images/photo 2.avif',
-    stat: { value: '15×', label: 'Locations Managed' }
-  },
-  {
-    name: 'Dr. Samuel Gitonga',
-    role: 'Director, Holistic Medical Spa',
-    location: 'Mombasa, Kenya',
-    content:
-      'The level of detail in the client management system is unparalleled. We track preferences and medical history with the security and precision our clinic demands.',
-    img: '/images/photo 3.webp',
-    stat: { value: '100%', label: 'Compliance Rate' }
-  },
-  {
-    name: 'Sarah Wahome',
-    role: 'CEO, Luminos Day Spa Group',
-    location: 'Tanzania',
-    content:
-      "Switching to MySpa was the best operational decision we've made. Booking rates are up, staff scheduling is seamless, and clients consistently remark on the improved experience.",
-    img: '/images/photo 4.webp',
-    stat: { value: '+52%', label: 'Booking Rate' }
-  }
-]
+/**
+ * Quote carousel on the home page. Edited in Directus under "Testimonials",
+ * ordered by its sort field, and only rows set to published are built in.
+ *
+ * Testimonials.tsx wraps the quote in its own quotation marks, so the stored
+ * text must not carry any; scripts/fetch-content.mjs fails the build if it does.
+ */
+export const testimonials: Testimonial[] = testimonialsJson.testimonials
 
 // ── PartnerSection.tsx ──────────────────────────────────────────
 
@@ -247,143 +264,72 @@ export const values: Value[] = [
 
 // ── ResourcesPage.tsx ───────────────────────────────────────────
 
-export const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    slug: 'spa-erp-vs-booking-software',
-    category: 'ERP',
-    title: "Spa ERP vs Booking Software: What's the Difference?",
-    preview:
-      'Understand why professional management requires more than just a calendar. Learn how ERP logic transforms back-of-house operations.',
-    image: '/images/Dash.png',
-    date: 'Oct 12, 2024',
-    readTime: '8 min read'
-  },
-  {
-    id: 2,
-    slug: 'how-to-reduce-no-shows',
-    category: 'Operations',
-    title: 'How to Reduce No-Shows in Your Spa',
-    preview:
-      'Practical systems and automated workflows that ensure your therapists remain productive and your schedule stays full.',
-    image: '/images/Orders.png',
-    date: 'Oct 08, 2024',
-    readTime: '6 min read'
-  },
-  {
-    id: 3,
-    slug: 'inventory-management-best-practices',
-    category: 'Inventory',
-    title: 'Inventory Management Best Practices for Spas',
-    preview:
-      'Eliminate waste and optimize retail sales with precision tracking. See how professional inventory modules prevent stock-outs.',
-    image: '/images/modules.png',
-    date: 'Sep 28, 2024',
-    readTime: '10 min read'
-  },
-  {
-    id: 4,
-    slug: 'how-erp-helps-multi-branch-spas-scale',
-    category: 'Growth',
-    title: 'How ERP Helps Multi-Branch Spas Scale',
-    preview:
-      "Scaling shouldn't mean complexity. Explore how unified systems allow owners to manage 10+ locations from a single dashboard.",
-    image: '/images/Acccounting.png',
-    date: 'Sep 15, 2024',
-    readTime: '12 min read'
-  },
-  {
-    id: 5,
-    slug: '5-metrics-every-spa-owner-should-monitor',
-    category: 'Growth',
-    title: '5 Metrics Every Spa Owner Should Monitor Daily',
-    preview:
-      'Move beyond total revenue. Discover the critical performance indicators that signal real business health and sustainability.',
-    image: '/images/image5.png',
-    date: 'Aug 25, 2024',
-    readTime: '7 min read'
-  },
-  {
-    id: 6,
-    slug: 'case-study-erp-increased-spa-revenue-40-percent',
-    category: 'Case Studies',
-    title: 'Case Study: How ERP Increased Spa Revenue by 40%',
-    preview:
-      'A detailed walkthrough of how Zenith Wellness migrated to MySpa and optimized their resource allocation for massive growth.',
-    image: 'images/Accounts.png',
-    date: 'Sep 10, 2024',
-    readTime: '15 min read'
-  }
-]
+// `blogPosts` (the /resources cards) is derived from `articles` at the bottom
+// of this file. One source of truth, so a card can never drift from the
+// article it links to.
 
+/**
+ * Filter row on /resources. Comes from the CMS category list, in the sort order
+ * set there, and lists only categories that actually have a published article,
+ * so archiving the last post in a category removes its tab rather than leaving
+ * a filter that yields an empty grid.
+ */
 export const blogCategories: string[] = [
   'All',
-  'ERP',
-  'Growth',
-  'Inventory',
-  'Case Studies'
+  ...content.categories
+    .map(category => category.name)
+    .filter(name => content.articles.some(article => article.category === name))
 ]
 
 // ── FeaturesPage.tsx ────────────────────────────────────────────
 
-export const anchorFeatures: AnchorFeature[] = [
-  {
-    name: 'Dashboard',
-    icon: LayoutGrid,
-    desc: "Your spa's command center. Get a real-time overview of revenue, customers, payments, orders and inventory, all in one intuitive dashboard.",
-    size: 'lg',
-    color: 'bg-[#207D40]',
-    img: '/images/Dashboard.png'
-  },
-  {
-    name: 'CRM',
-    icon: Users,
-    desc: 'Manage client profiles, preferences, and history. Build loyalty programs, track visits, and personalize experiences.',
-    size: 'sm',
-    color: 'bg-[#F7A300]',
-    img: '/images/CRM.png'
-  },
-  {
-    name: 'Orders & Invoices',
-    icon: Receipt,
-    desc: 'Simplify billing with automated invoices, order tracking, and payment integration for smooth transactions.',
-    size: 'sm',
-    color: 'bg-[#207D40]',
-    img: '/images/Orders.png'
-  },
-  {
-    name: 'Accounting',
-    icon: Wallet,
-    desc: 'Stay on top of finances with integrated accounting tools. Track expenses, revenue, and profitability with ease. Generate reports for smarter decisions.',
-    size: 'md',
-    color: 'bg-[#F7A300]',
-    img: '/images/Accounts.png'
-  },
-  {
-    name: 'Stock & Inventory',
-    icon: Package,
-    desc: 'Track product usage, supplier orders, and stock levels in real time to minimize waste and optimize costs.',
-    color: 'bg-[#207D40]',
-    img: '/images/Stocks.png',
-    hidden: true
-  },
-  {
-    name: 'Reports & Analytics',
-    icon: BarChart3,
-    desc: 'Turn raw data into actionable insight. Generate detailed reports on revenue, staff performance, and client trends.',
-    color: 'bg-[#F7A300]',
-    img: '/images/Report.png',
-    hidden: true
-  },
-  {
-    name: 'HR Management',
-    icon: UserCheck,
-    desc: 'Manage staff schedules, attendance, payroll, and performance — tailored for the unique rhythms of spa operations.',
-    color: 'bg-[#207D40]',
-    img: '/images/HR.png',
-    hidden: true
-  }
-]
+/**
+ * The screenshot at the top of /features. Edited in Directus under "Features
+ * Hero Image"; the headline and the Request a Demo button stay here in code.
+ */
+export const featuresHeroImage: CmsImage = featuresHeroImageJson
+
+/**
+ * The product demo, shown in the "One Unified Ecosystem" section and in the
+ * home page hero pop-up. One record in Directus feeds both.
+ */
+export const demoVideo: DemoVideo = demoVideoJson
+
+/**
+ * Icon, colour and grid size for each module card, keyed by the `key` field on
+ * the matching row in Directus.
+ *
+ * None of these three can live in the CMS. `icon` is a live Lucide component
+ * reference, and `color` is a Tailwind class: Tailwind builds its stylesheet by
+ * scanning source files, so `bg-[#207D40]` arriving from Postgres would appear
+ * in no source file, compile to no CSS rule, and leave the card unstyled with
+ * no error anywhere. `size` is layout, not content.
+ *
+ * scripts/fetch-content.mjs parses the keys out of this object and fails the
+ * build if Directus holds a published card whose key is missing here, so a new
+ * module can never be published before the code that styles it exists.
+ */
+const anchorFeatureStyles: Record<
+  string,
+  { icon: LucideIcon; color: string; size?: string }
+> = {
+  dashboard: { icon: LayoutGrid, color: 'bg-[#207D40]', size: 'lg' },
+  crm: { icon: Users, color: 'bg-[#F7A300]', size: 'sm' },
+  'orders-invoices': { icon: Receipt, color: 'bg-[#207D40]', size: 'sm' },
+  accounting: { icon: Wallet, color: 'bg-[#F7A300]', size: 'md' },
+  'stock-inventory': { icon: Package, color: 'bg-[#207D40]' },
+  'reports-analytics': { icon: BarChart3, color: 'bg-[#F7A300]' },
+  'hr-management': { icon: UserCheck, color: 'bg-[#207D40]' }
+}
+
+/**
+ * Module cards on /features, in CMS sort order. The first four that are not
+ * hidden fill the four fixed positions in the bento grid, so their order is
+ * load-bearing; the rest appear behind "See the List".
+ */
+export const anchorFeatures: AnchorFeature[] = anchorFeaturesJson.features.map(
+  feature => ({ ...feature, ...anchorFeatureStyles[feature.key] })
+) as AnchorFeature[]
 
 export const utilityFeatures: UtilityFeature[] = [
   {
@@ -529,113 +475,40 @@ export const plans: Plan[] = [
 
 // ── FAQPage.tsx ─────────────────────────────────────────────────
 
-export const faqs: FAQ[] = [
-  {
-    question: 'What is Myspa ERP System?',
-    answer:
-      'MySpa ERP System is a cloud-based Spa Management Software designed exclusively for spas. It is a complete Spa ERP solution that integrates bookings, client management, accounting, HR, inventory, billing, reporting, and gift vouchers into one unified platform. Unlike basic booking tools, it provides full operational visibility and business control.',
-    icon: Sparkles,
-    category: 'General',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  },
-  {
-    question: 'How do I get started with Myspa?',
-    answer:
-      'To get started with MySpa ERP System, request a demo, select a suitable subscription plan, and complete onboarding with our support team. Since MySpa is cloud-based, no installation is required. You can access your Spa ERP system securely from any device with internet access.',
-    icon: Zap,
-    category: 'Getting Started'
-  },
-  {
-    question: 'How much does Myspa ERP System cost?',
-    answer:
-      "The cost of MySpa ERP System depends on the number of users, branches, and required modules. Pricing is subscription-based and tailored to your spa's size and operational needs. Contact us for a customized quote based on your business structure.",
-    icon: CreditCard,
-    category: 'Pricing'
-  },
-  {
-    question: 'Can I cancel my subscription at any time?',
-    answer:
-      'Yes, MySpa ERP System operates on a subscription model. You may cancel according to your agreed billing terms. We prioritize flexibility while building long-term partnerships with spa businesses.',
-    icon: HelpCircle,
-    category: 'Billing'
-  },
-  {
-    question: 'Is Myspa ERP System secure?',
-    answer:
-      'Yes, MySpa ERP System is built on secure cloud infrastructure with encrypted data storage, role-based access control, secure authentication, and regular system updates. Your client data, financial records, and operational information remain protected at all times.',
-    icon: ShieldCheck,
-    category: 'Security'
-  },
-  {
-    question: 'How does the Myspa ERP dashboard work?',
-    answer:
-      'The MySpa ERP dashboard provides real-time visibility into revenue, client visits, payments, inventory levels, staff activity, and profitability. It acts as a centralized command center, helping spa owners make data-driven decisions using live performance analytics.',
-    icon: Sparkles,
-    category: 'Features'
-  },
-  {
-    question: 'How does the Client Module work?',
-    answer:
-      'The Client Module helps you manage customer profiles, visit history, preferences, and loyalty information in one place. You get a complete 360° view of every client, enabling personalized service and stronger retention.',
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How are customer orders created?',
-    answer:
-      'Customer orders are created, managed, and linked to billing and inventory inside the MySpa ERP system seamlessly. From service selection to payment, the entire order lifecycle is tracked in real time.',
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How does the Stock & Inventory Module work?',
-    answer:
-      "MySpa tracks product usage, monitors stock levels, manages suppliers, and prevents shortages through smart inventory control. You'll receive alerts before stock runs out and can generate purchase orders directly from the system.",
-    icon: HelpCircle,
-    category: 'Features'
-  },
-  {
-    question: 'How do gift cards and vouchers work?',
-    answer:
-      'You can create, sell, and redeem gift cards and vouchers to increase spa revenue and customer engagement. The system tracks redemption history and balances automatically, making it effortless to run promotions.',
-    icon: Gift,
-    category: 'Features'
-  },
-  {
-    question: 'How does the HR Management Module work?',
-    answer:
-      'MySpa manages staff schedules, attendance, payroll tracking, and performance incentives in one integrated HR system. Team leads get full visibility into workforce productivity without juggling spreadsheets.',
-    icon: Users,
-    category: 'Features'
-  },
-  {
-    question: 'How does Myspa help manage daily spa operations?',
-    answer:
-      'MySpa ERP System centralizes bookings, billing, HR, inventory, accounting, and reporting into one integrated Spa Operations System. This eliminates disconnected tools and improves workflow efficiency across your entire spa business.',
-    icon: Zap,
-    category: 'Operations'
-  },
-  {
-    question: 'How does Myspa improve business performance?',
-    answer:
-      'MySpa improves business performance by providing real-time data, financial visibility, and structured reporting. Spa owners can identify profitable services, reduce inefficiencies, improve staff productivity, and scale confidently using actionable insights.',
-    icon: Sparkles,
-    category: 'Growth'
-  }
-]
+/**
+ * Questions on /faq, in CMS sort order. Edited in Directus under "FAQs".
+ *
+ * These feed faqPageSchema() in seo/schema.ts as well as the page itself, so
+ * every published question also becomes a schema.org Question that Google can
+ * show as a rich result. scripts/fetch-content.mjs enforces the rules that
+ * follow from that, including that a question ends in a question mark and that
+ * an answer is long enough to stand on its own.
+ */
+export const faqs: FAQ[] = faqsJson.faqs
 
-export const faqCategoryColors: FAQCategoryColorMap = {
-  General: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  'Getting Started': { bg: '#eff6ff', color: '#2563eb', border: '#bfdbfe' },
-  Pricing: { bg: '#fefce8', color: '#d97706', border: '#fde68a' },
-  Billing: { bg: '#fdf4ff', color: '#9333ea', border: '#e9d5ff' },
-  Security: { bg: '#fff1f2', color: '#e11d48', border: '#fecdd3' },
-  Features: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' },
-  Operations: { bg: '#fff7ed', color: '#ea580c', border: '#fed7aa' },
-  Growth: { bg: '#f0fdf4', color: '#207D40', border: '#bbf7d0' }
-}
+/**
+ * Pill colours, keyed by category name and sourced from the CMS, so adding a
+ * category no longer needs a code change.
+ *
+ * These are hex values rather than Tailwind class names, which is the only
+ * reason they can live in a database at all: a class that appears in no source
+ * file is never compiled, and the pill would render unstyled.
+ */
+export const faqCategoryColors: FAQCategoryColorMap = Object.fromEntries(
+  faqsJson.categories.map(category => [
+    category.name,
+    { bg: category.colorBg, color: category.colorText, border: category.colorBorder }
+  ])
+)
 
 // ── AboutSection.tsx ────────────────────────────────────────────
+
+/**
+ * The photo in the left panel of the modules section, and the text of the badge
+ * over it. Edited in Directus under "Modules Image". The badge's icon and the
+ * module tiles below stay hardcoded, because both carry Lucide components.
+ */
+export const modulesImage: ModulesImage = modulesImageJson
 
 export const modules: Module[] = [
   {
@@ -690,238 +563,44 @@ export const modules: Module[] = [
 
 // ── ArticlePage.tsx ─────────────────────────────────────────────
 
-export const articles: Article[] = [
-  {
-    slug: 'spa-erp-vs-booking-software',
-    category: 'ERP',
-    title: "Spa ERP vs Booking Software: What's the Difference?",
-    date: 'Oct 12, 2024',
-    readTime: '8 min read',
-    image: '/images/Dash.png',
-    intro:
-      'Many spa owners start with a basic booking tool and assume the job is done. But as your business grows, you quickly discover that scheduling appointments is only a fraction of what needs to be managed. This is where the distinction between booking software and a true Spa ERP becomes critical.',
-    sections: [
-      {
-        heading: 'What Booking Software Does',
-        body: 'Booking software is designed to handle one thing well: appointments. It lets clients schedule sessions, sends reminders, and shows your calendar. For a solo therapist just starting out, this may be sufficient. But it leaves enormous operational gaps , no payroll, no inventory tracking, no financial reporting, and no multi-staff management.'
-      },
-      {
-        heading: 'What a Spa ERP Does',
-        body: 'An ERP (Enterprise Resource Planning) system connects every layer of your business into one unified platform. MySpa ERP manages appointments, yes , but also staff schedules, payroll calculations, product inventory, client loyalty, gift vouchers, accounting, and real-time analytics. Everything talks to everything else.'
-      },
-      {
-        heading: 'Key Differences at a Glance',
-        bullets: [
-          'Booking software manages time slots. ERP manages the entire business.',
-          'Booking tools have no stock control. ERP tracks every product used per treatment.',
-          'Booking software has basic reports. ERP delivers profit-per-service, therapist KPIs, and branch comparisons.',
-          'Booking tools are standalone. ERP integrates HR, inventory, finance, and CRM.',
-          'Booking software scales awkwardly. ERP is built for multi-branch growth.'
-        ]
-      },
-      {
-        heading: 'When Should You Make the Switch?',
-        body: 'If you have more than two staff members, carry any retail inventory, or want to understand which services are actually profitable , you have already outgrown booking software. The switch to ERP is not an upgrade; it is a transformation in how you see and run your business.'
-      },
-      {
-        heading: 'The MySpa Difference',
-        body: 'MySpa was built specifically for spas by a team with over a decade of ERP implementation experience across Africa. It brings enterprise-grade operational logic to wellness businesses of every size , from boutique day spas to multi-location wellness chains.'
-      }
-    ]
-  },
-  {
-    slug: 'how-to-reduce-no-shows',
-    category: 'Operations',
-    title: 'How to Reduce No-Shows in Your Spa',
-    date: 'Oct 08, 2024',
-    readTime: '6 min read',
-    image: '/images/Orders.png',
-    intro:
-      'A no-show is not just a missed appointment , it is lost therapist time, wasted room allocation, and direct revenue that never arrives. For spas operating on tight margins, even a 10% no-show rate can devastate monthly profitability. The good news: most no-shows are preventable with the right systems.',
-    sections: [
-      {
-        heading: 'Why No-Shows Happen',
-        bullets: [
-          'Clients forget — especially when bookings are made days or weeks in advance.',
-          'No financial commitment was made at the time of booking.',
-          'Reminders are sent too early or not at all.',
-          'Rescheduling feels too complicated, so clients simply do not show.'
-        ]
-      },
-      {
-        heading: 'Automated Reminder Workflows',
-        body: 'The most effective tool against no-shows is a structured multi-touch reminder sequence: a confirmation at booking, a reminder 48 hours before, and a final reminder 2 hours before the appointment. MySpa automates all three touchpoints, dramatically reducing memory-related absences.'
-      },
-      {
-        heading: 'Deposit and Prepayment Policies',
-        body: "Requiring a small deposit at booking creates financial accountability. Clients who have paid something are significantly more likely to attend or to cancel with sufficient notice. MySpa's payment gateway integration makes collecting deposits seamless at the point of booking."
-      },
-      {
-        heading: 'Easy Rescheduling',
-        body: 'A client who cannot make their appointment but finds rescheduling difficult will simply not show up. Making rescheduling frictionless , through a client portal or a quick response to a reminder message , turns a no-show into a future booking.'
-      },
-      {
-        heading: 'Waitlist Management',
-        body: "Even when cancellations do happen, MySpa's waitlist feature ensures that open slots are filled immediately from a queue of interested clients. A cancelled appointment should never mean an empty treatment room."
-      }
-    ]
-  },
-  {
-    slug: 'inventory-management-best-practices',
-    category: 'Inventory',
-    title: 'Inventory Management Best Practices for Spas',
-    date: 'Sep 28, 2024',
-    readTime: '10 min read',
-    image: '/images/modules.png',
-    intro:
-      'Inventory is one of the most overlooked profit levers in spa management. Products walk out the door, stock-outs frustrate clients, over-ordering ties up cash, and manual counts eat hours every week. A disciplined inventory system transforms this chaos into a competitive advantage.',
-    sections: [
-      {
-        heading: 'The True Cost of Poor Inventory Control',
-        bullets: [
-          'Unsold retail stock represents dead capital on your shelves.',
-          'Product shrinkage (theft and unreported usage) averages 3–7% in unmanaged spas.',
-          'Stock-outs during peak periods damage client trust and service quality.',
-          'Manual reconciliation takes hours and is prone to counting errors.'
-        ]
-      },
-      {
-        heading: 'Link Products to Treatments',
-        body: 'Every treatment should have a defined product consumption profile. When a therapist performs a 60-minute deep tissue massage, the system should automatically deduct the corresponding quantities of massage oil and towels from stock. MySpa does this automatically , no manual logging required.'
-      },
-      {
-        heading: 'Set Reorder Thresholds',
-        body: 'Define minimum stock levels for every product you carry. When stock falls below the threshold, MySpa triggers an automatic alert and can generate a purchase order ready for your supplier. You will never run out of your best-selling product during a busy Saturday.'
-      },
-      {
-        heading: 'Separate Retail and Operational Stock',
-        body: 'Retail products (sold to clients) and operational products (used in treatments) should be tracked separately. Mixing the two creates reporting confusion and masks your true retail performance. MySpa maintains distinct inventory pools for each category.'
-      },
-      {
-        heading: 'Regular Cycle Counts Over Annual Stocktakes',
-        body: 'Instead of a painful annual stocktake, count a small rotation of products every week. Cycle counting catches discrepancies early, keeps your data accurate year-round, and distributes the workload across your team without disrupting operations.'
-      }
-    ]
-  },
-  {
-    slug: 'how-erp-helps-multi-branch-spas-scale',
-    category: 'Growth',
-    title: 'How ERP Helps Multi-Branch Spas Scale',
-    date: 'Sep 15, 2024',
-    readTime: '12 min read',
-    image: '/images/Acccounting.png',
-    intro:
-      "Opening a second or third location is a milestone every ambitious spa owner envisions. But without the right operational infrastructure, each new branch multiplies your complexity without multiplying your control. Here's how ERP removes the ceiling on growth.",
-    sections: [
-      {
-        heading: 'The Multi-Branch Management Problem',
-        body: "Most spa owners running multiple locations manage them through separate systems, spreadsheets, and WhatsApp messages. This creates information silos where you never truly know which branch is profitable, which therapist is underperforming, or where inventory is running low , until it's too late."
-      },
-      {
-        heading: 'Unified Dashboard Across All Locations',
-        body: 'MySpa gives you a single dashboard that aggregates performance data from every branch in real time. Revenue per location, therapist utilisation, client retention rates, and stock levels , all visible from one screen. You can manage ten branches with the same clarity as one.'
-      },
-      {
-        heading: 'Centralised HR and Payroll',
-        body: 'Managing staff across multiple locations requires a system that tracks attendance, schedules, commissions, and payroll consistently regardless of where a therapist works. MySpa centralises HR management, ensuring your policies are applied uniformly and your payroll runs accurately every month.'
-      },
-      {
-        heading: 'Transferring Stock Between Branches',
-        body: 'When one branch is overstocked and another is running low, inter-branch stock transfers should take minutes , not a series of phone calls and manual adjustments. MySpa tracks every transfer with a full audit trail, keeping your inventory data accurate across the network.'
-      },
-      {
-        heading: 'Benchmarking Branch Performance',
-        body: "Growth requires knowing which branches are thriving and which need intervention. MySpa's comparative reporting lets you benchmark revenue per treatment room, average client spend, and rebooking rates side by side , giving you the data to make confident expansion or optimisation decisions."
-      }
-    ]
-  },
-  {
-    slug: '5-metrics-every-spa-owner-should-monitor',
-    category: 'Growth',
-    title: '5 Metrics Every Spa Owner Should Monitor Daily',
-    date: 'Aug 25, 2024',
-    readTime: '7 min read',
-    image: '/images/image5.png',
-    intro:
-      'Total revenue is a vanity metric. It feels good to watch it grow, but it tells you almost nothing about the health of your business. These five metrics, monitored daily through your ERP dashboard, give you a true picture of operational performance and reveal opportunities before they become problems.',
-    sections: [
-      {
-        heading: '1. Revenue Per Treatment Room Per Hour',
-        body: 'This metric reveals how efficiently you are utilising your core asset: your treatment rooms. A room sitting idle is money evaporating. Track this daily and you will quickly identify underperforming time slots, poor scheduling patterns, and opportunities to add express treatments during gaps.'
-      },
-      {
-        heading: '2. Therapist Utilisation Rate',
-        body: 'Divide the number of hours a therapist spent performing treatments by the total hours they were available. Industry best practice is 75–85%. Below 70% signals a scheduling or demand problem. Above 90% consistently signals a risk of therapist burnout and a need to hire.'
-      },
-      {
-        heading: '3. Retail Attachment Rate',
-        body: 'What percentage of service clients also purchased a retail product? A 20–30% attachment rate is achievable with the right training and product placement. This metric is a direct indicator of how well your team is converting treatment outcomes into retail recommendations.'
-      },
-      {
-        heading: '4. Client Rebooking Rate',
-        body: 'What percentage of first-time clients booked a second appointment? This is your most important retention metric. A rebooking rate above 50% indicates strong service quality and effective post-treatment conversation. Below 30% signals a systemic experience or follow-up problem.'
-      },
-      {
-        heading: '5. Cost Per Treatment (Including Product Usage)',
-        body: 'Most spa owners know their service price but not their true cost per treatment once product usage, therapist time, and room overhead are factored in. MySpa calculates this automatically, helping you identify which services have the healthiest margins and which may be priced incorrectly.'
-      }
-    ]
-  },
-  {
-    slug: 'case-study-erp-increased-spa-revenue-40-percent',
-    category: 'Case Studies',
-    title: 'Case Study: How ERP Increased Spa Revenue by 40%',
-    date: 'Sep 10, 2024',
-    readTime: '15 min read',
-    image: 'images/DSC06632.jpg',
-    intro:
-      'Zenith Wellness, a premium three-branch spa group, was generating strong top-line revenue but struggling with thin margins, inventory losses, and no reliable way to compare performance across locations. Twelve months after implementing MySpa ERP, their revenue had grown by 40% while operational costs fell by 18%.',
-    sections: [
-      {
-        heading: 'The Challenge',
-        bullets: [
-          'Three branches managed through separate spreadsheets and booking tools.',
-          'No visibility into which treatments were profitable after product costs.',
-          'Monthly payroll reconciliation taking two full days of manual work.',
-          'Retail stock shrinkage estimated at 9% — well above industry average.',
-          'Owner spending 60% of working hours on administrative tasks rather than growth.'
-        ]
-      },
-      {
-        heading: 'The Implementation',
-        body: 'MySpa was implemented across all three branches simultaneously over a four-week onboarding period. All existing client records, product catalogues, and staff profiles were migrated into the system. Staff received role-based training, and the owner was trained on the executive dashboard and reporting suite.'
-      },
-      {
-        heading: 'Month 1–3: Operational Stabilisation',
-        body: 'In the first quarter, the primary gains came from operational tightening. Automated product deduction per treatment immediately exposed a significant discrepancy between products used and products recorded , revealing a 9.2% shrinkage rate that had been invisible in the previous system. Payroll processing time dropped from two days to under two hours.'
-      },
-      {
-        heading: 'Month 4–6: Revenue Optimisation',
-        body: "With clean data now available, the owner used MySpa's analytics to identify that two treatment rooms were generating 60% of total revenue. Scheduling was restructured to maximise utilisation of those rooms. Underperforming service packages were repriced based on accurate margin data. Retail attachment rate climbed from 11% to 28% after targeted staff training informed by the new reporting."
-      },
-      {
-        heading: 'Month 7–12: Growth and Expansion',
-        body: 'In the second half of the year, Zenith Wellness used the operational confidence and cash flow improvement to open a fourth location. Because the ERP infrastructure was already in place, the new branch was fully operational within three weeks. By month twelve, consolidated group revenue had increased by 40% year-on-year.'
-      },
-      {
-        heading: 'Key Results',
-        bullets: [
-          '40% increase in total group revenue within 12 months.',
-          '18% reduction in operational costs through inventory control and scheduling efficiency.',
-          'Retail shrinkage reduced from 9.2% to under 1%.',
-          'Payroll processing time reduced by 94%.',
-          'Fourth branch launched in under three weeks using existing ERP infrastructure.',
-          'Owner reclaimed 70% of previously administrative working hours.'
-        ]
-      }
-    ]
-  }
-]
+/**
+ * Articles are authored in Directus and pulled in at build time by
+ * scripts/fetch-content.mjs, which writes generated/articles.json. That file is
+ * committed, so the build never depends on the CMS being reachable, and the
+ * article list is available synchronously at module init, which is what
+ * seo/routes.ts and scripts/prerender.mjs both require.
+ *
+ * Do not edit generated/articles.json by hand. Edit the article in Directus and
+ * run `pnpm content`. See directus/README.md.
+ */
+export const articles: Article[] = content.articles
 
-export const articleCategoryColors: ArticleCategoryColorMap = {
-  ERP: { bg: '#f0fdf4', color: '#207D40' },
-  Operations: { bg: '#eff6ff', color: '#2563eb' },
-  Inventory: { bg: '#fefce8', color: '#d97706' },
-  Growth: { bg: '#f0fdf4', color: '#207D40' },
-  'Case Studies': { bg: '#fdf4ff', color: '#9333ea' }
-}
+/**
+ * Category pill colours, keyed by category name. Sourced from the CMS so adding
+ * a category no longer needs a code change.
+ */
+export const articleCategoryColors: ArticleCategoryColorMap = Object.fromEntries(
+  content.categories.map(category => [
+    category.name,
+    { bg: category.colorBg, color: category.colorText }
+  ])
+)
+
+// ── ResourcesPage.tsx ───────────────────────────────────────────
+
+/**
+ * Cards for the /resources grid, derived from `articles` so slug, title, date
+ * and image can never diverge from the article they link to. Newest first.
+ */
+export const blogPosts: BlogPost[] = [...articles]
+  .sort((a, b) => b.datePublished.localeCompare(a.datePublished))
+  .map((article, i) => ({
+    id: i + 1,
+    slug: article.slug,
+    category: article.category,
+    title: article.title,
+    preview: article.preview ?? article.intro,
+    image: article.image,
+    date: article.date,
+    readTime: article.readTime
+  }))

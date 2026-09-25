@@ -1,0 +1,4154 @@
+version: 1
+directus: 12.3.1
+vendor: postgres
+collections:
+  - collection: anchor_features
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      autosave_revision_interval: null
+      collapse: open
+      collection: anchor_features
+      color: null
+      display_template: '{{name}}'
+      group: null
+      hidden: false
+      icon: grid_view
+      item_duplication_fields: null
+      note: >-
+        The module cards on /features. The first four published rows fill the
+        big grid in order; rows marked Hidden appear under "See the List". Each
+        row needs a Key that matches the icon and colour map in data/index.ts,
+        so adding a brand new module needs a developer too.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: anchor_features
+  - collection: article_categories
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: article_categories
+      color: null
+      display_template: '{{name}}'
+      group: null
+      hidden: false
+      icon: sell
+      item_duplication_fields: null
+      note: >-
+        Article categories. Drives the /resources filter row and the pill
+        colours that articleCategoryColors used to hardcode.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: article_categories
+  - collection: article_sections
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: article_sections
+      color: null
+      display_template: '{{heading}}'
+      group: null
+      hidden: true
+      icon: segment
+      item_duplication_fields: null
+      note: >-
+        Ordered body blocks of one article. Edited through the parent article,
+        not directly.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: article_sections
+  - collection: articles
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      autosave_revision_interval: null
+      collapse: open
+      collection: articles
+      color: null
+      display_template: '{{title}}'
+      group: null
+      hidden: false
+      icon: article
+      item_duplication_fields: null
+      note: >-
+        Long-form posts published at /resources/:slug. Fetched at build time by
+        scripts/fetch-content.mjs; the site never reads Directus at runtime.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: date_published
+      status: active
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: articles
+  - collection: contact_details
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: contact_details
+      color: null
+      display_template: '{{sales_email}}'
+      group: null
+      hidden: false
+      icon: contact_page
+      item_duplication_fields: null
+      note: >-
+        The sales phone number and email address. One record, used in three
+        places: the cards on /contact, the footer on every page, and the
+        Organization contactPoint in the structured data search engines read.
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: contact_details
+  - collection: demo_video
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: demo_video
+      color: null
+      display_template: Demo video
+      group: null
+      hidden: false
+      icon: movie
+      item_duplication_fields: null
+      note: >-
+        The product demo. Used in two places from this one record: the "One
+        Unified Ecosystem" section on /features, and the "How it works" pop-up
+        in the home page hero. Change it here and both update.
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: demo_video
+  - collection: faq_categories
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: faq_categories
+      color: null
+      display_template: '{{name}}'
+      group: null
+      hidden: false
+      icon: sell
+      item_duplication_fields: null
+      note: >-
+        The coloured pill above each question on /faq. Hex values, not Tailwind
+        class names, so they survive the trip through the database and can be
+        edited here. Adding a category no longer needs a code change.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: faq_categories
+  - collection: faqs
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      autosave_revision_interval: null
+      collapse: open
+      collection: faqs
+      color: null
+      display_template: '{{question}}'
+      group: null
+      hidden: false
+      icon: help
+      item_duplication_fields: null
+      note: >-
+        Questions on /faq, in sort order. These also become the FAQPage
+        structured data Google reads for rich results, so the answer has to
+        stand on its own without the page around it.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: faqs
+  - collection: features_hero_image
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: features_hero_image
+      color: null
+      display_template: '{{alt}}'
+      group: null
+      hidden: false
+      icon: wallpaper
+      item_duplication_fields: null
+      note: >-
+        The product screenshot at the top of /features, beside "All-in-One ERP
+        Software". The headline and the Request a Demo button stay in the code.
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: features_hero_image
+  - collection: home_hero_image
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: home_hero_image
+      color: null
+      display_template: '{{alt}}'
+      group: null
+      hidden: false
+      icon: wallpaper
+      item_duplication_fields: null
+      note: >-
+        The product screenshot in the home page hero, beside "Simplify Spa
+        Operations". Downloaded into public/images/cms/ at build time.
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: home_hero_image
+  - collection: modules_image
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: null
+      archive_value: null
+      autosave_revision_interval: null
+      collapse: open
+      collection: modules_image
+      color: null
+      display_template: '{{badge}}'
+      group: null
+      hidden: false
+      icon: image
+      item_duplication_fields: null
+      note: >-
+        The photo in the left panel of the home page modules section, and the
+        badge that sits on top of it. The badge icon stays in the code.
+      preview_url: null
+      singleton: true
+      sort: null
+      sort_field: null
+      status: active
+      translations: null
+      unarchive_value: null
+      versioning: false
+    schema:
+      name: modules_image
+  - collection: modules_marquee
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      autosave_revision_interval: null
+      collapse: open
+      collection: modules_marquee
+      color: null
+      display_template: '{{label}}'
+      group: null
+      hidden: false
+      icon: view_carousel
+      item_duplication_fields: null
+      note: >-
+        The scrolling strip of capability labels under the home page feature
+        grid. The dot colours alternate in code, not here.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: modules_marquee
+  - collection: testimonials
+    meta:
+      accountability: all
+      archive_app_filter: true
+      archive_field: status
+      archive_value: archived
+      autosave_revision_interval: null
+      collapse: open
+      collection: testimonials
+      color: null
+      display_template: '{{name}}'
+      group: null
+      hidden: false
+      icon: format_quote
+      item_duplication_fields: null
+      note: >-
+        Customer quotes in the home page testimonials carousel. Only "published"
+        rows are built into the site.
+      preview_url: null
+      singleton: false
+      sort: null
+      sort_field: sort
+      status: active
+      translations: null
+      unarchive_value: draft
+      versioning: false
+    schema:
+      name: testimonials
+fields:
+  - collection: anchor_features
+    field: id
+    type: integer
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: anchor_features
+      data_type: integer
+      default_value: nextval('anchor_features_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: status
+    type: string
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: Only "published" cards appear on the site.
+      options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: anchor_features
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: sort
+    type: integer
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: anchor_features
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: key
+    type: string
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: key
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Do not change this. It is how the card finds its icon and its colour,
+        which live in the code because neither can be stored in a database. The
+        build fails if a key has no match.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: key
+      table: anchor_features
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: hidden
+    type: boolean
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: hidden
+      group: null
+      hidden: false
+      interface: boolean
+      note: >-
+        On: the card appears under "See the List" instead of the main grid.
+        Exactly four published cards must stay off this list, because the grid
+        has four fixed positions.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: hidden
+      table: anchor_features
+      data_type: boolean
+      default_value: false
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: name
+    type: string
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: Module name shown on the card, e.g. "Orders & Invoices".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: name
+      table: anchor_features
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: description
+    type: text
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: description
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: One or two sentences. 60 to 220 characters reads best on the card.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: description
+      table: anchor_features
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: anchor_features
+    field: image
+    type: uuid
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: Screenshot of the module. Wide crop, it fills the card behind the text.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 7
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: anchor_features
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: anchor_features
+    field: image_alt
+    type: string
+    meta:
+      collection: anchor_features
+      conditions: null
+      display: null
+      display_options: null
+      field: image_alt
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Alt text. Describe what is in the image for screen readers and search
+        engines. Required: the build fails without it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image_alt
+      table: anchor_features
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_categories
+    field: id
+    type: integer
+    meta:
+      collection: article_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: article_categories
+      data_type: integer
+      default_value: nextval('article_categories_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_categories
+    field: name
+    type: string
+    meta:
+      collection: article_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Shown verbatim on the article card and the /resources filter row, e.g.
+        "Case Studies".
+      options:
+        trim: true
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: name
+      table: article_categories
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_categories
+    field: sort
+    type: integer
+    meta:
+      collection: article_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: Order in the /resources filter row.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: article_categories
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_categories
+    field: color_text
+    type: string
+    meta:
+      collection: article_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: color_text
+      group: null
+      hidden: false
+      interface: select-color
+      note: Pill text colour.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: color_text
+      table: article_categories
+      data_type: character varying
+      default_value: '#207D40'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_categories
+    field: color_bg
+    type: string
+    meta:
+      collection: article_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: color_bg
+      group: null
+      hidden: false
+      interface: select-color
+      note: Pill background colour. Keep it pale; the text colour sits on top of it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: color_bg
+      table: article_categories
+      data_type: character varying
+      default_value: '#f0fdf4'
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: id
+    type: integer
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: article_sections
+      data_type: integer
+      default_value: nextval('article_sections_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: article
+    type: integer
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: article
+      group: null
+      hidden: true
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{title}}'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: article
+      table: article_sections
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: articles
+      foreign_key_column: id
+  - collection: article_sections
+    field: sort
+    type: integer
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: article_sections
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: heading
+    type: string
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: heading
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Rendered as an <h2>. Leave empty for a continuation block that carries
+        on from the section above.
+      options:
+        placeholder: 1. Use an Appointment Booking System
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: heading
+      table: article_sections
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: body
+    type: text
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: body
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        PLAIN TEXT ONLY. This renders inside a single <p> with no HTML parsing,
+        so markdown or tags will show up literally as characters. One paragraph
+        per section.
+      options:
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: body
+      table: article_sections
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: bullets
+    type: json
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: bullets
+      group: null
+      hidden: false
+      interface: list
+      note: Optional bulleted list shown under the body.
+      options:
+        addLabel: Add bullet
+        fields:
+          - field: text
+            meta:
+              field: text
+              interface: input
+              options:
+                trim: true
+              required: true
+              type: string
+            name: Text
+            type: string
+        template: '{{text}}'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 6
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: bullets
+      table: article_sections
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: article_sections
+    field: links
+    type: json
+    meta:
+      collection: article_sections
+      conditions: null
+      display: null
+      display_options: null
+      field: links
+      group: null
+      hidden: false
+      interface: list
+      note: >-
+        Turns words already in the body into internal links. "Text" must appear
+        in the body EXACTLY as typed, or the build fails. "To" is a
+        root-relative path such as /features.
+      options:
+        addLabel: Add link
+        fields:
+          - field: text
+            meta:
+              field: text
+              interface: input
+              options:
+                placeholder: appointment booking system
+                trim: true
+              required: true
+              type: string
+              width: half
+            name: Text in body
+            type: string
+          - field: to
+            meta:
+              field: to
+              interface: input
+              options:
+                placeholder: /features
+                trim: true
+              required: true
+              type: string
+              width: half
+            name: Links to
+            type: string
+        template: '{{text}} ({{to}})'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special:
+        - cast-json
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: links
+      table: article_sections
+      data_type: json
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: id
+    type: integer
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: articles
+      data_type: integer
+      default_value: nextval('articles_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: status
+    type: string
+    meta:
+      collection: articles
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: Only "published" articles are pulled into the build.
+      options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: articles
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: category
+    type: integer
+    meta:
+      collection: articles
+      conditions: null
+      display: related-values
+      display_options:
+        template: '{{name}}'
+      field: category
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: null
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: category
+      table: articles
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: article_categories
+      foreign_key_column: id
+  - collection: articles
+    field: title
+    type: string
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: title
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        The on-page <h1>. Also the Article schema headline, which is truncated
+        to 110 chars.
+      options:
+        placeholder: How to Manage a Busy Spa Without Losing Customers
+        trim: true
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: title
+      table: articles
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: slug
+    type: string
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: slug
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        URL at /resources/{slug}. Lowercase, dashes, no spaces. Treat as
+        permanent: changing it breaks every existing link and drops the old URL
+        out of the sitemap.
+      options:
+        placeholder: how-to-manage-a-busy-spa
+        slug: true
+        trim: true
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: slug
+      table: articles
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: image
+    type: uuid
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: >-
+        Hero image and og:image. Use a 16:7 crop at 1200x525 or larger.
+        Downloaded into public/images/articles/ at build time, so the live site
+        serves it from myspa.co.ke.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 6
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: articles
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: articles
+    field: divider_content
+    type: alias
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: divider_content
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        icon: text_snippet
+        title: Content
+      readonly: false
+      required: false
+      searchable: true
+      sort: 7
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: articles
+    field: intro
+    type: text
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: intro
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        Standfirst paragraph under the title. Doubles as the fallback for both
+        the meta description and the /resources card copy, so make it work
+        standalone.
+      options:
+        trim: true
+      readonly: false
+      required: true
+      searchable: true
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: intro
+      table: articles
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: sections
+    type: alias
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: sections
+      group: null
+      hidden: false
+      interface: list-o2m
+      note: The article body, in order. Drag to reorder.
+      options:
+        enableSelect: false
+        template: '{{heading}}'
+      readonly: false
+      required: false
+      searchable: true
+      sort: 9
+      special:
+        - o2m
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: articles
+    field: divider_meta
+    type: alias
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: divider_meta
+      group: null
+      hidden: false
+      interface: presentation-divider
+      note: null
+      options:
+        icon: search
+        title: Publishing & SEO
+      readonly: false
+      required: false
+      searchable: true
+      sort: 10
+      special:
+        - alias
+        - no-data
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+  - collection: articles
+    field: date_published
+    type: date
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: date_published
+      group: null
+      hidden: false
+      interface: datetime
+      note: >-
+        Drives the displayed date, Article schema datePublished, and
+        newest-first ordering on /resources.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 11
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_published
+      table: articles
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: date_modified
+    type: date
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: date_modified
+      group: null
+      hidden: false
+      interface: datetime
+      note: >-
+        Bump this only for a meaningful edit, not a typo fix. Feeds sitemap
+        <lastmod>. Falls back to date_published when empty.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 12
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: date_modified
+      table: articles
+      data_type: date
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: author
+    type: string
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: author
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Credited as an Organization in Article schema, so use a team or company
+        name.
+      options:
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 13
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: author
+      table: articles
+      data_type: character varying
+      default_value: MySpa Team
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: read_time_override
+    type: integer
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: read_time_override
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Minutes. Leave empty and the build computes it from word count at 220
+        wpm. Only set this to overrule that.
+      options:
+        min: 1
+        placeholder: auto
+      readonly: false
+      required: false
+      searchable: true
+      sort: 14
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: read_time_override
+      table: articles
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: preview
+    type: text
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: preview
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        Card copy on /resources. Two lines at most; the card clamps it. Falls
+        back to intro when empty.
+      options:
+        softLength: 180
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 15
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: preview
+      table: articles
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: meta_title
+    type: string
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: meta_title
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Overrides the <title> tag only. Keep under 60 chars or Google truncates
+        it. Falls back to title.
+      options:
+        softLength: 60
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 16
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: meta_title
+      table: articles
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: articles
+    field: meta_description
+    type: text
+    meta:
+      collection: articles
+      conditions: null
+      display: null
+      display_options: null
+      field: meta_description
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        Meta description and og:description. Aim for 140 to 160 chars. Falls
+        back to the first 155 chars of intro.
+      options:
+        softLength: 160
+        trim: true
+      readonly: false
+      required: false
+      searchable: true
+      sort: 17
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: meta_description
+      table: articles
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contact_details
+    field: id
+    type: integer
+    meta:
+      collection: contact_details
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: contact_details
+      data_type: integer
+      default_value: nextval('contact_details_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contact_details
+    field: sales_phone
+    type: string
+    meta:
+      collection: contact_details
+      conditions: null
+      display: null
+      display_options: null
+      field: sales_phone
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Write it the way it should appear on the page, spaces and all, in full
+        international form: +254 708 178 500. The build strips the spaces itself
+        for the structured data and the tap-to-call link, so there is only ever
+        one number to change.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sales_phone
+      table: contact_details
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: contact_details
+    field: sales_email
+    type: string
+    meta:
+      collection: contact_details
+      conditions: null
+      display: null
+      display_options: null
+      field: sales_email
+      group: null
+      hidden: false
+      interface: input
+      note: The address sales enquiries should reach.
+      options:
+        iconLeft: alternate_email
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: sales_email
+      table: contact_details
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: demo_video
+    field: id
+    type: integer
+    meta:
+      collection: demo_video
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: demo_video
+      data_type: integer
+      default_value: nextval('demo_video_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: demo_video
+    field: video
+    type: uuid
+    meta:
+      collection: demo_video
+      conditions: null
+      display: null
+      display_options: null
+      field: video
+      group: null
+      hidden: false
+      interface: file
+      note: >-
+        The demo itself, MP4 with H.264 video and AAC audio so every browser can
+        play it. This file is downloaded at build time but deliberately NOT
+        committed to git, because each version would add its full size to the
+        repository permanently.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: video
+      table: demo_video
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: demo_video
+    field: poster
+    type: uuid
+    meta:
+      collection: demo_video
+      conditions: null
+      display: null
+      display_options: null
+      field: poster
+      group: null
+      hidden: false
+      interface: file-image
+      note: >-
+        Still frame shown before playback starts, with the play button over it.
+        16:9, 1280x720 or larger.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: poster
+      table: demo_video
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: demo_video
+    field: poster_alt
+    type: string
+    meta:
+      collection: demo_video
+      conditions: null
+      display: null
+      display_options: null
+      field: poster_alt
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Alt text. Describe what is in the image for screen readers and search
+        engines. Required: the build fails without it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: poster_alt
+      table: demo_video
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: id
+    type: integer
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: faq_categories
+      data_type: integer
+      default_value: nextval('faq_categories_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: name
+    type: string
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: Shown on the pill, in capitals. Keep it short.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: name
+      table: faq_categories
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: sort
+    type: integer
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: faq_categories
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: color_bg
+    type: string
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: color_bg
+      group: null
+      hidden: false
+      interface: select-color
+      note: 'Pill background, e.g. #f0fdf4. Keep it pale.'
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: color_bg
+      table: faq_categories
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: color_text
+    type: string
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: color_text
+      group: null
+      hidden: false
+      interface: select-color
+      note: 'Pill text, e.g. #207D40. Dark enough to read on the background.'
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: color_text
+      table: faq_categories
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faq_categories
+    field: color_border
+    type: string
+    meta:
+      collection: faq_categories
+      conditions: null
+      display: null
+      display_options: null
+      field: color_border
+      group: null
+      hidden: false
+      interface: select-color
+      note: 'Pill border, e.g. #bbf7d0. Usually between the other two.'
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: color_border
+      table: faq_categories
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: id
+    type: integer
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: faqs
+      data_type: integer
+      default_value: nextval('faqs_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: status
+    type: string
+    meta:
+      collection: faqs
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: >-
+        Only "published" questions appear on the site and in the structured
+        data.
+      options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: faqs
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: sort
+    type: integer
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: faqs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: question
+    type: text
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: question
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: The question as a visitor would ask it, ending in a question mark.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: question
+      table: faqs
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: answer
+    type: text
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: answer
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        A complete answer in plain prose. Google reads this as the answer to the
+        question, so it must make sense on its own, with no HTML and no
+        reference to "the page above".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: answer
+      table: faqs
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: youtube_url
+    type: string
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: youtube_url
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Optional. Adds a "Watch on YouTube" button under the answer. Leave empty
+        for no button.
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: youtube_url
+      table: faqs
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: faqs
+    field: category
+    type: integer
+    meta:
+      collection: faqs
+      conditions: null
+      display: null
+      display_options: null
+      field: category
+      group: null
+      hidden: false
+      interface: select-dropdown-m2o
+      note: Which pill appears above the question.
+      options:
+        template: '{{name}}'
+      readonly: false
+      required: true
+      searchable: true
+      sort: 6
+      special:
+        - m2o
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: category
+      table: faqs
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: faq_categories
+      foreign_key_column: id
+  - collection: features_hero_image
+    field: id
+    type: integer
+    meta:
+      collection: features_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: features_hero_image
+      data_type: integer
+      default_value: nextval('features_hero_image_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: features_hero_image
+    field: image
+    type: uuid
+    meta:
+      collection: features_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: Hero screenshot. Use a wide crop, 1200px or wider.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: features_hero_image
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: features_hero_image
+    field: alt
+    type: string
+    meta:
+      collection: features_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: alt
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Alt text. Describe what is in the image for screen readers and search
+        engines. Required: the build fails without it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: alt
+      table: features_hero_image
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: home_hero_image
+    field: id
+    type: integer
+    meta:
+      collection: home_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: home_hero_image
+      data_type: integer
+      default_value: nextval('home_hero_image_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: home_hero_image
+    field: image
+    type: uuid
+    meta:
+      collection: home_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: Hero screenshot. Use a wide crop, 1200px or wider.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: home_hero_image
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: home_hero_image
+    field: alt
+    type: string
+    meta:
+      collection: home_hero_image
+      conditions: null
+      display: null
+      display_options: null
+      field: alt
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Alt text. Describe what is in the image for screen readers and search
+        engines. Required: the build fails without it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: alt
+      table: home_hero_image
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_image
+    field: id
+    type: integer
+    meta:
+      collection: modules_image
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: modules_image
+      data_type: integer
+      default_value: nextval('modules_image_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_image
+    field: image
+    type: uuid
+    meta:
+      collection: modules_image
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: >-
+        Section photo. Fills a tall panel, so a portrait-friendly crop works
+        best.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: modules_image
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: modules_image
+    field: alt
+    type: string
+    meta:
+      collection: modules_image
+      conditions: null
+      display: null
+      display_options: null
+      field: alt
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Alt text. Describe what is in the image for screen readers and search
+        engines. Required: the build fails without it.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: alt
+      table: modules_image
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_image
+    field: badge
+    type: string
+    meta:
+      collection: modules_image
+      conditions: null
+      display: null
+      display_options: null
+      field: badge
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Short label on the green pill, e.g. "Modular Infrastructure". Rendered
+        uppercase.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: badge
+      table: modules_image
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_marquee
+    field: id
+    type: integer
+    meta:
+      collection: modules_marquee
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: modules_marquee
+      data_type: integer
+      default_value: nextval('modules_marquee_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_marquee
+    field: status
+    type: string
+    meta:
+      collection: modules_marquee
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: Only "published" labels appear in the strip.
+      options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: modules_marquee
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_marquee
+    field: sort
+    type: integer
+    meta:
+      collection: modules_marquee
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: modules_marquee
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: modules_marquee
+    field: label
+    type: string
+    meta:
+      collection: modules_marquee
+      conditions: null
+      display: null
+      display_options: null
+      field: label
+      group: null
+      hidden: false
+      interface: input
+      note: >-
+        Short capability name, e.g. "ERP Management". Rendered uppercase, so
+        keep it under 30 characters.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: label
+      table: modules_marquee
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: id
+    type: integer
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: id
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: true
+      required: false
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: id
+      table: testimonials
+      data_type: integer
+      default_value: nextval('testimonials_id_seq'::regclass)
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: false
+      is_unique: true
+      is_indexed: false
+      is_primary_key: true
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: true
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: status
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: labels
+      display_options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+        showAsDot: true
+      field: status
+      group: null
+      hidden: false
+      interface: select-dropdown
+      note: Only "published" testimonials appear on the site.
+      options:
+        choices:
+          - color: '#2ECDA7'
+            text: Published
+            value: published
+          - color: '#A2B5CD'
+            text: Draft
+            value: draft
+          - color: '#E35169'
+            text: Archived
+            value: archived
+      readonly: false
+      required: true
+      searchable: true
+      sort: 1
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: status
+      table: testimonials
+      data_type: character varying
+      default_value: draft
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: sort
+    type: integer
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: sort
+      group: null
+      hidden: true
+      interface: input
+      note: null
+      options: null
+      readonly: false
+      required: false
+      searchable: true
+      sort: 2
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: sort
+      table: testimonials
+      data_type: integer
+      default_value: null
+      max_length: null
+      numeric_precision: 32
+      numeric_scale: 0
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: name
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: name
+      group: null
+      hidden: false
+      interface: input
+      note: Person quoted. Also names their photo file in the build.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 3
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: name
+      table: testimonials
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: role
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: role
+      group: null
+      hidden: false
+      interface: input
+      note: Job title and company, e.g. "Founder, Azure Wellness Spa".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 4
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: role
+      table: testimonials
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: location
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: location
+      group: null
+      hidden: false
+      interface: input
+      note: City and country, e.g. "Nairobi, Kenya".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 5
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: location
+      table: testimonials
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: content
+    type: text
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: content
+      group: null
+      hidden: false
+      interface: input-multiline
+      note: >-
+        The quote itself, without surrounding quotation marks. 80 to 320
+        characters.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 6
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: content
+      table: testimonials
+      data_type: text
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: image
+    type: uuid
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: image
+      group: null
+      hidden: false
+      interface: file-image
+      note: Headshot. Square crop, 200x200 or larger.
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 7
+      special:
+        - file
+      translations: null
+      validation: null
+      validation_message: null
+      width: full
+    schema:
+      name: image
+      table: testimonials
+      data_type: uuid
+      default_value: null
+      max_length: null
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: true
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: directus_files
+      foreign_key_column: id
+  - collection: testimonials
+    field: stat_value
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: stat_value
+      group: null
+      hidden: false
+      interface: input
+      note: The number on the card, e.g. "+38%" or "15x".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 8
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: stat_value
+      table: testimonials
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+  - collection: testimonials
+    field: stat_label
+    type: string
+    meta:
+      collection: testimonials
+      conditions: null
+      display: null
+      display_options: null
+      field: stat_label
+      group: null
+      hidden: false
+      interface: input
+      note: What the number measures, e.g. "Revenue Growth".
+      options: null
+      readonly: false
+      required: true
+      searchable: true
+      sort: 9
+      special: null
+      translations: null
+      validation: null
+      validation_message: null
+      width: half
+    schema:
+      name: stat_label
+      table: testimonials
+      data_type: character varying
+      default_value: null
+      max_length: 255
+      numeric_precision: null
+      numeric_scale: null
+      is_nullable: false
+      is_unique: false
+      is_indexed: false
+      is_primary_key: false
+      is_generated: false
+      generation_expression: null
+      has_auto_increment: false
+      foreign_key_table: null
+      foreign_key_column: null
+systemFields:
+  - collection: directus_activity
+    field: timestamp
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_clients
+    field: date_created
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_codes
+    field: expires_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_codes
+    field: used_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_consents
+    field: client
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: code_hash
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: expires_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: previous_session
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: session
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: activity
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: parent
+    schema:
+      is_indexed: true
+  - collection: directus_sessions
+    field: oauth_client
+    schema:
+      is_indexed: true
+relations:
+  - collection: anchor_features
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: anchor_features
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: anchor_features
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: anchor_features_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: article_sections
+    field: article
+    related_collection: articles
+    meta:
+      junction_field: null
+      many_collection: article_sections
+      many_field: article
+      one_allowed_collections: null
+      one_collection: articles
+      one_collection_field: null
+      one_deselect_action: delete
+      one_field: sections
+      sort_field: sort
+    schema:
+      table: article_sections
+      column: article
+      foreign_key_table: articles
+      foreign_key_column: id
+      constraint_name: article_sections_article_foreign
+      on_update: NO ACTION
+      on_delete: CASCADE
+  - collection: articles
+    field: category
+    related_collection: article_categories
+    meta:
+      junction_field: null
+      many_collection: articles
+      many_field: category
+      one_allowed_collections: null
+      one_collection: article_categories
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: articles
+      column: category
+      foreign_key_table: article_categories
+      foreign_key_column: id
+      constraint_name: articles_category_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: articles
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: articles
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: articles
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: articles_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: demo_video
+    field: video
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: demo_video
+      many_field: video
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: demo_video
+      column: video
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: demo_video_video_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: demo_video
+    field: poster
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: demo_video
+      many_field: poster
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: demo_video
+      column: poster
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: demo_video_poster_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: faqs
+    field: category
+    related_collection: faq_categories
+    meta:
+      junction_field: null
+      many_collection: faqs
+      many_field: category
+      one_allowed_collections: null
+      one_collection: faq_categories
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: faqs
+      column: category
+      foreign_key_table: faq_categories
+      foreign_key_column: id
+      constraint_name: faqs_category_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: features_hero_image
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: features_hero_image
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: features_hero_image
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: features_hero_image_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: home_hero_image
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: home_hero_image
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: home_hero_image
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: home_hero_image_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: modules_image
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: modules_image
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: modules_image
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: modules_image_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL
+  - collection: testimonials
+    field: image
+    related_collection: directus_files
+    meta:
+      junction_field: null
+      many_collection: testimonials
+      many_field: image
+      one_allowed_collections: null
+      one_collection: directus_files
+      one_collection_field: null
+      one_deselect_action: nullify
+      one_field: null
+      sort_field: null
+    schema:
+      table: testimonials
+      column: image
+      foreign_key_table: directus_files
+      foreign_key_column: id
+      constraint_name: testimonials_image_foreign
+      on_update: NO ACTION
+      on_delete: SET NULL

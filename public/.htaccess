@@ -1,8 +1,95 @@
+# MySpa Apache config for the prerendered static build.
+#
+# Every route is a real file on disk (scripts/prerender.mjs writes one
+# index.html per URL), so there is no blanket SPA fallback here. That is
+# deliberate: a catch-all rewrite to index.html makes every mistyped URL return
+# HTTP 200 with the homepage, which Google treats as a soft 404 and which can
+# generate unlimited duplicate URLs. Unknown paths now fall through to a real
+# 404 served from 404.html.
+
+Options -Indexes
+
+# We rewrite /features to /features/index.html ourselves, so mod_dir must not
+# also 301 /features to /features/ and undo the clean, canonical URL.
+<IfModule mod_dir.c>
+  DirectorySlash Off
+  DirectoryIndex index.html
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+
+  # ── Canonical host ────────────────────────────────────────────────────────
+  # Force HTTPS and the non-www host. MUST match SITE_URL in seo/routes.ts. If
+  # these disagree, canonicals point at a URL that redirects and ranking
+  # signals split across two hostnames.
+  # The localhost guard keeps the file testable against a local Apache.
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://myspa.co.ke/$1 [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^www\.myspa\.co\.ke$ [NC]
+  RewriteRule ^(.*)$ https://myspa.co.ke/$1 [R=301,L]
+
+  # ── Strip trailing slashes (root excluded) ────────────────────────────────
+  # Canonicals are emitted without a trailing slash, so /features/ redirects to
+  # /features rather than both URLs serving the same page.
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # ── Serve the prerendered page for a clean URL ────────────────────────────
+  # Internal rewrite, not a redirect, so /features stays /features in the
+  # address bar.
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+)$ /$1/index.html [L]
+</IfModule>
+
+# Anything not matched above is a genuine 404.
+ErrorDocument 404 /404.html
+
+# ── Compression ─────────────────────────────────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  # text/javascript is the type Apache actually serves .js as, and omitting it
+  # leaves the main bundle uncompressed.
+  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# ── Caching ─────────────────────────────────────────────────────────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Vite content-hashes filenames under /assets, so these are safe to pin.
+  <FilesMatch "\.(js|css|woff2?|ttf|otf|eot)$">
+    ExpiresDefault "access plus 1 year"
+  </FilesMatch>
+
+  <FilesMatch "\.(png|jpe?g|gif|webp|avif|svg|ico|mp4)$">
+    ExpiresDefault "access plus 6 months"
+  </FilesMatch>
+
+  # HTML must revalidate, otherwise a deploy never reaches returning visitors.
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+  </FilesMatch>
+
+  <FilesMatch "\.(xml|txt)$">
+    ExpiresDefault "access plus 1 day"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|woff2?|ttf|otf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  Header set X-Content-Type-Options "nosniff"
+  Header always append X-Frame-Options "SAMEORIGIN"
 </IfModule>

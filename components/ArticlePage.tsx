@@ -1,25 +1,77 @@
 import React from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react'
 import { articles, articleCategoryColors } from '@/data'
+import type { ArticleSection } from '@/types'
+import Seo from './Seo'
+import {
+  articleSchema,
+  breadcrumbSchema,
+  graph,
+  organizationSchema
+} from '@/seo/schema'
+
+const escapeRegExp = (value: string) =>
+  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/**
+ * Renders a section body, swapping any configured `links` text for a real
+ * <Link>. Keeps article copy as plain data, with no dangerouslySetInnerHTML.
+ */
+const SectionBody: React.FC<{ section: ArticleSection }> = ({ section }) => {
+  const { body, links } = section
+  if (!body) return null
+
+  if (!links?.length) return <>{body}</>
+
+  const pattern = new RegExp(
+    `(${links.map(link => escapeRegExp(link.text)).join('|')})`,
+    'g'
+  )
+
+  return (
+    <>
+      {body.split(pattern).map((part, i) => {
+        const match = links.find(link => link.text === part)
+        return match ? (
+          <Link
+            key={i}
+            to={match.to}
+            className='font-semibold text-[#207D40] underline underline-offset-2 hover:text-[#1a6333] transition-colors'
+          >
+            {part}
+          </Link>
+        ) : (
+          <React.Fragment key={i}>{part}</React.Fragment>
+        )
+      })}
+    </>
+  )
+}
 
 const ArticlePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
-  const navigate = useNavigate()
 
   const article = articles.find(a => a.slug === slug)
 
   if (!article) {
     return (
       <div className='min-h-screen flex flex-col items-center justify-center gap-6 text-center px-4'>
+        {/* Unknown slugs must never be indexed. */}
+        <Seo
+          path={`/resources/${slug ?? ''}`}
+          title='Article Not Found | MySpa'
+          description='This article does not exist. Browse the MySpa resource library for spa management guides.'
+          noindex
+        />
         <p className='text-5xl font-black text-gray-100'>404</p>
         <h1 className='text-xl font-black text-[#111827]'>Article not found</h1>
-        <button
-          onClick={() => navigate('/resources')}
+        <Link
+          to='/resources'
           className='flex items-center gap-2 bg-[#207D40] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#1a6333] transition-all'
         >
           <ArrowLeft size={15} /> Back to Resources
-        </button>
+        </Link>
       </div>
     )
   }
@@ -30,15 +82,30 @@ const ArticlePage: React.FC = () => {
 
   return (
     <div className="bg-white text-[#111827] font-['Inter']">
+      <Seo
+        path={`/resources/${article.slug}`}
+        publishedTime={article.datePublished}
+        modifiedTime={article.dateModified}
+        jsonLd={graph(
+          articleSchema(article),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Resources', path: '/resources' },
+            { name: article.title, path: `/resources/${article.slug}` }
+          ]),
+          organizationSchema()
+        )}
+      />
+
       <section className='relative pt-28 pb-0 overflow-hidden'>
         <div className='container mx-auto px-4 md:px-8 max-w-4xl'>
           {/* Back link */}
-          <button
-            onClick={() => navigate('/resources')}
-            className='flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-[#207D40] transition-colors mb-8'
+          <Link
+            to='/resources'
+            className='inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-[#207D40] transition-colors mb-8'
           >
             <ArrowLeft size={13} /> Back to Resources
-          </button>
+          </Link>
 
           {/* Category + meta */}
           <div className='flex flex-wrap items-center gap-3 mb-6'>
@@ -52,7 +119,8 @@ const ArticlePage: React.FC = () => {
               <Clock size={11} className='text-[#207D40]' /> {article.readTime}
             </span>
             <span className='flex items-center gap-1.5 text-[11px] font-bold text-gray-400'>
-              <Calendar size={11} className='text-[#F7A300]' /> {article.date}
+              <Calendar size={11} className='text-[#F7A300]' />
+              <time dateTime={article.datePublished}>{article.date}</time>
             </span>
           </div>
 
@@ -77,6 +145,8 @@ const ArticlePage: React.FC = () => {
               src={article.image}
               alt={article.title}
               className='w-full h-full object-cover block'
+              width={1200}
+              height={525}
             />
           </div>
         </div>
@@ -94,7 +164,7 @@ const ArticlePage: React.FC = () => {
               )}
               {section.body && (
                 <p className='text-[15px] text-gray-500 leading-relaxed font-medium'>
-                  {section.body}
+                  <SectionBody section={section} />
                 </p>
               )}
               {section.bullets && (
@@ -133,12 +203,12 @@ const ArticlePage: React.FC = () => {
               Book a personalised demo with our team and discover how MySpa fits
               your business.
             </p>
-            <button
-              onClick={() => navigate('/contact')}
+            <Link
+              to='/contact'
               className='inline-flex items-center gap-2 bg-[#F7A300] hover:bg-orange-600 text-white px-8 py-3.5 rounded-xl font-black text-sm transition-all active:scale-95'
             >
               Book a Demo <ArrowRight size={15} />
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -156,15 +226,16 @@ const ArticlePage: React.FC = () => {
                   articleCategoryColors[post.category] ??
                   articleCategoryColors.ERP
                 return (
-                  <div
+                  <Link
                     key={post.slug}
-                    onClick={() => navigate(`/resources/${post.slug}`)}
+                    to={`/resources/${post.slug}`}
                     className='group bg-white rounded-[1.25rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col'
                   >
                     <div className='relative aspect-[16/9] overflow-hidden'>
                       <img
                         src={post.image}
                         alt={post.title}
+                        loading='lazy'
                         className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 block'
                       />
                       <span
@@ -192,7 +263,7 @@ const ArticlePage: React.FC = () => {
                         />
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
             </div>
