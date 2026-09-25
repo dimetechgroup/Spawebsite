@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ChevronDown, ArrowRight, MessageCircle } from 'lucide-react'
-import { faqs, faqCategoryColors } from '@/data'
+import { useFaqs, useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { faqPageSchema, graph, organizationSchema } from '@/seo/schema'
 
@@ -13,6 +13,10 @@ import { faqPageSchema, graph, organizationSchema } from '@/seo/schema'
 const FALLBACK_TAG = { bg: '#f1f5f9', color: '#475569', border: '#e2e8f0' }
 
 const FAQPage = () => {
+  const faqContent = useFaqs().data
+  const faqs = faqContent?.faqs ?? []
+  const faqCategoryColors = faqContent?.categoryColors ?? {}
+  const contactDetails = useSiteSettings().data?.contactDetails
   const [openIndex, setOpenIndex] = useState<number | null>(0)
   const navigate = useNavigate()
 
@@ -24,7 +28,7 @@ const FAQPage = () => {
         minHeight: '100vh'
       }}
     >
-      <Seo path='/faq' jsonLd={graph(faqPageSchema(), organizationSchema())} />
+      <Seo path='/faq' jsonLd={graph(faqPageSchema(faqs), organizationSchema(contactDetails))} />
       {/* Poppins is loaded globally in index.html, so no @import is needed here. */}
       <style>{`
         * { box-sizing: border-box; }

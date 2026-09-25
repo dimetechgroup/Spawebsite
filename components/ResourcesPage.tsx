@@ -10,12 +10,16 @@ import {
   CheckCircle,
   Loader2
 } from 'lucide-react'
-import { blogPosts, blogCategories } from '@/data'
+import { useArticles, useSiteSettings } from '@/cms/hooks'
 import { subscribeNewsletter } from '../api'
 import Seo from './Seo'
 import { blogListSchema, graph, organizationSchema } from '@/seo/schema'
 
 const ResourcesPage: React.FC = () => {
+  const articleContent = useArticles().data
+  const blogPosts = articleContent?.blogPosts ?? []
+  const blogCategories = articleContent?.blogCategories ?? ['All']
+  const contactDetails = useSiteSettings().data?.contactDetails
   const navigate = useNavigate()
   const [activeCategory, setActiveCategory] = useState('All')
   const [subName, setSubName] = useState('')
@@ -47,7 +51,7 @@ const ResourcesPage: React.FC = () => {
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
       <Seo
         path='/resources'
-        jsonLd={graph(blogListSchema(), organizationSchema())}
+        jsonLd={graph(blogListSchema(articleContent?.articles ?? []), organizationSchema(contactDetails))}
       />
       {/* HERO SECTION */}
       <section className='relative pt-32 pb-10 lg:pt-48 lg:pb-12 overflow-hidden border-b border-gray-50'>

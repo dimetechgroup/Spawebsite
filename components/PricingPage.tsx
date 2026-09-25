@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Check, ArrowRight, Clock } from 'lucide-react'
 import { plans } from '@/data'
 import { fetchConfig } from '../api'
+import { useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { graph, organizationSchema, pricingSchema } from '@/seo/schema'
 
@@ -18,6 +19,7 @@ function formatPrice (n: number) {
 }
 
 const PricingPage = () => {
+  const contactDetails = useSiteSettings().data?.contactDetails
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(
     'monthly'
   )
@@ -62,7 +64,7 @@ const PricingPage = () => {
     >
       <Seo
         path='/pricing'
-        jsonLd={graph(pricingSchema(), organizationSchema())}
+        jsonLd={graph(pricingSchema(), organizationSchema(contactDetails))}
       />
       {/* Poppins is loaded globally in index.html, so no @import is needed here. */}
       <style>{`

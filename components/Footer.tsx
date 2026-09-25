@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Phone, Mail, Send, CheckCircle, Loader2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { subscribeNewsletter } from '../api'
-import { contactDetails } from '@/data'
+import { useSiteSettings } from '@/cms/hooks'
 import { footerRoutes } from '@/seo/routes'
 
 const Footer: React.FC = () => {
+  const contactDetails = useSiteSettings().data?.contactDetails
   const [subName, setSubName] = useState('')
   const [subEmail, setSubEmail] = useState('')
   const [honeypot, setHoneypot] = useState('')
@@ -66,11 +67,11 @@ const Footer: React.FC = () => {
             <ul className='space-y-4 text-gray-400 text-xs font-bold'>
               <li className='flex gap-3 items-center'>
                 <Phone size={14} className='text-[#207D40]' />
-                <span>{contactDetails.salesPhone}</span>
+                <span>{contactDetails?.salesPhone}</span>
               </li>
               <li className='flex gap-3 items-center'>
                 <Mail size={14} className='text-[#207D40]' />
-                <span>{contactDetails.salesEmail}</span>
+                <span>{contactDetails?.salesEmail}</span>
               </li>
             </ul>
           </div>
