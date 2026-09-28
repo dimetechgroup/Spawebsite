@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { testimonials } from '../data'
+import { useTestimonials } from '@/cms/hooks'
+import type { Testimonial } from '@/types'
+
+const NO_TESTIMONIALS: Testimonial[] = []
 
 const slideVariants = {
   enter: (dir: number) => ({
@@ -27,19 +30,21 @@ const slideVariants = {
 }
 
 const Testimonials: React.FC = () => {
+  const testimonials = useTestimonials().data ?? NO_TESTIMONIALS
+  const count = testimonials.length
   const [current, setCurrent] = useState(0)
   const [direction, setDirection] = useState(1)
   const [isPaused, setIsPaused] = useState(false)
 
   const next = useCallback(() => {
     setDirection(1)
-    setCurrent(prev => (prev + 1) % testimonials.length)
-  }, [])
+    setCurrent(prev => (prev + 1) % count)
+  }, [count])
 
   const prev = useCallback(() => {
     setDirection(-1)
-    setCurrent(prev => (prev - 1 + testimonials.length) % testimonials.length)
-  }, [])
+    setCurrent(prev => (prev - 1 + count) % count)
+  }, [count])
 
   const goTo = (idx: number) => {
     setDirection(idx > current ? 1 : -1)
@@ -47,12 +52,14 @@ const Testimonials: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isPaused) return
+    if (isPaused || count === 0) return
     const timer = setInterval(next, 5000)
     return () => clearInterval(timer)
-  }, [next, isPaused])
+  }, [next, isPaused, count])
 
   const t = testimonials[current]
+  // The carousel has nothing to show until the testimonials arrive from the CMS.
+  if (!t) return null
 
   return (
     <section

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { ArrowLeft, Clock, Calendar, ArrowRight } from 'lucide-react'
-import { articles, articleCategoryColors } from '@/data'
+import { useArticles, useSiteSettings } from '@/cms/hooks'
 import type { ArticleSection } from '@/types'
 import Seo from './Seo'
 import {
@@ -10,6 +10,10 @@ import {
   graph,
   organizationSchema
 } from '@/seo/schema'
+import { articleRouteMeta } from '@/seo/routes'
+
+/** Pill colours when a category has none set in the CMS. */
+const FALLBACK_TAG = { bg: '#f0fdf4', color: '#207D40' }
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -52,7 +56,30 @@ const SectionBody: React.FC<{ section: ArticleSection }> = ({ section }) => {
 const ArticlePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
 
+  const { data, loading, error } = useArticles()
+  const contactDetails = useSiteSettings().data?.contactDetails
+  const articles = data?.articles ?? []
+  const articleCategoryColors = data?.categoryColors ?? {}
+
   const article = articles.find(a => a.slug === slug)
+
+  if (loading || error) {
+    return (
+      <div className='min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4'>
+        <Seo path={`/resources/${slug ?? ''}`} title='MySpa Resources' noindex />
+        {error ? (
+          <>
+            <p className='text-sm font-bold text-gray-500'>This article could not be loaded right now.</p>
+            <Link to='/resources' className='text-sm font-bold text-[#207D40] underline'>
+              Back to Resources
+            </Link>
+          </>
+        ) : (
+          <div className='w-10 h-10 rounded-full border-4 border-[#207D40]/20 border-t-[#207D40] animate-spin' />
+        )}
+      </div>
+    )
+  }
 
   if (!article) {
     return (
@@ -77,13 +104,18 @@ const ArticlePage: React.FC = () => {
   }
 
   const tag =
-    articleCategoryColors[article.category] ?? articleCategoryColors.ERP
+    articleCategoryColors[article.category] ?? articleCategoryColors.ERP ?? FALLBACK_TAG
   const otherArticles = articles.filter(a => a.slug !== slug).slice(0, 3)
+  const meta = articleRouteMeta(article)
 
   return (
     <div className="bg-white text-[#111827] font-['Inter']">
       <Seo
-        path={`/resources/${article.slug}`}
+        path={meta.path}
+        title={meta.title}
+        description={meta.description}
+        image={meta.ogImage}
+        type='article'
         publishedTime={article.datePublished}
         modifiedTime={article.dateModified}
         jsonLd={graph(
@@ -93,7 +125,7 @@ const ArticlePage: React.FC = () => {
             { name: 'Resources', path: '/resources' },
             { name: article.title, path: `/resources/${article.slug}` }
           ]),
-          organizationSchema()
+          organizationSchema(contactDetails)
         )}
       />
 
@@ -224,7 +256,8 @@ const ArticlePage: React.FC = () => {
               {otherArticles.map(post => {
                 const postTag =
                   articleCategoryColors[post.category] ??
-                  articleCategoryColors.ERP
+                  articleCategoryColors.ERP ??
+                  FALLBACK_TAG
                 return (
                   <Link
                     key={post.slug}

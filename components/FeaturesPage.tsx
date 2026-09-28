@@ -20,12 +20,15 @@ import {
   Activity
 } from 'lucide-react'
 import {
-  anchorFeatures,
   utilityFeatures,
-  featuresPageMarqueeItems,
-  featuresHeroImage,
-  demoVideo
+  featuresPageMarqueeItems
 } from '@/data'
+import { useAnchorFeatures, useSiteSettings } from '@/cms/hooks'
+import type { AnchorFeature } from '@/types'
+import DemoVideoEmbed from './DemoVideoEmbed'
+
+/** Stands in for a grid card until the module cards arrive from the CMS. */
+const EMPTY_CARD = { key: '', name: '', desc: '', img: '', imgAlt: '' } as unknown as AnchorFeature
 
 const FeaturesPage: React.FC = () => {
   const navigate = useNavigate()
@@ -36,14 +39,22 @@ const FeaturesPage: React.FC = () => {
     { text: 'SETUP IN MINUTES', icon: Zap }
   ]
   const [showMore, setShowMore] = React.useState(false)
-  const hiddenFeatures = anchorFeatures.filter(f => f.hidden)
+  const settings = useSiteSettings().data
+  const featuresHeroImage = settings?.featuresHeroImage
+  const demoVideo = settings?.demoVideo
+  const allFeatures = useAnchorFeatures().data ?? []
+  const hiddenFeatures = allFeatures.filter(f => f.hidden)
+  // The bento grid has four fixed positions, filled by the first four visible
+  // cards; empty placeholders hold the layout until they load.
+  const visibleFeatures = allFeatures.filter(f => !f.hidden)
+  const anchorFeatures = [0, 1, 2, 3].map(i => visibleFeatures[i] ?? EMPTY_CARD)
   const [playing, setPlaying] = useState(false)
 
   return (
     <div className='bg-white selection:bg-[#207D40] selection:text-white'>
       <Seo
         path='/features'
-        jsonLd={graph(softwareApplicationSchema(), organizationSchema())}
+        jsonLd={graph(softwareApplicationSchema(), organizationSchema(settings?.contactDetails))}
       />
       {/* HERO SECTION */}
       <section className='relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>
@@ -81,11 +92,15 @@ const FeaturesPage: React.FC = () => {
             <div className='lg:w-[50%] xl:w-[48%] relative'>
               <div className='relative'>
                 <div className='relative rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white  group hover:rotate-0 transition-transform duration-1000 max-w-[700px] ml-auto'>
-                  <img
-                    src={featuresHeroImage.src}
-                    alt={featuresHeroImage.alt}
-                    className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000'
-                  />
+                  {featuresHeroImage ? (
+                    <img
+                      src={featuresHeroImage.src}
+                      alt={featuresHeroImage.alt}
+                      className='w-full h-full object-contain group-hover:scale-105 transition-transform duration-1000'
+                    />
+                  ) : (
+                    <div className='w-full aspect-[16/10] bg-gray-100 animate-pulse' />
+                  )}
 
                   <div className='absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent'></div>
                 </div>
@@ -200,18 +215,20 @@ const FeaturesPage: React.FC = () => {
                   '0 12px 48px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)'
               }}
             >
-              <img
-                src={anchorFeatures[0].img}
-                alt={anchorFeatures[0].imgAlt}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.55
-                }}
-              />
+              {anchorFeatures[0].img && (
+                <img
+                  src={anchorFeatures[0].img}
+                  alt={anchorFeatures[0].imgAlt}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.55
+                  }}
+                />
+              )}
               <div
                 style={{
                   position: 'absolute',
@@ -286,18 +303,20 @@ const FeaturesPage: React.FC = () => {
                   '0 12px 48px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)'
               }}
             >
-              <img
-                src={anchorFeatures[1].img}
-                alt={anchorFeatures[1].imgAlt}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.5
-                }}
-              />
+              {anchorFeatures[1].img && (
+                <img
+                  src={anchorFeatures[1].img}
+                  alt={anchorFeatures[1].imgAlt}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.5
+                  }}
+                />
+              )}
               <div
                 style={{
                   position: 'absolute',
@@ -371,18 +390,20 @@ const FeaturesPage: React.FC = () => {
                   '0 12px 48px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)'
               }}
             >
-              <img
-                src={anchorFeatures[2].img}
-                alt={anchorFeatures[2].imgAlt}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.5
-                }}
-              />
+              {anchorFeatures[2].img && (
+                <img
+                  src={anchorFeatures[2].img}
+                  alt={anchorFeatures[2].imgAlt}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.5
+                  }}
+                />
+              )}
               <div
                 style={{
                   position: 'absolute',
@@ -456,18 +477,20 @@ const FeaturesPage: React.FC = () => {
                   '0 12px 48px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.06)'
               }}
             >
-              <img
-                src={anchorFeatures[3].img}
-                alt={anchorFeatures[3].imgAlt}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  opacity: 0.6
-                }}
-              />
+              {anchorFeatures[3].img && (
+                <img
+                  src={anchorFeatures[3].img}
+                  alt={anchorFeatures[3].imgAlt}
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    opacity: 0.6
+                  }}
+                />
+              )}
               <div
                 style={{
                   position: 'absolute',
@@ -770,22 +793,17 @@ const FeaturesPage: React.FC = () => {
               className='relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 aspect-video bg-gray-900 cursor-pointer'
               onClick={() => setPlaying(true)}
             >
-              {playing ? (
-                <video
-                  src={demoVideo.src}
-                  poster={demoVideo.poster.src}
-                  className='w-full h-full object-cover'
-                  autoPlay
-                  controls
-                  playsInline
-                />
+              {playing && demoVideo ? (
+                <DemoVideoEmbed video={demoVideo} />
               ) : (
                 <>
-                  <img
-                    src={demoVideo.poster.src}
-                    alt={demoVideo.poster.alt}
-                    className='w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000'
-                  />
+                  {demoVideo && (
+                    <img
+                      src={demoVideo.poster.src}
+                      alt={demoVideo.poster.alt}
+                      className='w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000'
+                    />
+                  )}
                   <div className='absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent' />
                   <div className='absolute inset-0 flex items-center justify-center'>
                     <div className='w-16 h-16 rounded-full bg-white/10 backdrop-blur-2xl border border-white/30 flex items-center justify-center text-white group-hover:scale-110 group-hover:bg-[#F7A300] group-hover:border-[#F7A300] transition-all duration-500 shadow-2xl'>

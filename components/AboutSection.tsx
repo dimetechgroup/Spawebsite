@@ -14,7 +14,8 @@ import {
   Sparkles
 } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { modules, modulesImage } from '@/data'
+import { modules } from '@/data'
+import { useSiteSettings } from '@/cms/hooks'
 
 const containerVariants = {
   hidden: {},
@@ -34,6 +35,7 @@ const itemVariants = {
 }
 
 const AboutSection: React.FC = () => {
+  const modulesImage = useSiteSettings().data?.modulesImage
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   return (
@@ -108,11 +110,13 @@ const AboutSection: React.FC = () => {
             className='relative min-h-[420px] lg:min-h-full'
             style={{ background: '#0d1f0d' }}
           >
-            <img
-              src={modulesImage.src}
-              alt={modulesImage.alt}
-              className='absolute inset-0 w-full h-full object-cover'
-            />
+            {modulesImage && (
+              <img
+                src={modulesImage.src}
+                alt={modulesImage.alt}
+                className='absolute inset-0 w-full h-full object-cover'
+              />
+            )}
 
             {/* Top badge */}
             <div className='absolute top-8 left-8'>
@@ -126,7 +130,7 @@ const AboutSection: React.FC = () => {
                   boxShadow: '0 4px 16px rgba(46,139,53,0.3)'
                 }}
               >
-                <LayoutGrid size={11} /> {modulesImage.badge}
+                <LayoutGrid size={11} /> {modulesImage?.badge}
               </div>
             </div>
 

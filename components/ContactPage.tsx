@@ -11,11 +11,12 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { submitContact } from '../api'
-import { contactDetails } from '@/data'
+import { useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { graph, organizationSchema } from '@/seo/schema'
 
 const ContactPage: React.FC = () => {
+  const contactDetails = useSiteSettings().data?.contactDetails
   const navigate = useNavigate()
 
   const [form, setForm] = useState({
@@ -64,7 +65,7 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className='bg-white min-h-screen'>
-      <Seo path='/contact' jsonLd={graph(organizationSchema())} />
+      <Seo path='/contact' jsonLd={graph(organizationSchema(contactDetails))} />
       <section className='relative pt-28 pb-10 lg:pt-36 lg:pb-14 overflow-hidden'>
         <div className='absolute inset-0 z-0'>
           <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
@@ -139,7 +140,7 @@ const ContactPage: React.FC = () => {
                     Call Sales
                   </h4>
                   <p className='text-sm font-black text-[#111827]'>
-                    {contactDetails.salesPhone}
+                    {contactDetails?.salesPhone}
                   </p>
                 </div>
                 <div className='p-8 rounded-[2rem] bg-[#F8FAFC] border border-gray-100 group hover:border-[#F7A300]/20 transition-all'>
@@ -150,7 +151,7 @@ const ContactPage: React.FC = () => {
                     Email Us
                   </h4>
                   <p className='text-sm font-black text-[#111827] leading-none'>
-                    {contactDetails.salesEmail}
+                    {contactDetails?.salesEmail}
                   </p>
                 </div>
               </div>

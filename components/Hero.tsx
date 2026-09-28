@@ -12,7 +12,8 @@ import {
 } from 'lucide-react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { homeHeroImage, demoVideo } from '../data'
+import { useSiteSettings } from '@/cms/hooks'
+import DemoVideoEmbed from './DemoVideoEmbed'
 
 const fadeUp: import('framer-motion').Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -28,6 +29,8 @@ const fadeUp: import('framer-motion').Variants = {
 }
 
 const Hero: React.FC = () => {
+  const settings = useSiteSettings().data
+  const homeHeroImage = settings?.homeHeroImage
   const navigate = useNavigate()
   const [showVideo, setShowVideo] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -199,11 +202,15 @@ const Hero: React.FC = () => {
                 }}
               >
                 <div className='rounded-[1.6rem] overflow-hidden border border-white/60'>
-                  <img
-                    src={homeHeroImage.src}
-                    alt={homeHeroImage.alt}
-                    className='w-[480px] lg:w-[560px] xl:w-[620px] h-auto block'
-                  />
+                  {homeHeroImage ? (
+                    <img
+                      src={homeHeroImage.src}
+                      alt={homeHeroImage.alt}
+                      className='w-[480px] lg:w-[560px] xl:w-[620px] h-auto block'
+                    />
+                  ) : (
+                    <div className='w-[480px] lg:w-[560px] xl:w-[620px] aspect-[16/10] bg-gray-100 animate-pulse' />
+                  )}
                 </div>
                 <div
                   className='absolute inset-0 rounded-[2rem] pointer-events-none'
@@ -261,14 +268,7 @@ const Hero: React.FC = () => {
                 Close <X size={18} />
               </button>
               <div className='rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-black aspect-video'>
-                <video
-                  src={demoVideo.src}
-                  poster={demoVideo.poster.src}
-                  className='w-full h-full object-cover'
-                  autoPlay
-                  controls
-                  playsInline
-                />
+                {settings && <DemoVideoEmbed video={settings.demoVideo} />}
               </div>
             </motion.div>
           </motion.div>

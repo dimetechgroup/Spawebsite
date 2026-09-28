@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { featureGroups, featuresMarqueeItems as marqueeItems } from '../data'
+import { featureGroups } from '../data'
+import { useSiteSettings } from '@/cms/hooks'
 
 const cardVariants = {
   hidden: { opacity: 0, y: 32 },
@@ -16,6 +17,7 @@ const cardVariants = {
 }
 
 const Features: React.FC = () => {
+  const marqueeItems = useSiteSettings().data?.marqueeItems ?? []
   const [hovered, setHovered] = useState<number | null>(null)
 
   return (

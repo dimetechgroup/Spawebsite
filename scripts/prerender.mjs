@@ -123,10 +123,21 @@ const main = async () => {
     page.setDefaultNavigationTimeout(NAV_TIMEOUT)
 
     // Boot once to read the authoritative route list off the app itself.
+    // Article routes come from the CMS, so the list appears once they load.
     await page.goto(`${origin}/`, { waitUntil: 'networkidle2' })
+    await page.waitForFunction(() => window.__SEO_ROUTES__, { timeout: 30_000 }).catch(() => {
+      throw new Error('window.__SEO_ROUTES__ was never set. Is it still assigned in index.tsx?')
+    })
     const manifest = await page.evaluate(() => window.__SEO_ROUTES__)
     const routes = manifest?.routes
 
+    if (manifest?.cmsError) {
+      throw new Error(
+        `could not load articles from the CMS (${manifest.cmsError}), so their ` +
+          'pages and sitemap entries would be missing. Check VITE_COCKPIT_URL and ' +
+          'VITE_COCKPIT_API_KEY, and that cms.myspa.co.ke is up.'
+      )
+    }
     if (!Array.isArray(routes) || routes.length === 0) {
       throw new Error(
         'window.__SEO_ROUTES__ was empty. Is it still assigned in index.tsx?'
@@ -147,6 +158,22 @@ const main = async () => {
       }
 
       await revealAllSections(page)
+
+      // Wait for this page's CMS content (see cms/hooks.ts), and never
+      // snapshot a page whose content failed to load.
+      try {
+        await page.waitForFunction(() => !document.documentElement.hasAttribute('data-cms-pending'), {
+          timeout: 30_000
+        })
+      } catch {
+        failures.push(`${route.path}: CMS content was still loading after 30s`)
+        continue
+      }
+      const cmsError = await page.evaluate(() => document.documentElement.getAttribute('data-cms-error'))
+      if (cmsError) {
+        failures.push(`${route.path}: CMS content failed to load (${cmsError})`)
+        continue
+      }
 
       const { html, textLength, title, sawSpinner } = await page.evaluate(
         () => {

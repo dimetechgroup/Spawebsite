@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { values } from '@/data'
+import { useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { graph, organizationSchema } from '@/seo/schema'
 
@@ -14,11 +15,12 @@ import {
 } from 'lucide-react'
 
 const AboutPage: React.FC = () => {
+  const contactDetails = useSiteSettings().data?.contactDetails
   const navigate = useNavigate()
 
   return (
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
-      <Seo path='/about' jsonLd={graph(organizationSchema())} />
+      <Seo path='/about' jsonLd={graph(organizationSchema(contactDetails))} />
       {/* SECTION 1: HERO */}
       <section className='relative pt-24 pb-12 lg:pt-32 lg:pb-16 overflow-hidden'>
         <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
