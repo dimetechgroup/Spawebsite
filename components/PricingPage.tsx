@@ -106,6 +106,10 @@ const PricingPage = () => {
         @media (max-width: 900px) {
           .plans-grid { grid-template-columns: 1fr !important; }
         }
+        @media (max-width: 640px) {
+          .plan-btn { padding: 18px 24px; font-size: 14px; }
+          .cta-primary { width: 100%; justify-content: center; padding: 18px 24px !important; font-size: 14px !important; }
+        }
       `}</style>
 
       {/* ══════════════════════ HERO ══════════════════════ */}

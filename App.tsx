@@ -130,9 +130,9 @@ const InnovationSection: React.FC = () => {
               software it's the evolution of wellness.
             </p>
 
-            <div className='flex flex-col sm:flex-row items-start gap-4 mb-14'>
+            <div className='flex flex-col sm:flex-row items-stretch sm:items-start gap-4 mb-14'>
               <button
-                className='flex items-center gap-2 text-sm font-semibold px-7 py-3.5 rounded-xl text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1'
+                className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: `linear-gradient(135deg, ${BRAND.green}, #1e6325)`,
                   boxShadow: `0 12px 32px ${BRAND.green}40`,
@@ -145,7 +145,7 @@ const InnovationSection: React.FC = () => {
               </button>
 
               <button
-                className='flex items-center gap-2 text-sm font-semibold px-7 py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1'
+                className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: 'rgba(255,255,255,0.05)',
                   border: '1px solid rgba(255,255,255,0.1)',

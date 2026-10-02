@@ -57,7 +57,7 @@ const FeaturesPage: React.FC = () => {
         jsonLd={graph(softwareApplicationSchema(), organizationSchema(settings?.contactDetails))}
       />
       {/* HERO SECTION */}
-      <section className='relative pt-32 pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>
+      <section className='relative pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>
         <div className='absolute top-0 right-0 w-1/3 h-full bg-[#F8FAFC] pointer-events-none skew-x-[-6deg] translate-x-12'></div>
 
         <div className='max-w-[1700px] mx-auto px-6 md:px-12 relative z-10'>
@@ -105,7 +105,7 @@ const FeaturesPage: React.FC = () => {
                   <div className='absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent'></div>
                 </div>
 
-                <div className='absolute -bottom-4 -left-6 z-20'>
+                <div className='absolute -bottom-5 left-4 sm:-bottom-4 sm:-left-6 z-20'>
                   <button
                     onClick={() => navigate('/contact')}
                     className='bg-[#207D40] text-white px-8 py-4 rounded-xl font-black text-base hover:bg-[#1a6333] transition-all flex items-center gap-2 group shadow-xl active:scale-95 border-2 border-white whitespace-nowrap'
@@ -124,6 +124,7 @@ const FeaturesPage: React.FC = () => {
       </section>
       {/* ─── CORE FOUNDATIONS BENTO ────────────────────────────────── */}
       <section
+        className='bento-section'
         style={{
           padding: '6rem 0 7rem',
           background: '#F7A300',
@@ -132,9 +133,10 @@ const FeaturesPage: React.FC = () => {
         }}
       >
         <div
+          className='bento-container'
           style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 2.5rem' }}
         >
-          <div style={{ marginBottom: '4rem' }}>
+          <div className='bento-intro' style={{ marginBottom: '4rem' }}>
             <div
               style={{
                 display: 'flex',
@@ -192,20 +194,11 @@ const FeaturesPage: React.FC = () => {
           </div>
 
           {/* Bento Grid */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(12, 1fr)',
-              gridAutoRows: '240px',
-              gap: '14px'
-            }}
-          >
+          <div className='bento-grid'>
             {/* Dashboard - spans 8 cols, 2 rows */}
             <div
-              className='bento-card'
+              className='bento-card bento-hero'
               style={{
-                gridColumn: 'span 8',
-                gridRow: 'span 2',
                 borderRadius: '2rem',
                 overflow: 'hidden',
                 position: 'relative',
@@ -238,6 +231,7 @@ const FeaturesPage: React.FC = () => {
                 }}
               />
               <div
+                className='bento-body'
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -291,9 +285,8 @@ const FeaturesPage: React.FC = () => {
 
             {/* CRM */}
             <div
-              className='bento-card'
+              className='bento-card bento-side'
               style={{
-                gridColumn: 'span 4',
                 borderRadius: '2rem',
                 overflow: 'hidden',
                 position: 'relative',
@@ -326,6 +319,7 @@ const FeaturesPage: React.FC = () => {
                 }}
               />
               <div
+                className='bento-body'
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -378,9 +372,8 @@ const FeaturesPage: React.FC = () => {
 
             {/* Orders */}
             <div
-              className='bento-card'
+              className='bento-card bento-side'
               style={{
-                gridColumn: 'span 4',
                 borderRadius: '2rem',
                 overflow: 'hidden',
                 position: 'relative',
@@ -413,6 +406,7 @@ const FeaturesPage: React.FC = () => {
                 }}
               />
               <div
+                className='bento-body'
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -465,9 +459,8 @@ const FeaturesPage: React.FC = () => {
 
             {/* Accounting */}
             <div
-              className='bento-card'
+              className='bento-card bento-wide'
               style={{
-                gridColumn: 'span 8',
                 borderRadius: '2rem',
                 overflow: 'hidden',
                 position: 'relative',
@@ -500,6 +493,7 @@ const FeaturesPage: React.FC = () => {
                 }}
               />
               <div
+                className='bento-body'
                 style={{
                   position: 'relative',
                   zIndex: 2,
@@ -553,8 +547,8 @@ const FeaturesPage: React.FC = () => {
 
             {/* CTA Card */}
             <div
+              className='bento-cta'
               style={{
-                gridColumn: 'span 4',
                 borderRadius: '2rem',
                 background:
                   'linear-gradient(150deg, #207D40 0%, #1a5e30 50%, #0f3d1e 100%)',
@@ -632,6 +626,7 @@ const FeaturesPage: React.FC = () => {
               </p>
 
               <button
+                className='bento-more-btn'
                 onClick={() => setShowMore(prev => !prev)}
                 style={{
                   background: 'white',
@@ -665,9 +660,9 @@ const FeaturesPage: React.FC = () => {
           {/* Revealed hidden features */}
           {showMore && (
             <div
+              className='bento-more'
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '14px',
                 marginTop: '14px',
                 animation: 'fadeSlideIn 0.4s ease forwards'
@@ -709,6 +704,7 @@ const FeaturesPage: React.FC = () => {
                     }}
                   />
                   <div
+                    className='bento-body'
                     style={{
                       position: 'relative',
                       zIndex: 2,
@@ -769,12 +765,12 @@ const FeaturesPage: React.FC = () => {
       {/* EXPLAINER VIDEO SECTION */}
       <section
         id='demo-video'
-        className='py-24 bg-black relative overflow-hidden'
+        className='py-16 sm:py-24 bg-black relative overflow-hidden'
       >
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#F7A300]/5 blur-[120px] rounded-full pointer-events-none'></div>
 
         <div className='container mx-auto px-4 md:px-8 relative z-10'>
-          <div className='text-center mb-16 max-w-4xl mx-auto'>
+          <div className='text-center mb-10 sm:mb-16 max-w-4xl mx-auto'>
             <div className='inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-xl text-[#F7A300] text-[10px] font-black uppercase tracking-[0.4em] mb-8'>
               <Activity size={10} className='animate-pulse' /> Integration
               Showcase
@@ -790,7 +786,7 @@ const FeaturesPage: React.FC = () => {
 
           <div className='relative max-w-4xl mx-auto group'>
             <div
-              className='relative rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 aspect-video bg-gray-900 cursor-pointer'
+              className='relative rounded-2xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 aspect-video bg-gray-900 cursor-pointer'
               onClick={() => setPlaying(true)}
             >
               {playing && demoVideo ? (
@@ -830,7 +826,7 @@ const FeaturesPage: React.FC = () => {
         </div>
       </section>
       {/* UTILITY SUITE SECTION */}
-      <section className='py-24'>
+      <section className='py-16 sm:py-24'>
         <div className='container mx-auto px-4 md:px-8 max-w-[1600px]'>
           <div className='flex flex-col lg:flex-row gap-16'>
             {/* Heading, Subheading & Cards */}
@@ -839,7 +835,7 @@ const FeaturesPage: React.FC = () => {
               <div className='text-center lg:sticky lg:top-40 h-fit'>
                 <div className='flex justify-center items-center gap-3 mb-4'></div>
 
-                <h3 className='text-3xl md:text-4xl font-black text-[#111827] tracking-tighter mb-6 leading-tight'>
+                <h3 className='text-3xl md:text-4xl font-black text-[#111827] tracking-tighter mb-4 sm:mb-6 leading-tight'>
                   Precision Tools for Every Touchpoint.
                 </h3>
 
@@ -850,13 +846,13 @@ const FeaturesPage: React.FC = () => {
               </div>
 
               {/* Cards in rows */}
-              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6'>
                 {utilityFeatures.map((f, i) => (
                   <div
                     key={i}
-                    className='bg-white p-10 group hover:bg-orange-50 transition-colors rounded-2xl shadow-lg flex flex-col items-center text-center'
+                    className='bg-white p-8 sm:p-10 group hover:bg-orange-50 transition-colors rounded-2xl shadow-lg flex flex-col items-center text-center'
                   >
-                    <div className='w-10 h-10 mb-6 text-[#207D40] group-hover:text-[#F7A300] transition-colors'>
+                    <div className='w-10 h-10 mb-3 sm:mb-6 flex items-center justify-center text-[#207D40] group-hover:text-[#F7A300] transition-colors'>
                       <f.icon size={24} strokeWidth={1.5} />
                     </div>
 
@@ -864,7 +860,7 @@ const FeaturesPage: React.FC = () => {
                       {f.name}
                     </h4>
 
-                    <p className='text-gray-500 font-medium leading-relaxed text-[12px]'>
+                    <p className='text-gray-500 font-medium leading-relaxed text-sm sm:text-[12px]'>
                       {f.desc}
                     </p>
                   </div>
@@ -898,7 +894,7 @@ const FeaturesPage: React.FC = () => {
       </div>
       {/* FINAL CTA */}
       <section
-        className='py-32 lg:py-48 relative overflow-hidden text-center bg-cover bg-center bg-no-repeat'
+        className='py-24 sm:py-32 lg:py-48 relative overflow-hidden text-center bg-cover bg-center bg-no-repeat'
         style={{
           backgroundImage: `url('/images/wmremove-transformed (22).jpeg')`
         }}
@@ -934,6 +930,32 @@ const FeaturesPage: React.FC = () => {
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { display: inline-flex; animation: marquee 30s linear infinite; }
         .font-serif { font-family: 'Times New Roman', serif; }
+        /* Bento: 12 columns on desktop, 2 on tablet, a single stack on phones */
+        .bento-grid { display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 240px; }
+        .bento-hero { grid-column: span 8; grid-row: span 2; }
+        .bento-side, .bento-cta { grid-column: span 4; }
+        .bento-wide { grid-column: span 8; }
+        .bento-more { grid-template-columns: repeat(3, 1fr); }
+        @media (max-width: 1023px) {
+          .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(260px, auto); }
+          .bento-hero { grid-column: span 2; grid-row: span 1; min-height: 340px; }
+          .bento-side, .bento-wide, .bento-cta { grid-column: span 1; }
+          .bento-more { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 639px) {
+          .bento-section { padding: 4rem 0 4.5rem !important; border-radius: 2.5rem 2.5rem 0 0 !important; }
+          .bento-container { padding: 0 1.25rem !important; }
+          .bento-intro { margin-bottom: 2.5rem !important; }
+          .bento-grid { grid-template-columns: 1fr; grid-auto-rows: minmax(250px, auto); }
+          .bento-hero, .bento-side, .bento-wide, .bento-cta { grid-column: auto; grid-row: auto; }
+          .bento-hero { min-height: 300px; }
+          .bento-body { padding: 1.75rem !important; }
+          .bento-body h3 { font-size: 1.6rem !important; }
+          .bento-cta { padding: 2.25rem 1.5rem !important; }
+          .bento-more { grid-template-columns: 1fr; }
+          .bento-body p, .bento-cta p { font-size: 0.95rem !important; }
+          .bento-more-btn { width: 100%; padding: 1rem 2rem !important; font-size: 0.95rem !important; }
+        }
         @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }

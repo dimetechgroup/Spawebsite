@@ -130,6 +130,19 @@ const FAQPage = () => {
           .page-grid { grid-template-columns: 1fr !important; }
           .sticky-sidebar { position: static !important; height: auto !important; }
           .sidebar-img { aspect-ratio: 16/7 !important; }
+          /* Questions first on small screens; the demo panel follows them */
+          .faq-aside { order: 2; }
+          .sticky-sidebar { padding: 40px 24px !important; gap: 22px !important; }
+          .faq-main { padding: 40px 16px 56px !important; }
+          .faq-a { padding: 16px 28px 24px 28px !important; }
+        }
+        @media (max-width: 640px) {
+          .cta-btn, .outline-btn { width: 100%; justify-content: center; padding: 17px 24px !important; font-size: 13.5px; }
+          .yt-btn { padding: 12px 20px !important; font-size: 14px !important; }
+          .sticky-sidebar p { font-size: 14px !important; }
+          .faq-q { padding: 18px 18px !important; }
+          .faq-a { padding: 14px 18px 22px !important; }
+          .faq-a p { font-size: 14px !important; }
         }
       `}</style>
 
@@ -252,6 +265,7 @@ const FAQPage = () => {
       >
         {/* sidebar */}
         <aside
+          className='faq-aside'
           style={{
             background: '#F5A800',
             position: 'relative',
@@ -261,6 +275,7 @@ const FAQPage = () => {
         >
           {/* Sticky panel: takes up all space above the badge */}
           <div
+            className='sticky-sidebar'
             style={{
               position: 'sticky',
               top: 0,
@@ -368,6 +383,7 @@ const FAQPage = () => {
 
         {/* RIGHT: FAQ LIST */}
         <main
+          className='faq-main'
           style={{
             background: '#f8fafc',
             padding: '56px 4vw 80px 6vw',
@@ -408,6 +424,7 @@ const FAQPage = () => {
                     onClick={() => setOpenIndex(isOpen ? null : idx)}
                   >
                     <div
+                      className='faq-q'
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -467,6 +484,7 @@ const FAQPage = () => {
                     <div className={`answer-grid ${isOpen ? 'open' : ''}`}>
                       <div className='answer-inner'>
                         <div
+                          className='faq-a'
                           style={{
                             padding: '20px 28px 26px 92px',
                             borderTop: '1px solid #f1f5f9'
@@ -485,6 +503,7 @@ const FAQPage = () => {
                           </p>
                           {faq.youtubeUrl && (
                             <button
+                              className='yt-btn'
                               onClick={e => {
                                 e.stopPropagation()
                                 window.open(

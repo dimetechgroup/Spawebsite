@@ -62,7 +62,7 @@ const AboutPage: React.FC = () => {
               <div className='flex flex-col sm:flex-row items-center gap-4'>
                 <button
                   onClick={() => navigate('/contact')}
-                  className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-[#F7A300]/10'
+                  className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-4 sm:py-3.5 rounded-xl font-bold text-base sm:text-sm hover:bg-orange-600 transition-all active:scale-95 shadow-lg shadow-[#F7A300]/10'
                 >
                   Let’s Grow Together
                 </button>
@@ -102,7 +102,7 @@ const AboutPage: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  <p className='text-[11px] text-gray-500 leading-relaxed font-medium'>
+                  <p className='text-sm sm:text-[11px] text-gray-500 leading-relaxed font-medium'>
                     MySpa Management System was developed to solve real-world
                     spa operational challenges, combining global ERP standards
                     with dedicated local support.
@@ -138,7 +138,7 @@ const AboutPage: React.FC = () => {
                   <h4 className='text-base font-black mb-1.5 tracking-tight'>
                     Industry-Specific Logic
                   </h4>
-                  <p className='text-gray-500 text-[11px] leading-relaxed font-medium'>
+                  <p className='text-gray-500 text-sm sm:text-[11px] leading-relaxed font-medium'>
                     Unlike generic SaaS tools, MySpa is built on specific
                     business logic that understands treatment rooms, therapist
                     commissions, and inventory shrinkage.
@@ -153,7 +153,7 @@ const AboutPage: React.FC = () => {
                   <h4 className='text-base font-black mb-1.5 tracking-tight'>
                     Built for Service Businesses
                   </h4>
-                  <p className='text-gray-500 text-[11px] leading-relaxed font-medium'>
+                  <p className='text-gray-500 text-sm sm:text-[11px] leading-relaxed font-medium'>
                     We specialize in the high-touch, high-transaction
                     environment of spas, ensuring your system handles peak-hour
                     pressure with zero lag.
@@ -183,7 +183,7 @@ const AboutPage: React.FC = () => {
             {values.map((v, i) => (
               <div
                 key={i}
-                className={`${v.bgColor} p-8 flex flex-col items-start hover:bg-gray-50 transition-colors`}
+                className={`${v.bgColor} p-6 sm:p-8 flex flex-col items-start hover:bg-gray-50 transition-colors`}
               >
                 <div className='w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 mb-6'>
                   <v.icon size={16} />
@@ -191,7 +191,7 @@ const AboutPage: React.FC = () => {
                 <h4 className='text-sm font-black mb-2 tracking-tight'>
                   {v.title}
                 </h4>
-                <p className='text-[11px] text-gray-400 font-medium leading-relaxed'>
+                <p className='text-sm sm:text-xs text-gray-500 font-medium leading-relaxed'>
                   {v.desc}
                 </p>
               </div>
@@ -204,19 +204,19 @@ const AboutPage: React.FC = () => {
       <section className='py-10 bg-white'>
         <div className='container mx-auto px-4 md:px-8'>
           <div className='bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-xl flex flex-col lg:flex-row'>
-            <div className='lg:w-2/5 min-h-[400px]'>
+            <div className='relative h-64 sm:h-80 lg:h-auto lg:w-2/5 lg:min-h-[400px]'>
               <img
                 src='/images/supportteam.jpeg'
                 alt='Spa Treatment in Action'
-                className='w-full h-full object-cover block'
+                className='absolute inset-0 w-full h-full object-cover block'
               />
             </div>
-            <div className='lg:w-3/5 p-10 lg:p-16'>
+            <div className='lg:w-3/5 p-7 sm:p-10 lg:p-16'>
               <h3 className='text-2xl md:text-3xl lg:text-4xl font-black text-[#111827] tracking-tighter mb-6 leading-tight'>
                 Dedicated Local <br />
                 <span className='text-[#F7A300]'>Support in Kenya</span>
               </h3>
-              <p className='text-sm text-gray-500 font-medium leading-relaxed mb-10'>
+              <p className='text-sm text-gray-500 font-medium leading-relaxed mb-8 sm:mb-10'>
                 We provide dedicated support from our Kenyan team, ensuring fast
                 response times, local understanding, and hands-on assistance
                 when needed.
@@ -231,7 +231,7 @@ const AboutPage: React.FC = () => {
                 ].map((point, i) => (
                   <div key={i} className='flex items-center gap-2'>
                     <CheckCircle2 size={16} className='text-[#207D40]' />
-                    <span className='text-[11px] font-bold text-[#111827]'>
+                    <span className='text-sm sm:text-[11px] font-bold text-[#111827]'>
                       {point}
                     </span>
                   </div>
