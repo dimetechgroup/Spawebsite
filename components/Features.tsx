@@ -301,7 +301,7 @@ const Features: React.FC = () => {
                           {item.name}
                         </p>
                         <p
-                          className='text-[11px] mt-1 leading-none'
+                          className='text-[13px] sm:text-[11px] mt-1 leading-snug sm:leading-none'
                           style={{
                             color: 'rgba(200,220,200,0.85)',
                             fontFamily: '"DM Sans", sans-serif'
@@ -338,13 +338,13 @@ const Features: React.FC = () => {
         >
           {/* Fade edges */}
           <div
-            className='absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none'
+            className='absolute left-0 top-0 bottom-0 w-10 sm:w-24 z-10 pointer-events-none'
             style={{
               background: 'linear-gradient(90deg, #0d1f0d, transparent)'
             }}
           />
           <div
-            className='absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none'
+            className='absolute right-0 top-0 bottom-0 w-10 sm:w-24 z-10 pointer-events-none'
             style={{
               background: 'linear-gradient(-90deg, #0d1f0d, transparent)'
             }}
@@ -356,7 +356,7 @@ const Features: React.FC = () => {
               animate={{ x: ['0%', '-50%'] }}
               transition={{ duration: 22, ease: 'linear', repeat: Infinity }}
             >
-              {marqueeItems.map((item, i) => (
+              {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <div key={i} className='flex items-center gap-3 flex-shrink-0'>
                   <div
                     className='w-1.5 h-1.5 rounded-full'

@@ -53,3 +53,12 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #207d40 #f1f5f9;
 }
+
+/* Horizontal scrollers (filter tabs) that should swipe without a visible bar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

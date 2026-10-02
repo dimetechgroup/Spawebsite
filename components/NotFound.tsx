@@ -30,16 +30,16 @@ const NotFound: React.FC = () => (
         still exactly where you left it.
       </p>
 
-      <div className='flex flex-wrap items-center justify-center gap-3 mb-16'>
+      <div className='flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center justify-center gap-3 mb-16'>
         <Link
           to='/'
-          className='flex items-center gap-2 bg-[#207D40] hover:bg-[#1a6333] text-white px-7 py-3.5 rounded-xl text-sm font-semibold transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'
+          className='flex items-center gap-2 bg-[#207D40] hover:bg-[#1a6333] text-white px-7 py-4 sm:py-3.5 rounded-xl text-base sm:text-sm font-semibold justify-center transition-all active:scale-95 shadow-lg shadow-[#207D40]/20'
         >
           <House size={15} /> Back to Home
         </Link>
         <Link
           to='/contact'
-          className='flex items-center gap-2 border border-gray-200 bg-white hover:border-[#207D40] text-[#0d1f0d] px-7 py-3.5 rounded-xl text-sm font-semibold transition-all'
+          className='flex items-center gap-2 border border-gray-200 bg-white hover:border-[#207D40] text-[#0d1f0d] px-7 py-4 sm:py-3.5 rounded-xl text-base sm:text-sm font-semibold justify-center transition-all'
         >
           Contact Support <ArrowRight size={15} />
         </Link>
