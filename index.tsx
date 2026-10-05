@@ -4,7 +4,10 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 import { SITE_URL, absoluteUrl, allRoutes } from './seo/routes'
 import { loadArticles } from './cms/content'
+import { initClarity } from './analytics/clarity'
 import './index.css'
+
+initClarity()
 
 /**
  * scripts/prerender.mjs reads this to learn which URLs to snapshot and to build
