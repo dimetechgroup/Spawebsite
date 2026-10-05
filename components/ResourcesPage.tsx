@@ -83,7 +83,7 @@ const ResourcesPage: React.FC = () => {
 
             <button
               onClick={() => document.getElementById('subscription-area')?.scrollIntoView({ behavior: 'smooth' })}
-              className='bg-[#F7A300] text-white px-8 py-3.5 rounded-xl font-black text-xs hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/10 active:scale-95'
+              className='w-full sm:w-auto bg-[#F7A300] text-white px-8 py-4 sm:py-3.5 rounded-xl font-black text-base sm:text-xs hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/10 active:scale-95'
             >
               Subscribe for Spa Growth Insights
             </button>
@@ -92,18 +92,18 @@ const ResourcesPage: React.FC = () => {
       </section>
 
       {/* ARTICLES GRID */}
-      <section className='py-20 bg-[#F8FAFC]/50'>
+      <section className='py-14 sm:py-20 bg-[#F8FAFC]/50'>
         <div className='container mx-auto px-4 md:px-8'>
-          <div className='flex flex-col md:flex-row items-center justify-between gap-6 mb-12'>
+          <div className='flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-6 mb-8 md:mb-12'>
             <h2 className='text-2xl md:text-3xl font-black tracking-tight border-l-4 border-[#207D40] pl-5'>
               Featured Insights
             </h2>
-            <div className='flex flex-wrap items-center gap-1.5 p-1 bg-white rounded-xl border border-gray-100 shadow-sm'>
+            <div className='flex items-center gap-1.5 p-1 bg-white rounded-xl border border-gray-100 shadow-sm max-w-full overflow-x-auto no-scrollbar'>
               {blogCategories.map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-1.5 rounded-lg text-[11px] font-black transition-all ${
+                  className={`px-5 sm:px-4 py-3 sm:py-1.5 rounded-lg text-sm sm:text-[11px] font-black transition-all whitespace-nowrap shrink-0 ${
                     activeCategory === cat
                       ? 'bg-[#111827] text-white shadow-md'
                       : 'text-gray-400 hover:text-gray-900'
@@ -149,7 +149,7 @@ const ResourcesPage: React.FC = () => {
                   <h3 className='text-base font-black text-[#111827] mb-3 leading-tight group-hover:text-[#207D40] transition-colors line-clamp-2'>
                     {post.title}
                   </h3>
-                  <p className='text-gray-400 text-[12px] leading-relaxed mb-6 flex-grow line-clamp-2'>
+                  <p className='text-gray-400 text-sm sm:text-[12px] leading-relaxed mb-6 flex-grow line-clamp-2'>
                     {post.preview}
                   </p>
                   <span className='flex items-center gap-1.5 text-[11px] font-black text-[#207D40] group/btn w-fit'>
@@ -263,7 +263,7 @@ const ResourcesPage: React.FC = () => {
                         value={subName}
                         onChange={e => setSubName(e.target.value)}
                         required
-                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-sm transition-all text-[#111827]'
+                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-base sm:text-sm transition-all text-[#111827]'
                       />
                       <input
                         type='email'
@@ -271,12 +271,12 @@ const ResourcesPage: React.FC = () => {
                         value={subEmail}
                         onChange={e => setSubEmail(e.target.value)}
                         required
-                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-sm transition-all text-[#111827]'
+                        className='flex-grow bg-white/90 backdrop-blur-md px-6 py-4 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-[#F7A300]/50 shadow-2xl text-base sm:text-sm transition-all text-[#111827]'
                       />
                       <button
                         type='submit'
                         disabled={subStatus === 'sending'}
-                        className='bg-[#F7A300] hover:bg-orange-600 disabled:opacity-50 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95 whitespace-nowrap flex items-center justify-center'
+                        className='bg-[#F7A300] hover:bg-orange-600 disabled:opacity-50 text-white px-10 py-[18px] sm:py-4 rounded-2xl font-black text-sm sm:text-xs uppercase tracking-widest transition-all shadow-xl active:scale-95 whitespace-nowrap flex items-center justify-center'
                       >
                         {subStatus === 'sending' ? (
                           <Loader2 size={16} className='animate-spin' />
@@ -294,7 +294,7 @@ const ResourcesPage: React.FC = () => {
 
               <div className='flex justify-center '>
                 <button
-                  className='text-[11px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-[#207D40] transition-colors border-b border-white/10 pb-1'
+                  className='text-[13px] sm:text-[11px] font-black uppercase tracking-[0.2em] text-white/50 hover:text-[#207D40] transition-colors border-b border-white/10 py-2 sm:pt-0 sm:pb-1'
                   onClick={() => navigate('/contact')}
                 >
                   Book a Demo

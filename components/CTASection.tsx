@@ -129,10 +129,10 @@ const CTASection: React.FC = () => {
                 ))}
               </div>
 
-              <div className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
+              <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto'>
                 <motion.button
                   whileHover={{ scale: 1.03 }}
-                  className='flex items-center gap-2 text-sm px-7 py-3.5 rounded-xl font-semibold'
+                  className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 px-7 py-4 sm:py-3.5 rounded-xl font-semibold'
                   onClick={() => navigate('/contact')}
                   style={{
                     background: '#F7A300',

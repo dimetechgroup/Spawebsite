@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
 
   return (
     <>
-    <section className='relative min-h-screen bg-[#FDFAF6] overflow-hidden flex items-center'>
+    <section className='relative lg:min-h-screen bg-[#FDFAF6] overflow-hidden flex items-center'>
       <div className='pointer-events-none absolute inset-0'>
         <div
           className='absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full opacity-30'
@@ -83,8 +83,8 @@ const Hero: React.FC = () => {
         />
       </div>
 
-      <div className='relative max-w-screen-2xl mx-auto px-6 lg:px-16 py-24 lg:py-0 w-full'>
-        <div className='grid lg:grid-cols-[1fr_1.15fr] gap-14 xl:gap-20 items-center'>
+      <div className='relative max-w-screen-2xl mx-auto px-6 lg:px-16 pt-28 pb-16 sm:py-24 lg:py-0 w-full'>
+        <div className='grid lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 xl:gap-20 items-center'>
           {/* ─────────── LEFT COLUMN ─────────── */}
           <div className='flex flex-col items-start'>
             <motion.h1
@@ -131,14 +131,14 @@ const Hero: React.FC = () => {
               initial='hidden'
               animate='visible'
               custom={3}
-              className='flex flex-col sm:flex-row items-start gap-3 mb-10'
+              className='flex flex-col sm:flex-row items-stretch sm:items-start gap-3 mb-10 w-full sm:w-auto'
             >
               <motion.button
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                 onClick={() => navigate('/pricing')}
-                className='relative overflow-hidden text-white text-sm font-semibold px-8 py-3.5 rounded-xl shadow-lg'
+                className='relative overflow-hidden text-white text-base sm:text-sm font-semibold px-8 py-4 sm:py-3.5 rounded-xl shadow-lg'
                 style={{
                   background:
                     'linear-gradient(135deg, #207D40 0%, #165c2e 100%)',
@@ -154,7 +154,7 @@ const Hero: React.FC = () => {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setShowVideo(true)}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                className='flex items-center gap-2.5 bg-white border border-[#e2e8e2] text-[#0d1f0d] text-sm font-semibold px-7 py-3.5 rounded-xl shadow-sm'
+                className='flex items-center justify-center gap-2.5 bg-white border border-[#e2e8e2] text-[#0d1f0d] text-base sm:text-sm font-semibold px-7 py-4 sm:py-3.5 rounded-xl shadow-sm'
                 style={{ fontFamily: '"DM Sans", sans-serif' }}
               >
                 <span

@@ -28,9 +28,9 @@ const Footer: React.FC = () => {
   }
 
   return (
-    <footer className='bg-[#111827] text-white pt-20 pb-10 border-t border-gray-800'>
+    <footer className='bg-[#111827] text-white pt-14 sm:pt-20 pb-10 border-t border-gray-800'>
       <div className='container mx-auto px-4 md:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-12 mb-10 sm:mb-16'>
           <div>
             <Link
               to='/'
@@ -119,7 +119,7 @@ const Footer: React.FC = () => {
                   value={subName}
                   onChange={e => setSubName(e.target.value)}
                   required
-                  className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-[#207D40] text-xs'
+                  className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 sm:py-2 w-full focus:outline-none focus:border-[#207D40] text-base sm:text-xs'
                 />
                 <div className='flex gap-2'>
                   <input
@@ -128,12 +128,12 @@ const Footer: React.FC = () => {
                     value={subEmail}
                     onChange={e => setSubEmail(e.target.value)}
                     required
-                    className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-[#207D40] text-xs'
+                    className='bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 sm:py-2 w-full focus:outline-none focus:border-[#207D40] text-base sm:text-xs'
                   />
                   <button
                     type='submit'
                     disabled={subStatus === 'sending'}
-                    className='bg-[#207D40] hover:bg-[#1a6333] disabled:opacity-50 p-2 rounded-lg transition-colors'
+                    className='bg-[#207D40] hover:bg-[#1a6333] disabled:opacity-50 p-2 w-12 sm:w-auto shrink-0 flex items-center justify-center rounded-lg transition-colors'
                   >
                     {subStatus === 'sending' ? (
                       <Loader2 size={14} className='animate-spin' />
@@ -150,7 +150,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className='pt-10 border-t border-gray-800 text-center text-gray-500 text-[11px] font-black uppercase tracking-widest'>
+        <div className='pt-10 border-t border-gray-800 text-center text-gray-500 text-xs sm:text-[11px] font-black uppercase tracking-widest'>
           <p>
             copyright © {new Date().getFullYear()} MySpa. All rights reserved.
           </p>

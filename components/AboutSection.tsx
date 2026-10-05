@@ -211,7 +211,7 @@ const AboutSection: React.FC = () => {
                       {item.name}
                     </p>
                     <p
-                      className='text-[11px] leading-relaxed'
+                      className='text-sm sm:text-[11px] leading-relaxed'
                       style={{
                         color: '#4b5563',
                         fontFamily: '"DM Sans", sans-serif'

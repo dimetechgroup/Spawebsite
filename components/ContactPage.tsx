@@ -213,7 +213,7 @@ const ContactPage: React.FC = () => {
             </div>
 
             {/* RIGHT: CONTACT FORM */}
-            <div className='bg-white p-10 lg:p-14 rounded-[3rem] border border-gray-100 shadow-2xl h-full flex flex-col'>
+            <div className='bg-white p-6 sm:p-10 lg:p-14 rounded-[2rem] sm:rounded-[3rem] border border-gray-100 shadow-2xl h-full flex flex-col'>
               <div className='mb-10'>
                 <h3 className='text-lg font-black text-[#111827] mb-2 tracking-tight'>
                   Send a Message
@@ -269,7 +269,7 @@ const ContactPage: React.FC = () => {
                         value={form.name}
                         onChange={handleChange}
                         required
-                        className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
+                        className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium'
                         placeholder='Jane Doe'
                       />
                     </div>
@@ -283,7 +283,7 @@ const ContactPage: React.FC = () => {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
+                        className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium'
                         placeholder='jane@spa.com'
                       />
                     </div>
@@ -302,7 +302,7 @@ const ContactPage: React.FC = () => {
                       autoComplete='tel'
                       pattern='[+0-9\s()-]{7,}'
                       title='Enter a valid phone number, e.g. 0712 345 678 or +254712345678'
-                      className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
+                      className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium'
                       placeholder='0712 345 678'
                     />
                   </div>
@@ -316,7 +316,7 @@ const ContactPage: React.FC = () => {
                       value={form.subject}
                       onChange={handleChange}
                       required
-                      className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium'
+                      className='w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium'
                       placeholder='e.g. Pricing inquiry, Demo request...'
                     />
                   </div>
@@ -330,14 +330,14 @@ const ContactPage: React.FC = () => {
                       value={form.message}
                       onChange={handleChange}
                       required
-                      className='flex-1 w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3 focus:outline-none focus:border-[#207D40] transition-colors text-sm font-medium resize-none'
+                      className='flex-1 w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium resize-none'
                       placeholder='Tell us about your brand vision...'
                     />
                   </div>
                   <button
                     type='submit'
                     disabled={loading}
-                    className='w-full bg-[#111827] hover:bg-[#207D40] disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-black text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 group active:scale-[0.98] shadow-xl'
+                    className='w-full bg-[#111827] hover:bg-[#207D40] disabled:opacity-60 disabled:cursor-not-allowed text-white py-[18px] sm:py-4 rounded-xl font-black text-sm sm:text-xs uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 group active:scale-[0.98] shadow-xl'
                   >
                     {loading ? 'Sending...' : 'Send Inquiry'}
                     {!loading && (
@@ -360,7 +360,7 @@ const ContactPage: React.FC = () => {
           <div className='max-w-xl mx-auto'>
             <button
               onClick={() => navigate('/faq')}
-              className='text-[#207D40] font-black uppercase tracking-widest text-[11px] border-b-2 border-[#207D40] pb-1 hover:text-[#1a6333] transition-colors'
+              className='inline-block text-[#207D40] font-black uppercase tracking-widest text-sm sm:text-[11px] border-b-2 border-[#207D40] py-2 sm:pt-0 sm:pb-1 hover:text-[#1a6333] transition-colors'
             >
               Go to FAQ Center
             </button>
