@@ -37,6 +37,11 @@ Options -Indexes
   # /features rather than both URLs serving the same page.
   RewriteRule ^(.+)/$ /$1 [R=301,L]
 
+  # ── Contact form endpoint ─────────────────────────────────────────────────
+  # The site's only server code (api/contact.php). The frontend posts to the
+  # clean URL, so it never depends on how the endpoint is implemented.
+  RewriteRule ^api/contact$ /api/contact.php [L]
+
   # ── Serve the prerendered page for a clean URL ────────────────────────────
   # Internal rewrite, not a redirect, so /features stays /features in the
   # address bar.
