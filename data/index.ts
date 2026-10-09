@@ -57,7 +57,7 @@ export const featureGroups: FeatureGroup[] = [
     accentLight: '#A8C5A0',
     items: [
       {
-        name: 'Dashboard',
+        name: 'Spa Dashboard',
         icon: BarChart2,
         description: 'Real-time KPIs at a glance'
       },
@@ -67,7 +67,7 @@ export const featureGroups: FeatureGroup[] = [
         description: 'Automated billing & receipts'
       },
       {
-        name: 'Accounting',
+        name: 'Spa Accounting',
         icon: CreditCard,
         description: 'Full P&L visibility'
       }
@@ -81,7 +81,7 @@ export const featureGroups: FeatureGroup[] = [
     accent: '#F5A800',
     accentLight: '#F9D98C',
     items: [
-      { name: 'CRM', icon: Users, description: 'Client profiles & history' },
+      { name: 'Spa CRM', icon: Users, description: 'Client profiles & history' },
       {
         name: 'Gift / Vouchers',
         icon: Gift,
@@ -104,7 +104,7 @@ export const featureGroups: FeatureGroup[] = [
         icon: UserCheck,
         description: 'Shifts, payroll & performance'
       },
-      { name: 'Inventory', icon: Package, description: 'Smart stock tracking' },
+      { name: 'Spa Inventory', icon: Package, description: 'Smart stock tracking' },
       {
         name: 'Settings',
         icon: Settings,
@@ -353,13 +353,13 @@ export const plans: Plan[] = [
 
 export const modules: Module[] = [
   {
-    name: 'Dashboard',
+    name: 'Spa Dashboard',
     desc: "Your spa's command center with real-time revenue and analytics.",
     icon: BarChart3,
     accent: '#2E8B35'
   },
   {
-    name: 'CRM',
+    name: 'Spa CRM',
     desc: 'Comprehensive CRM with profiles, history, and loyalty programs.',
     icon: Users,
     accent: '#F5A800'
@@ -371,7 +371,7 @@ export const modules: Module[] = [
     accent: '#2E8B35'
   },
   {
-    name: 'Accounting',
+    name: 'Spa Accounting',
     desc: 'Integrated financial tools to track expenses.',
     icon: Wallet,
     accent: '#F5A800'
