@@ -1,7 +1,9 @@
 import React from 'react'
 import { ArrowRight, Play, Clock, TrendingUp, Zap } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+const MotionLink = motion.create(Link)
 
 const perks = [
   { icon: Clock, text: 'Save 15+ hours per week' },
@@ -10,7 +12,6 @@ const perks = [
 ]
 
 const CTASection: React.FC = () => {
-  const navigate = useNavigate()
   return (
     <section className='py-24 bg-white relative overflow-hidden'>
       <div className='max-w-7xl mx-auto px-6 lg:px-10'>
@@ -130,10 +131,10 @@ const CTASection: React.FC = () => {
               </div>
 
               <div className='flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto'>
-                <motion.button
+                <MotionLink
+                  to='/contact'
                   whileHover={{ scale: 1.03 }}
                   className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 px-7 py-4 sm:py-3.5 rounded-xl font-semibold'
-                  onClick={() => navigate('/contact')}
                   style={{
                     background: '#F7A300',
                     color: '#207D40',
@@ -151,8 +152,8 @@ const CTASection: React.FC = () => {
                   >
                     <Play size={9} fill='white' color='white' />
                   </span>
-                  Book a demo
-                </motion.button>
+                  Book a free demo
+                </MotionLink>
               </div>
             </div>
 

@@ -19,13 +19,16 @@ const ContactPage: React.FC = () => {
   const contactDetails = useSiteSettings().data?.contactDetails
   const navigate = useNavigate()
 
-  const [form, setForm] = useState({
+  const emptyForm = {
     name: '',
     email: '',
     phone: '',
     subject: '',
-    message: ''
-  })
+    message: '',
+    // Honeypot, rendered off-screen: people leave it empty, form-filling bots do not.
+    website: ''
+  }
+  const [form, setForm] = useState(emptyForm)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +58,7 @@ const ContactPage: React.FC = () => {
     try {
       await submitContact({ ...form, phone: formatPhoneForBackend(form.phone) })
       setSuccess(true)
-      setForm({ name: '', email: '', phone: '', subject: '', message: '' })
+      setForm(emptyForm)
     } catch (err: any) {
       setError(err.message || 'Something went wrong. Please try again.')
     } finally {
@@ -258,6 +261,16 @@ const ContactPage: React.FC = () => {
                       </p>
                     </div>
                   )}
+                  <input
+                    type='text'
+                    name='website'
+                    value={form.website}
+                    onChange={handleChange}
+                    tabIndex={-1}
+                    autoComplete='off'
+                    aria-hidden='true'
+                    style={{ position: 'absolute', left: '-9999px', opacity: 0 }}
+                  />
                   <div className='grid sm:grid-cols-2 gap-6'>
                     <div className='space-y-2'>
                       <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>

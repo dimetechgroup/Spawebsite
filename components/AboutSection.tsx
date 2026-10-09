@@ -14,6 +14,7 @@ import {
   Sparkles
 } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { modules } from '@/data'
 import { useSiteSettings } from '@/cms/hooks'
 
@@ -143,22 +144,23 @@ const AboutSection: React.FC = () => {
             style={{ background: 'white' }}
           >
             <h3
-              className='text-2xl md:text-3xl font-bold text-[#0d1f0d] mb-2 leading-tight tracking-[-0.02em]'
+              className='text-2xl md:text-3xl font-bold mb-8 leading-tight tracking-[-0.02em]'
               style={{ fontFamily: '"Playfair Display" ,serif' }}
             >
-              A serene, high-precision
-            </h3>
-            <h3
-              className='text-2xl md:text-3xl font-bold mb-8 leading-tight tracking-[-0.02em]'
-              style={{
-                fontFamily: '"Playfair Display" ,serif',
-                background: 'linear-gradient(100deg, #2E8B35, #F5A800)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              system for your team.
+              <span className='block text-[#0d1f0d] mb-2'>
+                A serene, high-precision
+              </span>{' '}
+              <span
+                className='block'
+                style={{
+                  background: 'linear-gradient(100deg, #2E8B35, #F5A800)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
+                system for your team.
+              </span>
             </h3>
 
             <motion.div
@@ -174,7 +176,7 @@ const AboutSection: React.FC = () => {
                   variants={itemVariants}
                   onMouseEnter={() => setHoveredIdx(idx)}
                   onMouseLeave={() => setHoveredIdx(null)}
-                  className='group flex items-start gap-3 p-3 rounded-xl cursor-default transition-all duration-300'
+                  className='relative group flex items-start gap-3 p-3 rounded-xl transition-all duration-300'
                   style={{
                     background:
                       hoveredIdx === idx ? `${item.accent}08` : 'transparent',
@@ -201,15 +203,18 @@ const AboutSection: React.FC = () => {
 
                   {/* Text */}
                   <div>
-                    <p
-                      className='text-[12px] font-bold uppercase tracking-wider leading-none mb-1.5 transition-colors duration-300'
+                    {/* Only the name is the anchor text; the ::after
+                        overlay makes the whole tile clickable. */}
+                    <Link
+                      to='/features'
+                      className='block text-[12px] font-bold uppercase tracking-wider leading-none mb-1.5 transition-colors duration-300 after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#2E8B35]'
                       style={{
                         color: hoveredIdx === idx ? item.accent : '#0d1f0d',
                         fontFamily: '"DM Sans", sans-serif'
                       }}
                     >
                       {item.name}
-                    </p>
+                    </Link>
                     <p
                       className='text-sm sm:text-[11px] leading-relaxed'
                       style={{

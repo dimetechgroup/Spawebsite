@@ -38,9 +38,9 @@ export interface RouteMeta {
 export const staticRoutes: RouteMeta[] = [
   {
     path: '/',
-    title: 'Spa Management Software in Kenya | MySpa',
+    title: 'Spa and Salon Management Software in Kenya | MySpa',
     description:
-      'MySpa is all-in-one spa and salon management software for Kenyan businesses. Run bookings, POS, inventory, CRM and reports from one system.',
+      'MySpa is spa management software built for Kenyan spas and salons. Bookings, POS, commissions, inventory and accounting in one system. Book a free demo.',
     ogImage: '/images/Dashboard.png',
     ogType: 'website',
     priority: 1.0,
@@ -93,7 +93,8 @@ export const staticRoutes: RouteMeta[] = [
     ogType: 'website',
     priority: 0.8,
     changefreq: 'weekly',
-    navLabel: 'Resources'
+    navLabel: 'Resources',
+    inFooter: true
   },
   {
     path: '/contact',
@@ -116,7 +117,8 @@ export const staticRoutes: RouteMeta[] = [
     ogType: 'website',
     priority: 0.6,
     changefreq: 'yearly',
-    navLabel: 'About Us'
+    navLabel: 'About Us',
+    inFooter: true
   },
   {
     path: '/404',

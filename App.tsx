@@ -1,7 +1,8 @@
 import React, { useState, lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, Link, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import WhatIsMySpa from './components/WhatIsMySpa'
 import Features from './components/Features'
 import AboutSection from './components/AboutSection'
 import PartnerSection from './components/PartnerSection'
@@ -52,7 +53,6 @@ const BRAND = {
 
 const InnovationSection: React.FC = () => {
   const [videoHovered, setVideoHovered] = useState(false)
-  const navigate = useNavigate()
 
   return (
     <section
@@ -131,20 +131,21 @@ const InnovationSection: React.FC = () => {
             </p>
 
             <div className='flex flex-col sm:flex-row items-stretch sm:items-start gap-4 mb-14'>
-              <button
+              <Link
+                to='/contact'
                 className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: `linear-gradient(135deg, ${BRAND.green}, #1e6325)`,
                   boxShadow: `0 12px 32px ${BRAND.green}40`,
                   fontFamily: '"DM Sans", sans-serif'
                 }}
-                onClick={() => navigate('/pricing')}
               >
-                Get Started
+                Book a free demo
                 <ArrowRight size={15} />
-              </button>
+              </Link>
 
-              <button
+              <Link
+                to='/features#demo-video'
                 className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: 'rgba(255,255,255,0.05)',
@@ -152,7 +153,6 @@ const InnovationSection: React.FC = () => {
                   color: 'rgba(255,255,255,0.75)',
                   fontFamily: '"DM Sans", sans-serif'
                 }}
-                onClick={() => navigate('/features#demo-video')}
               >
                 <span
                   className='w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0'
@@ -160,8 +160,8 @@ const InnovationSection: React.FC = () => {
                 >
                   <Play size={8} fill='white' color='white' />
                 </span>
-                Watch Demo
-              </button>
+                Watch the MySpa demo
+              </Link>
             </div>
           </div>
 
@@ -234,12 +234,12 @@ const InnovationSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <p
+                    <h3
                       className='text-sm font-bold text-white leading-none mb-2'
                       style={{ fontFamily: '"DM Sans", sans-serif' }}
                     >
                       {card.title}
-                    </p>
+                    </h3>
                     <p
                       className='text-[12px] leading-relaxed'
                       style={{
@@ -298,6 +298,7 @@ const HomePage: React.FC = () => {
       )}
     />
     <Hero />
+    <WhatIsMySpa />
     <Features />
     <AboutSection />
     <PartnerSection />
