@@ -146,7 +146,7 @@ export const articleSchema = (article: Article) => ({
   inLanguage: 'en-KE',
   mainEntityOfPage: {
     '@type': 'WebPage',
-    '@id': `${SITE_URL}/resources/${article.slug}`
+    '@id': `${SITE_URL}/insights/${article.slug}`
   }
 })
 
@@ -163,14 +163,14 @@ export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
 /** Blog index: an ItemList of every published article. */
 export const blogListSchema = (articles: Article[]) => ({
   '@type': 'Blog',
-  '@id': `${SITE_URL}/resources#blog`,
-  name: 'MySpa Resources',
-  url: `${SITE_URL}/resources`,
+  '@id': `${SITE_URL}/insights#blog`,
+  name: 'MySpa Insights',
+  url: `${SITE_URL}/insights`,
   publisher: { '@id': ORG_ID },
   blogPost: articles.map(article => ({
     '@type': 'BlogPosting',
     headline: article.title.slice(0, 110),
-    url: `${SITE_URL}/resources/${article.slug}`,
+    url: `${SITE_URL}/insights/${article.slug}`,
     datePublished: article.datePublished,
     dateModified: article.dateModified,
     image: absoluteUrl(article.image),

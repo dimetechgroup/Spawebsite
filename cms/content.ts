@@ -116,9 +116,9 @@ interface CockpitCategory {
 export interface ArticlesContent {
   articles: Article[]
   categoryColors: ArticleCategoryColorMap
-  /** Filter tabs for /resources: 'All', then each category that has an article. */
+  /** Filter tabs for /insights: 'All', then each category that has an article. */
   blogCategories: string[]
-  /** Cards for /resources, newest first. */
+  /** Cards for /insights, newest first. */
   blogPosts: BlogPost[]
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, Link, useLocation } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import WhatIsMySpa from './components/WhatIsMySpa'
@@ -22,7 +22,7 @@ import { Activity, Sparkles, ArrowRight, Play } from 'lucide-react'
 const FeaturesPage = lazy(() => import('./components/FeaturesPage'))
 const PricingPage = lazy(() => import('./components/PricingPage'))
 const AboutPage = lazy(() => import('./components/AboutPage'))
-const ResourcesPage = lazy(() => import('./components/ResourcesPage'))
+const InsightsPage = lazy(() => import('./components/InsightsPage'))
 const ArticlePage = lazy(() => import('./components/ArticlePage'))
 const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
@@ -41,6 +41,12 @@ const ScrollToTop: React.FC = () => {
     }
   }, [pathname, hash])
   return null
+}
+
+/** Sends an old /resources/:slug link (e.g. inside CMS article copy) to /insights/:slug. */
+const LegacyArticleRedirect: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>()
+  return <Navigate to={`/insights/${slug ?? ''}`} replace />
 }
 
 const BRAND = {
@@ -338,8 +344,11 @@ const App: React.FC = () => {
             <Route path='/features' element={<FeaturesPage />} />
             <Route path='/pricing' element={<PricingPage />} />
             <Route path='/about' element={<AboutPage />} />
-            <Route path='/resources' element={<ResourcesPage />} />
-            <Route path='/resources/:slug' element={<ArticlePage />} />
+            <Route path='/insights' element={<InsightsPage />} />
+            <Route path='/insights/:slug' element={<ArticlePage />} />
+            {/* Old /resources URLs. .htaccess 301s them; these catch in-app links. */}
+            <Route path='/resources' element={<Navigate to='/insights' replace />} />
+            <Route path='/resources/:slug' element={<LegacyArticleRedirect />} />
             <Route path='/faq' element={<FAQPage />} />
             <Route path='/contact' element={<ContactPage />} />
             {/* Prerendered to dist/404.html and served by .htaccess ErrorDocument. */}

@@ -138,7 +138,7 @@ const WhatIsMySpa: React.FC = () => (
           <ArrowRight size={15} />
         </Link>
         <Link
-          to='/resources/spa-erp-vs-booking-software'
+          to='/insights/spa-erp-vs-booking-software'
           className='group inline-flex items-center justify-center sm:justify-start gap-2 text-[#207D40] hover:text-[#165c2e] text-base sm:text-sm font-semibold underline decoration-[#207D40]/30 underline-offset-4 hover:decoration-[#165c2e] transition-colors'
           style={{ fontFamily: '"DM Sans", sans-serif' }}
         >

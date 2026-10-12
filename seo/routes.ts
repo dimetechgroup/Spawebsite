@@ -85,7 +85,7 @@ export const staticRoutes: RouteMeta[] = [
     inFooter: true
   },
   {
-    path: '/resources',
+    path: '/insights',
     title: 'Spa Management Guides & Insights | MySpa Blog',
     description:
       'Practical guides on running a spa: cutting no-shows, managing inventory, tracking the metrics that matter and scaling a multi-branch spa business.',
@@ -93,7 +93,7 @@ export const staticRoutes: RouteMeta[] = [
     ogType: 'website',
     priority: 0.8,
     changefreq: 'weekly',
-    navLabel: 'Resources',
+    navLabel: 'Insights',
     inFooter: true
   },
   {
@@ -136,7 +136,7 @@ export const staticRoutes: RouteMeta[] = [
 
 /** The route metadata for one article: its title, description and share image. */
 export const articleRouteMeta = (article: Article): RouteMeta => ({
-  path: `/resources/${article.slug}`,
+  path: `/insights/${article.slug}`,
   title: article.metaTitle ?? article.title,
   description: article.metaDescription ?? article.intro.slice(0, 155),
   ogImage: article.image,
