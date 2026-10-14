@@ -38,9 +38,9 @@ export interface RouteMeta {
 export const staticRoutes: RouteMeta[] = [
   {
     path: '/',
-    title: 'Spa Management Software in Kenya | MySpa',
+    title: 'Spa and Salon Management Software in Kenya | MySpa',
     description:
-      'MySpa is all-in-one spa and salon management software for Kenyan businesses. Run bookings, POS, inventory, CRM and reports from one system.',
+      'MySpa is spa management software built for Kenyan spas and salons. Bookings, POS, commissions, inventory and accounting in one system. Book a free demo.',
     ogImage: '/images/Dashboard.png',
     ogType: 'website',
     priority: 1.0,
@@ -85,7 +85,7 @@ export const staticRoutes: RouteMeta[] = [
     inFooter: true
   },
   {
-    path: '/resources',
+    path: '/insights',
     title: 'Spa Management Guides & Insights | MySpa Blog',
     description:
       'Practical guides on running a spa: cutting no-shows, managing inventory, tracking the metrics that matter and scaling a multi-branch spa business.',
@@ -93,7 +93,8 @@ export const staticRoutes: RouteMeta[] = [
     ogType: 'website',
     priority: 0.8,
     changefreq: 'weekly',
-    navLabel: 'Resources'
+    navLabel: 'Insights',
+    inFooter: true
   },
   {
     path: '/contact',
@@ -116,7 +117,8 @@ export const staticRoutes: RouteMeta[] = [
     ogType: 'website',
     priority: 0.6,
     changefreq: 'yearly',
-    navLabel: 'About Us'
+    navLabel: 'About Us',
+    inFooter: true
   },
   {
     path: '/404',
@@ -134,7 +136,7 @@ export const staticRoutes: RouteMeta[] = [
 
 /** The route metadata for one article: its title, description and share image. */
 export const articleRouteMeta = (article: Article): RouteMeta => ({
-  path: `/resources/${article.slug}`,
+  path: `/insights/${article.slug}`,
   title: article.metaTitle ?? article.title,
   description: article.metaDescription ?? article.intro.slice(0, 155),
   ogImage: article.image,

@@ -66,12 +66,12 @@ const ArticlePage: React.FC = () => {
   if (loading || error) {
     return (
       <div className='min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4'>
-        <Seo path={`/resources/${slug ?? ''}`} title='MySpa Resources' noindex />
+        <Seo path={`/insights/${slug ?? ''}`} title='MySpa Insights' noindex />
         {error ? (
           <>
             <p className='text-sm font-bold text-gray-500'>This article could not be loaded right now.</p>
-            <Link to='/resources' className='text-sm font-bold text-[#207D40] underline'>
-              Back to Resources
+            <Link to='/insights' className='text-sm font-bold text-[#207D40] underline'>
+              Back to Insights
             </Link>
           </>
         ) : (
@@ -86,18 +86,18 @@ const ArticlePage: React.FC = () => {
       <div className='min-h-screen flex flex-col items-center justify-center gap-6 text-center px-4'>
         {/* Unknown slugs must never be indexed. */}
         <Seo
-          path={`/resources/${slug ?? ''}`}
+          path={`/insights/${slug ?? ''}`}
           title='Article Not Found | MySpa'
-          description='This article does not exist. Browse the MySpa resource library for spa management guides.'
+          description='This article does not exist. Browse MySpa Insights for spa management guides.'
           noindex
         />
         <p className='text-5xl font-black text-gray-100'>404</p>
         <h1 className='text-xl font-black text-[#111827]'>Article not found</h1>
         <Link
-          to='/resources'
+          to='/insights'
           className='flex items-center gap-2 bg-[#207D40] text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-[#1a6333] transition-all'
         >
-          <ArrowLeft size={15} /> Back to Resources
+          <ArrowLeft size={15} /> Back to Insights
         </Link>
       </div>
     )
@@ -122,8 +122,8 @@ const ArticlePage: React.FC = () => {
           articleSchema(article),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
-            { name: 'Resources', path: '/resources' },
-            { name: article.title, path: `/resources/${article.slug}` }
+            { name: 'Insights', path: '/insights' },
+            { name: article.title, path: `/insights/${article.slug}` }
           ]),
           organizationSchema(contactDetails)
         )}
@@ -133,10 +133,10 @@ const ArticlePage: React.FC = () => {
         <div className='container mx-auto px-4 md:px-8 max-w-4xl'>
           {/* Back link */}
           <Link
-            to='/resources'
+            to='/insights'
             className='inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-[#207D40] transition-colors mb-8'
           >
-            <ArrowLeft size={13} /> Back to Resources
+            <ArrowLeft size={13} /> Back to Insights
           </Link>
 
           {/* Category + meta */}
@@ -261,7 +261,7 @@ const ArticlePage: React.FC = () => {
                 return (
                   <Link
                     key={post.slug}
-                    to={`/resources/${post.slug}`}
+                    to={`/insights/${post.slug}`}
                     className='group bg-white rounded-[1.25rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col'
                   >
                     <div className='relative aspect-[16/9] overflow-hidden'>

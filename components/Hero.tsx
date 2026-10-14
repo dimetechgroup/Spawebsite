@@ -11,9 +11,11 @@ import {
   X
 } from 'lucide-react'
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSiteSettings } from '@/cms/hooks'
 import DemoVideoEmbed from './DemoVideoEmbed'
+
+const MotionLink = motion.create(Link)
 
 const fadeUp: import('framer-motion').Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -31,7 +33,6 @@ const fadeUp: import('framer-motion').Variants = {
 const Hero: React.FC = () => {
   const settings = useSiteSettings().data
   const homeHeroImage = settings?.homeHeroImage
-  const navigate = useNavigate()
   const [showVideo, setShowVideo] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
   const mouseX = useMotionValue(0)
@@ -93,12 +94,9 @@ const Hero: React.FC = () => {
               animate='visible'
               custom={1}
               style={{ fontFamily: '"Playfair Display", serif' }}
-              className='text-[2.85rem] lg:text-[3.6rem] xl:text-[4.2rem] 2xl:text-[4.4rem] font-bold text-[#0d1f0d] leading-[1.08] tracking-[-0.02em] mb-6'
+              className='text-[2.3rem] sm:text-[2.8rem] lg:text-[2.6rem] xl:text-[3.1rem] 2xl:text-[3.5rem] font-bold text-[#0d1f0d] leading-[1.1] tracking-[-0.02em] mb-6 text-balance'
             >
-              Simplify Spa
-              <br />
-              Operations.
-              <br />
+              Spa Management Software Built for{' '}
               <em
                 className='not-italic'
                 style={{
@@ -109,7 +107,7 @@ const Hero: React.FC = () => {
                   backgroundClip: 'text'
                 }}
               >
-                Grow with Confidence.
+                Kenyan Spas and Salons
               </em>
             </motion.h1>
 
@@ -118,6 +116,18 @@ const Hero: React.FC = () => {
               initial='hidden'
               animate='visible'
               custom={2}
+              style={{ fontFamily: '"DM Sans", sans-serif' }}
+              className='text-[#0d1f0d] text-[1.15rem] font-semibold leading-snug mb-4'
+            >
+              <span className='sm:block'>Simplify spa and salon operations.</span>{' '}
+              <span className='sm:block text-[#207D40]'>Grow with confidence.</span>
+            </motion.p>
+
+            <motion.p
+              variants={fadeUp}
+              initial='hidden'
+              animate='visible'
+              custom={3}
               style={{ fontFamily: '"DM Sans", sans-serif' }}
               className='text-[#5a6e5a] text-[1rem] leading-[1.75] max-w-[450px] mb-10'
             >
@@ -130,15 +140,15 @@ const Hero: React.FC = () => {
               variants={fadeUp}
               initial='hidden'
               animate='visible'
-              custom={3}
+              custom={4}
               className='flex flex-col sm:flex-row items-stretch sm:items-start gap-3 mb-10 w-full sm:w-auto'
             >
-              <motion.button
+              <MotionLink
+                to='/contact'
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                onClick={() => navigate('/pricing')}
-                className='relative overflow-hidden text-white text-base sm:text-sm font-semibold px-8 py-4 sm:py-3.5 rounded-xl shadow-lg'
+                className='relative overflow-hidden text-center whitespace-nowrap text-white text-base sm:text-sm font-semibold px-8 py-4 sm:py-3.5 rounded-xl shadow-lg'
                 style={{
                   background:
                     'linear-gradient(135deg, #207D40 0%, #165c2e 100%)',
@@ -146,15 +156,15 @@ const Hero: React.FC = () => {
                   boxShadow: '0 10px 30px rgba(32, 125, 64, 0.30)'
                 }}
               >
-                <span className='relative z-10'>Get Started</span>
-              </motion.button>
+                <span className='relative z-10'>Book a free demo</span>
+              </MotionLink>
 
               <motion.button
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 onClick={() => setShowVideo(true)}
                 transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-                className='flex items-center justify-center gap-2.5 bg-white border border-[#e2e8e2] text-[#0d1f0d] text-base sm:text-sm font-semibold px-7 py-4 sm:py-3.5 rounded-xl shadow-sm'
+                className='flex items-center justify-center gap-2.5 whitespace-nowrap bg-white border border-[#e2e8e2] text-[#0d1f0d] text-base sm:text-sm font-semibold px-7 py-4 sm:py-3.5 rounded-xl shadow-sm'
                 style={{ fontFamily: '"DM Sans", sans-serif' }}
               >
                 <span

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ArrowRight, Clock } from 'lucide-react'
 import { plans } from '@/data'
-import { fetchConfig } from '../api'
 import { useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { graph, organizationSchema, pricingSchema } from '@/seo/schema'
@@ -24,24 +23,6 @@ const PricingPage = () => {
     'monthly'
   )
   const navigate = useNavigate()
-
-  const [dynamicPlans, setDynamicPlans] = useState(plans)
-
-  useEffect(() => {
-    fetchConfig()
-      .then(data => {
-        if (data?.pricing) {
-          setDynamicPlans(prev =>
-            prev.map(p =>
-              data.pricing[p.id]
-                ? { ...p, monthlyPrice: data.pricing[p.id] }
-                : p
-            )
-          )
-        }
-      })
-      .catch(err => console.error(err))
-  }, [])
 
   const handlePlanClick = (planId: string) => {
     window.open(`https://app.myspa.co.ke/register`, '_blank')
@@ -318,7 +299,7 @@ const PricingPage = () => {
             alignItems: 'stretch'
           }}
         >
-          {dynamicPlans.map((plan, i) => {
+          {plans.map((plan, i) => {
             const isGreen = plan.theme === 'green'
             const isDark = plan.theme === 'dark'
             const displayPrice = getPrice(plan.monthlyPrice)

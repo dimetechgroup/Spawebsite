@@ -61,9 +61,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#F7A300] pl-3'>
+            <h2 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#F7A300] pl-3'>
               Contact Us
-            </h4>
+            </h2>
             <ul className='space-y-4 text-gray-400 text-xs font-bold'>
               <li className='flex gap-3 items-center'>
                 <Phone size={14} className='text-[#207D40]' />
@@ -77,9 +77,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#207D40] pl-3'>
+            <h2 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#207D40] pl-3'>
               Explore
-            </h4>
+            </h2>
             <ul className='space-y-3 text-gray-400 text-xs font-bold'>
               {footerRoutes().map(route => (
                 <li key={route.path}>
@@ -95,9 +95,9 @@ const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#F7A300] pl-3'>
+            <h2 className='text-[11px] font-black uppercase tracking-widest mb-6 border-l-4 border-[#F7A300] pl-3'>
               Subscribe
-            </h4>
+            </h2>
             {subStatus === 'success' ? (
               <div className='flex items-center gap-2 text-[#207D40] text-xs font-bold'>
                 <CheckCircle size={14} /> You're subscribed!

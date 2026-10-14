@@ -15,7 +15,7 @@ import { subscribeNewsletter } from '../api'
 import Seo from './Seo'
 import { blogListSchema, graph, organizationSchema } from '@/seo/schema'
 
-const ResourcesPage: React.FC = () => {
+const InsightsPage: React.FC = () => {
   const articleContent = useArticles().data
   const blogPosts = articleContent?.blogPosts ?? []
   const blogCategories = articleContent?.blogCategories ?? ['All']
@@ -50,7 +50,7 @@ const ResourcesPage: React.FC = () => {
   return (
     <div className="bg-white text-[#111827] font-['Inter'] selection:bg-[#207D40] selection:text-white">
       <Seo
-        path='/resources'
+        path='/insights'
         jsonLd={graph(blogListSchema(articleContent?.articles ?? []), organizationSchema(contactDetails))}
       />
       {/* HERO SECTION */}
@@ -77,7 +77,7 @@ const ResourcesPage: React.FC = () => {
             </h1>
 
             <p className='text-sm md:text-base text-gray-500 font-medium max-w-xl mx-auto leading-relaxed mb-10'>
-              Our resources are designed to help spa owners make informed
+              Our insights are designed to help spa owners make informed
               decisions, improve operations, and grow sustainably.
             </p>
 
@@ -119,7 +119,7 @@ const ResourcesPage: React.FC = () => {
             {filteredPosts.map(post => (
               <Link
                 key={post.id}
-                to={`/resources/${post.slug}`}
+                to={`/insights/${post.slug}`}
                 className='group bg-white rounded-[1.5rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col'
               >
                 <div className='relative aspect-[16/10] overflow-hidden'>
@@ -321,4 +321,4 @@ const ResourcesPage: React.FC = () => {
   )
 }
 
-export default ResourcesPage
+export default InsightsPage

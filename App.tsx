@@ -1,7 +1,8 @@
 import React, { useState, lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
+import { Routes, Route, Link, Navigate, useLocation, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import WhatIsMySpa from './components/WhatIsMySpa'
 import Features from './components/Features'
 import AboutSection from './components/AboutSection'
 import PartnerSection from './components/PartnerSection'
@@ -21,7 +22,7 @@ import { Activity, Sparkles, ArrowRight, Play } from 'lucide-react'
 const FeaturesPage = lazy(() => import('./components/FeaturesPage'))
 const PricingPage = lazy(() => import('./components/PricingPage'))
 const AboutPage = lazy(() => import('./components/AboutPage'))
-const ResourcesPage = lazy(() => import('./components/ResourcesPage'))
+const InsightsPage = lazy(() => import('./components/InsightsPage'))
 const ArticlePage = lazy(() => import('./components/ArticlePage'))
 const FAQPage = lazy(() => import('./components/FAQPage'))
 const ContactPage = lazy(() => import('./components/ContactPage'))
@@ -42,6 +43,12 @@ const ScrollToTop: React.FC = () => {
   return null
 }
 
+/** Sends an old /resources/:slug link (e.g. inside CMS article copy) to /insights/:slug. */
+const LegacyArticleRedirect: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>()
+  return <Navigate to={`/insights/${slug ?? ''}`} replace />
+}
+
 const BRAND = {
   green: '#2E8B35',
   greenLight: '#A8C5A0',
@@ -52,7 +59,6 @@ const BRAND = {
 
 const InnovationSection: React.FC = () => {
   const [videoHovered, setVideoHovered] = useState(false)
-  const navigate = useNavigate()
 
   return (
     <section
@@ -131,20 +137,21 @@ const InnovationSection: React.FC = () => {
             </p>
 
             <div className='flex flex-col sm:flex-row items-stretch sm:items-start gap-4 mb-14'>
-              <button
+              <Link
+                to='/contact'
                 className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl text-white transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: `linear-gradient(135deg, ${BRAND.green}, #1e6325)`,
                   boxShadow: `0 12px 32px ${BRAND.green}40`,
                   fontFamily: '"DM Sans", sans-serif'
                 }}
-                onClick={() => navigate('/pricing')}
               >
-                Get Started
+                Book a free demo
                 <ArrowRight size={15} />
-              </button>
+              </Link>
 
-              <button
+              <Link
+                to='/features#demo-video'
                 className='flex items-center justify-center w-full sm:w-auto text-base sm:text-sm gap-2 font-semibold px-7 py-4 sm:py-3.5 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1'
                 style={{
                   background: 'rgba(255,255,255,0.05)',
@@ -152,7 +159,6 @@ const InnovationSection: React.FC = () => {
                   color: 'rgba(255,255,255,0.75)',
                   fontFamily: '"DM Sans", sans-serif'
                 }}
-                onClick={() => navigate('/features#demo-video')}
               >
                 <span
                   className='w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0'
@@ -160,8 +166,8 @@ const InnovationSection: React.FC = () => {
                 >
                   <Play size={8} fill='white' color='white' />
                 </span>
-                Watch Demo
-              </button>
+                Watch the MySpa demo
+              </Link>
             </div>
           </div>
 
@@ -234,12 +240,12 @@ const InnovationSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <p
+                    <h3
                       className='text-sm font-bold text-white leading-none mb-2'
                       style={{ fontFamily: '"DM Sans", sans-serif' }}
                     >
                       {card.title}
-                    </p>
+                    </h3>
                     <p
                       className='text-[12px] leading-relaxed'
                       style={{
@@ -298,6 +304,7 @@ const HomePage: React.FC = () => {
       )}
     />
     <Hero />
+    <WhatIsMySpa />
     <Features />
     <AboutSection />
     <PartnerSection />
@@ -337,8 +344,11 @@ const App: React.FC = () => {
             <Route path='/features' element={<FeaturesPage />} />
             <Route path='/pricing' element={<PricingPage />} />
             <Route path='/about' element={<AboutPage />} />
-            <Route path='/resources' element={<ResourcesPage />} />
-            <Route path='/resources/:slug' element={<ArticlePage />} />
+            <Route path='/insights' element={<InsightsPage />} />
+            <Route path='/insights/:slug' element={<ArticlePage />} />
+            {/* Old /resources URLs. .htaccess 301s them; these catch in-app links. */}
+            <Route path='/resources' element={<Navigate to='/insights' replace />} />
+            <Route path='/resources/:slug' element={<LegacyArticleRedirect />} />
             <Route path='/faq' element={<FAQPage />} />
             <Route path='/contact' element={<ContactPage />} />
             {/* Prerendered to dist/404.html and served by .htaccess ErrorDocument. */}

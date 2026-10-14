@@ -1,33 +1,42 @@
-const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? '')
-  .trim()
-  .replace(/\/+$/, '')
-
-const API_BASE_URL =
-  configuredBaseUrl || (import.meta.env.DEV ? 'http://localhost:8000/api' : '')
-
-export const isApiConfigured = (): boolean => API_BASE_URL !== ''
+/**
+ * The site's two forms. Neither needs a backend of our own beyond one PHP file:
+ *
+ * - Contact posts to /api/contact, public/api/contact.php on the same host, which
+ *   emails the message to the sales inbox.
+ * - Newsletter signups go straight from the browser to HubSpot.
+ */
 
 /**
- * Runtime overrides returned by GET /config. All fields are optional.
- *
- * `contact_email` used to be here and was applied by Footer.tsx after mount.
- * The address now comes from the CMS at build time, so it is prerendered and
- * visible to crawlers; keeping the runtime override would have let a stale
- * value from this endpoint silently replace the CMS one for visitors only.
- * The backend may still send the field, it is simply no longer read.
+ * HubSpot form that collects newsletter signups. Both IDs are public (they appear
+ * in every embedded HubSpot form) and this endpoint needs no token. HubSpot
+ * allows browser calls from myspa.co.ke, so no server of ours is involved.
  */
-export interface AppConfig {
-  /** Plan id (see `plans` in data/index.ts) to monthly price. */
-  pricing?: Record<string, number>
-}
+const HUBSPOT_PORTAL_ID = '148419234'
+const HUBSPOT_NEWSLETTER_FORM_ID = '976c43ef-def8-4e2c-9903-5915a936f952'
+const NEWSLETTER_URL = `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_NEWSLETTER_FORM_ID}`
 
-/** Guard for user-initiated submissions, so the UI shows a real message. */
-function requireApi (): void {
-  if (!isApiConfigured()) {
-    throw new Error(
-      'This service is not available right now. Please email or call us instead.'
-    )
+/** POSTs JSON and returns the JSON reply, throwing a readable error on failure. */
+async function postJson (url: string, body: unknown, fallbackError: string) {
+  let res: Response
+  try {
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(body)
+    })
+  } catch {
+    // Offline, DNS failure, blocked request: the browser's own message is not
+    // something to show a visitor.
+    throw new Error(fallbackError)
   }
+  // Both endpoints answer errors with JSON carrying a `message`, but an outage
+  // or a misconfigured server can answer with HTML, so a parse failure must not
+  // replace the real error.
+  const payload = await res.json().catch(() => null)
+  if (!res.ok) {
+    throw new Error(payload?.message || fallbackError)
+  }
+  return payload
 }
 
 export async function submitContact (data: {
@@ -36,68 +45,30 @@ export async function submitContact (data: {
   phone: string
   subject: string
   message: string
+  /** Honeypot: hidden from people, so anything in it marks a bot. */
+  website: string
 }) {
-  requireApi()
-  const res = await fetch(`${API_BASE_URL}/contact`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  if (!res.ok) {
-    const err = await res.json()
-    throw new Error(err.message || 'Failed to send message')
-  }
-  return res.json()
+  return postJson(
+    '/api/contact',
+    data,
+    'We could not send your message. Please try again, or email us directly.'
+  )
 }
-
-export async function submitInquiry (data: {
-  name: string
-  email: string
-  phone: string
-  company_name: string
-  plan: string
-  duration: string
-}) {
-  requireApi()
-  const res = await fetch(`${API_BASE_URL}/inquiry`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  if (!res.ok) {
-    const err = await res.json()
-    throw new Error(err.message || 'Failed to send inquiry')
-  }
-  return res.json()
-}
-
-export async function fetchConfig (): Promise<AppConfig | null> {
-  if (!isApiConfigured()) return null
-  try {
-    const res = await fetch(`${API_BASE_URL}/config`)
-    if (!res.ok) return null
-    return await res.json()
-  } catch {
-    return null
-  }
-}
-
-const NEWSLETTER_URL =
-  (import.meta.env.VITE_NEWSLETTER_URL ?? '').trim() ||
-  'https://api.myspa.co.ke/newsletter/subscribe'
 
 export async function subscribeNewsletter (data: {
   firstname: string
   email: string
 }) {
-  const res = await fetch(NEWSLETTER_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  })
-  if (!res.ok) {
-    const err = await res.json()
-    throw new Error(err.message || 'Failed to subscribe')
-  }
-  return res.json()
+  return postJson(
+    NEWSLETTER_URL,
+    {
+      fields: [
+        { name: 'firstname', value: data.firstname },
+        { name: 'email', value: data.email }
+      ],
+      // Lets HubSpot record which page the signup came from.
+      context: { pageUri: window.location.href, pageName: document.title }
+    },
+    'Failed to subscribe'
+  )
 }

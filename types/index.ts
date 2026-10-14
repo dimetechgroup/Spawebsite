@@ -90,7 +90,7 @@ export interface Value {
   bgColor: string
 }
 
-// ── ResourcesPage.tsx ───────────────────────────────────────────
+// ── InsightsPage.tsx ────────────────────────────────────────────
 export interface BlogPost {
   id: number
   slug: string
@@ -216,7 +216,7 @@ export interface Article {
   metaTitle?: string
   /** Meta description / OG description. Falls back to `intro` when omitted. */
   metaDescription?: string
-  /** Short card copy for the /resources grid. Falls back to `intro`. */
+  /** Short card copy for the /insights grid. Falls back to `intro`. */
   preview?: string
   intro: string
   sections: ArticleSection[]

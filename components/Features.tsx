@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import { ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { featureGroups } from '../data'
 import { useSiteSettings } from '@/cms/hooks'
 
@@ -105,7 +107,7 @@ const Features: React.FC = () => {
         </motion.div>
 
         {/* ── Cards ── */}
-        <div className='grid lg:grid-cols-3 gap-6 mb-16'>
+        <div className='grid lg:grid-cols-3 gap-6 mb-12'>
           {featureGroups.map((group, gIdx) => (
             <motion.div
               key={gIdx}
@@ -270,7 +272,7 @@ const Features: React.FC = () => {
                   {group.items.map((item, idx) => (
                     <div
                       key={idx}
-                      className='flex items-center gap-4 group/item'
+                      className='relative flex items-center gap-4 group/item'
                     >
                       <div
                         className='w-[34px] h-[34px] rounded-xl flex items-center justify-center flex-shrink-0'
@@ -294,12 +296,15 @@ const Features: React.FC = () => {
                       </div>
 
                       <div className='min-w-0 flex-1'>
-                        <p
-                          className='text-sm font-semibold text-white leading-none'
+                        {/* Only the name is the anchor text; the ::after
+                            overlay makes the whole row clickable. */}
+                        <Link
+                          to='/features'
+                          className='block text-sm font-semibold text-white leading-none decoration-1 underline-offset-4 group-hover/item:underline after:absolute after:-inset-1.5 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[#F5A800]'
                           style={{ fontFamily: '"DM Sans", sans-serif' }}
                         >
                           {item.name}
-                        </p>
+                        </Link>
                         <p
                           className='text-[13px] sm:text-[11px] mt-1 leading-snug sm:leading-none'
                           style={{
@@ -326,6 +331,24 @@ const Features: React.FC = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className='flex justify-center mb-16'>
+          <Link
+            to='/pricing'
+            className='group inline-flex items-center gap-2 px-7 py-3.5 rounded-full text-base sm:text-sm font-semibold transition-colors duration-300 hover:bg-[#F5A800]/10'
+            style={{
+              color: '#F9D98C',
+              border: '1px solid rgba(245,168,0,0.35)',
+              fontFamily: '"DM Sans", sans-serif'
+            }}
+          >
+            See MySpa pricing in KES
+            <ArrowRight
+              size={15}
+              className='transition-transform duration-300 group-hover:translate-x-1'
+            />
+          </Link>
         </div>
 
         {/* ── Marquee strip ── */}
