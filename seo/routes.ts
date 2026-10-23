@@ -64,7 +64,7 @@ export const staticRoutes: RouteMeta[] = [
     path: '/pricing',
     title: 'Spa Software Pricing in Kenya from KES 3,000/mo | MySpa',
     description:
-      'MySpa spa management software pricing in Kenya: three plans from KES 3,000 per month with a 15-day free trial and no credit card required.',
+      'MySpa spa management software pricing in Kenya: three plans from KES 3,000 per month with a 14-day free trial and no credit card required.',
     ogImage: '/images/Dashboard.png',
     ogType: 'website',
     priority: 0.9,

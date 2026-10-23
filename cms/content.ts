@@ -1,4 +1,4 @@
-import { anchorFeatureStyles } from '@/data'
+import { anchorFeatureStyles, planStyles } from '@/data'
 import type {
   AnchorFeature,
   Article,
@@ -11,6 +11,7 @@ import type {
   FAQ,
   FAQCategoryColorMap,
   ModulesImage,
+  Plan,
   Testimonial
 } from '@/types'
 import { assetUrl, cmsItems, cmsSingleton, type CockpitAsset } from './client'
@@ -52,6 +53,7 @@ interface CockpitSettings {
   demoVideoPoster?: CockpitAsset
   demoVideoPosterAlt?: string
   marqueeLabels?: string[]
+  freeTrialDays?: number
 }
 
 export interface SiteSettings {
@@ -62,6 +64,8 @@ export interface SiteSettings {
   demoVideo: DemoVideo
   /** The capability strip labels, doubled so Features.tsx can loop it seamlessly. */
   marqueeItems: string[]
+  /** Free trial length on every plan. 0 hides the trial copy on /pricing. */
+  freeTrialDays: number
 }
 
 /**
@@ -84,7 +88,8 @@ export const loadSiteSettings = once(async (): Promise<SiteSettings> => {
       embedUrl: str(s.demoVideoUrl),
       poster: { src: assetUrl(s.demoVideoPoster), alt: str(s.demoVideoPosterAlt) }
     },
-    marqueeItems: [...labels, ...labels]
+    marqueeItems: [...labels, ...labels],
+    freeTrialDays: Math.max(0, Math.round(Number(s.freeTrialDays) || 0))
   }
 })
 
@@ -252,6 +257,39 @@ export const loadAnchorFeatures = once(async (): Promise<AnchorFeature[]> =>
       ...(row.hidden === true && { hidden: true }),
       ...anchorFeatureStyles[str(row.key)]
     }) as AnchorFeature)
+)
+
+// ── Pricing plans ────────────────────────────────────────────────
+
+interface CockpitPlan {
+  key?: string
+  name?: string
+  tagline?: string
+  monthlyPrice?: number
+  features?: string[]
+  buttonText?: string
+  popular?: boolean
+}
+
+/**
+ * Plan cards on /pricing, cheapest first. Like the anchor features, each joins
+ * its icon and theme from `planStyles` on `key`; a plan with an unknown key or
+ * no price is dropped rather than shown broken.
+ */
+export const loadPlans = once(async (): Promise<Plan[]> =>
+  (await cmsItems<CockpitPlan>('plans'))
+    .filter(row => planStyles[str(row.key)] && str(row.name) && Number(row.monthlyPrice) > 0)
+    .map(row => ({
+      id: str(row.key),
+      name: str(row.name),
+      tagline: str(row.tagline),
+      monthlyPrice: Number(row.monthlyPrice),
+      features: (row.features ?? []).map(str).filter(Boolean),
+      buttonText: str(row.buttonText),
+      ...(row.popular === true && { popular: true }),
+      ...planStyles[str(row.key)]
+    }))
+    .sort((a, b) => a.monthlyPrice - b.monthlyPrice)
 )
 
 // ── FAQs ─────────────────────────────────────────────────────────

@@ -1,5 +1,4 @@
-import { plans } from '@/data'
-import type { Article, ContactDetails, FAQ } from '@/types'
+import type { Article, ContactDetails, FAQ, Plan } from '@/types'
 import { SITE_NAME, SITE_URL, absoluteUrl } from './routes'
 
 const ORG_ID = `${SITE_URL}/#organization`
@@ -65,8 +64,8 @@ export const websiteSchema = () => ({
   inLanguage: 'en-KE'
 })
 
-/** Offers built from the real KES plan prices on /pricing. */
-const planOffers = () =>
+/** Offers built from the real KES plan prices on /pricing (from the CMS). */
+const planOffers = (plans: Plan[]) =>
   plans.map(plan => ({
     '@type': 'Offer',
     name: `${plan.name} Plan`,
@@ -85,7 +84,8 @@ const planOffers = () =>
     }
   }))
 
-export const softwareApplicationSchema = () => ({
+/** `plans` adds the price Offers once they have loaded from the CMS. */
+export const softwareApplicationSchema = (plans: Plan[] = []) => ({
   '@type': 'SoftwareApplication',
   '@id': SOFTWARE_ID,
   name: 'MySpa Spa Management Software',
@@ -107,18 +107,25 @@ export const softwareApplicationSchema = () => ({
     'Multi-branch management'
   ],
   publisher: { '@id': ORG_ID },
-  offers: planOffers()
+  ...(plans.length > 0 && { offers: planOffers(plans) })
 })
 
 /** Product + Offers for /pricing. */
-export const pricingSchema = () => ({
+export const pricingSchema = (plans: Plan[] = [], freeTrialDays = 0) => ({
   '@type': 'Product',
   name: 'MySpa Spa Management Software',
-  description:
-    'Spa and salon management software subscription plans for Kenyan businesses, from KES 3,000 per month with a 15-day free trial.',
+  description: [
+    'Spa and salon management software subscription plans for Kenyan businesses',
+    plans.length > 0 &&
+      `, from KES ${Math.min(...plans.map(p => p.monthlyPrice)).toLocaleString('en-KE')} per month`,
+    freeTrialDays > 0 && ` with a ${freeTrialDays}-day free trial`,
+    '.'
+  ]
+    .filter(Boolean)
+    .join(''),
   image: absoluteUrl('/images/Dashboard.png'),
   brand: { '@id': ORG_ID },
-  offers: planOffers()
+  ...(plans.length > 0 && { offers: planOffers(plans) })
 })
 
 export const faqPageSchema = (faqs: FAQ[]) => ({

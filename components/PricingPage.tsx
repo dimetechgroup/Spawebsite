@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Check, ArrowRight, Clock } from 'lucide-react'
-import { plans } from '@/data'
-import { useSiteSettings } from '@/cms/hooks'
+import { usePlans, useSiteSettings } from '@/cms/hooks'
 import Seo from './Seo'
 import { graph, organizationSchema, pricingSchema } from '@/seo/schema'
 
@@ -18,7 +17,11 @@ function formatPrice (n: number) {
 }
 
 const PricingPage = () => {
-  const contactDetails = useSiteSettings().data?.contactDetails
+  const settings = useSiteSettings().data
+  const contactDetails = settings?.contactDetails
+  const trialDays = settings?.freeTrialDays ?? 0
+  const { data: plansData, error: plansError } = usePlans()
+  const plans = plansData ?? []
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>(
     'monthly'
   )
@@ -45,7 +48,7 @@ const PricingPage = () => {
     >
       <Seo
         path='/pricing'
-        jsonLd={graph(pricingSchema(), organizationSchema(contactDetails))}
+        jsonLd={graph(pricingSchema(plans, trialDays), organizationSchema(contactDetails))}
       />
       {/* Poppins is loaded globally in index.html, so no @import is needed here. */}
       <style>{`
@@ -231,60 +234,62 @@ const PricingPage = () => {
       </div>
 
       {/* ── FREE TRIAL BANNER ── */}
-      <div
-        style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 5vw 32px' }}
-      >
+      {trialDays > 0 && (
         <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '18px',
-            background: '#f8fafc',
-            border: `1.5px solid ${Gr(0.15)}`,
-            borderRadius: '16px',
-            padding: '18px 24px',
-            boxShadow: `0 8px 24px ${Gr(0.04)}`
-          }}
+          style={{ maxWidth: '1600px', margin: '0 auto', padding: '0 5vw 32px' }}
         >
           <div
             style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '12px',
-              background: '#fff',
-              border: `1px solid ${Gr(0.1)}`,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0,
-              boxShadow: `0 4px 12px ${Gr(0.06)}`
+              gap: '18px',
+              background: '#f8fafc',
+              border: `1.5px solid ${Gr(0.15)}`,
+              borderRadius: '16px',
+              padding: '18px 24px',
+              boxShadow: `0 8px 24px ${Gr(0.04)}`
             }}
           >
-            <Clock size={22} color={G} strokeWidth={2.5} />
-          </div>
-          <div>
-            <p
+            <div
               style={{
-                fontSize: '16px',
-                fontWeight: 500,
-                color: '#475569',
-                margin: 0,
-                letterSpacing: '-0.01em',
-                lineHeight: 1.4
+                width: '44px',
+                height: '44px',
+                borderRadius: '12px',
+                background: '#fff',
+                border: `1px solid ${Gr(0.1)}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: `0 4px 12px ${Gr(0.06)}`
               }}
             >
-              Enjoy a{' '}
-              <strong style={{ color: '#111827', fontWeight: 800 }}>
-                15-Day Free Trial
-              </strong>{' '}
-              on any plan for your first subscription.{' '}
-              <span style={{ color: G, fontWeight: 700 }}>
-                No credit card required.
-              </span>
-            </p>
+              <Clock size={22} color={G} strokeWidth={2.5} />
+            </div>
+            <div>
+              <p
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 500,
+                  color: '#475569',
+                  margin: 0,
+                  letterSpacing: '-0.01em',
+                  lineHeight: 1.4
+                }}
+              >
+                Enjoy a{' '}
+                <strong style={{ color: '#111827', fontWeight: 800 }}>
+                  {trialDays}-Day Free Trial
+                </strong>{' '}
+                on every plan for your first subscription.{' '}
+                <span style={{ color: G, fontWeight: 700 }}>
+                  No credit card required.
+                </span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* ── PRICING CARDS ── */}
       <section
@@ -299,6 +304,19 @@ const PricingPage = () => {
             alignItems: 'stretch'
           }}
         >
+          {plansError && (
+            <p style={{ gridColumn: '1 / -1', textAlign: 'center', fontSize: '15px', fontWeight: 600, color: '#64748b' }}>
+              Pricing could not be loaded right now. Please refresh, or contact us for a quote.
+            </p>
+          )}
+          {/* Placeholders hold the layout until the plans arrive from the CMS. */}
+          {!plansData && !plansError &&
+            [0, 1, 2].map(i => (
+              <div
+                key={i}
+                style={{ minHeight: '640px', borderRadius: '24px', background: '#f8fafc', border: '1.5px solid #f1f5f9' }}
+              />
+            ))}
           {plans.map((plan, i) => {
             const isGreen = plan.theme === 'green'
             const isDark = plan.theme === 'dark'
@@ -457,6 +475,19 @@ const PricingPage = () => {
                         Math.round(plan.monthlyPrice * (1 - ANNUAL_DISCOUNT))
                       )}{' '}
                       / mo · billed annually
+                    </p>
+                  )}
+                  {trialDays > 0 && (
+                    <p
+                      style={{
+                        marginTop: '16px',
+                        fontSize: '15px',
+                        fontWeight: 800,
+                        letterSpacing: '-0.01em',
+                        color: isDark ? AM : G
+                      }}
+                    >
+                      {trialDays}-day free trial
                     </p>
                   )}
                 </div>

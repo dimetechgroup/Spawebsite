@@ -3,6 +3,7 @@ import {
   loadAnchorFeatures,
   loadArticles,
   loadFaqs,
+  loadPlans,
   loadSiteSettings,
   loadTestimonials
 } from './content'
@@ -78,3 +79,4 @@ export const useArticles = () => useCms(loadArticles)
 export const useTestimonials = () => useCms(loadTestimonials)
 export const useAnchorFeatures = () => useCms(loadAnchorFeatures)
 export const useFaqs = () => useCms(loadFaqs)
+export const usePlans = () => useCms(loadPlans)
