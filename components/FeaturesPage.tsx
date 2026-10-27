@@ -23,7 +23,7 @@ import {
   utilityFeatures,
   featuresPageMarqueeItems
 } from '@/data'
-import { useAnchorFeatures, useSiteSettings } from '@/cms/hooks'
+import { useAnchorFeatures, usePlans, useSiteSettings } from '@/cms/hooks'
 import type { AnchorFeature } from '@/types'
 import DemoVideoEmbed from './DemoVideoEmbed'
 
@@ -43,6 +43,7 @@ const FeaturesPage: React.FC = () => {
   const featuresHeroImage = settings?.featuresHeroImage
   const demoVideo = settings?.demoVideo
   const allFeatures = useAnchorFeatures().data ?? []
+  const plans = usePlans().data ?? []
   const hiddenFeatures = allFeatures.filter(f => f.hidden)
   // The bento grid has four fixed positions, filled by the first four visible
   // cards; empty placeholders hold the layout until they load.
@@ -54,7 +55,7 @@ const FeaturesPage: React.FC = () => {
     <div className='bg-white selection:bg-[#207D40] selection:text-white'>
       <Seo
         path='/features'
-        jsonLd={graph(softwareApplicationSchema(), organizationSchema(settings?.contactDetails))}
+        jsonLd={graph(softwareApplicationSchema(plans), organizationSchema(settings?.contactDetails))}
       />
       {/* HERO SECTION */}
       <section className='relative pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-48 lg:pb-28 overflow-hidden'>

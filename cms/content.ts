@@ -1,4 +1,4 @@
-import { anchorFeatureStyles } from '@/data'
+import { anchorFeatureStyles, planStyles } from '@/data'
 import type {
   AnchorFeature,
   Article,
@@ -11,6 +11,7 @@ import type {
   FAQ,
   FAQCategoryColorMap,
   ModulesImage,
+  Plan,
   Testimonial
 } from '@/types'
 import { assetUrl, cmsItems, cmsSingleton, type CockpitAsset } from './client'
@@ -21,6 +22,11 @@ import { assetUrl, cmsItems, cmsSingleton, type CockpitAsset } from './client'
  *
  * Each loader runs at most once per page load: the promise is cached, so the
  * footer, the contact page and the structured data all share one request.
+ *
+ * Fetching and mapping are kept apart so a prerendered page can carry the raw
+ * responses it was built from, and the browser can map them without waiting on
+ * the network (see cms/hooks.ts). The raw form is what travels because mapped
+ * content holds icon components, which cannot be serialised.
  */
 
 const str = (v: unknown): string => (typeof v === 'string' ? v.trim() : '')
@@ -34,6 +40,21 @@ const once = <T>(load: () => Promise<T>) => {
     })
     return promise
   }
+}
+
+export interface CmsLoader<T> {
+  (): Promise<T>
+  /** Names this content in a prerendered page's snapshot. */
+  key: string
+  map: (raw: unknown) => T
+  /** The raw response, once this page load has fetched it. */
+  raw: () => unknown
+}
+
+const loader = <Raw, T>(key: string, fetch: () => Promise<Raw>, map: (raw: Raw) => T): CmsLoader<T> => {
+  let raw: Raw | undefined
+  const load = once(async () => map((raw = await fetch())))
+  return Object.assign(load, { key, map: map as (raw: unknown) => T, raw: () => raw })
 }
 
 // ── Site Settings ────────────────────────────────────────────────
@@ -52,6 +73,7 @@ interface CockpitSettings {
   demoVideoPoster?: CockpitAsset
   demoVideoPosterAlt?: string
   marqueeLabels?: string[]
+  freeTrialDays?: number
 }
 
 export interface SiteSettings {
@@ -62,6 +84,8 @@ export interface SiteSettings {
   demoVideo: DemoVideo
   /** The capability strip labels, doubled so Features.tsx can loop it seamlessly. */
   marqueeItems: string[]
+  /** Free trial length on every plan. 0 hides the trial copy on /pricing. */
+  freeTrialDays: number
 }
 
 /**
@@ -71,8 +95,7 @@ export interface SiteSettings {
  */
 const toE164 = (phone: string) => phone.replace(/[^\d+]/g, '')
 
-export const loadSiteSettings = once(async (): Promise<SiteSettings> => {
-  const s = await cmsSingleton<CockpitSettings>('sitesettings')
+export const loadSiteSettings = loader('sitesettings', () => cmsSingleton<CockpitSettings>('sitesettings'), (s): SiteSettings => {
   const labels = (s.marqueeLabels ?? []).map(str).filter(Boolean)
   const phone = str(s.salesPhone)
   return {
@@ -84,7 +107,8 @@ export const loadSiteSettings = once(async (): Promise<SiteSettings> => {
       embedUrl: str(s.demoVideoUrl),
       poster: { src: assetUrl(s.demoVideoPoster), alt: str(s.demoVideoPosterAlt) }
     },
-    marqueeItems: [...labels, ...labels]
+    marqueeItems: [...labels, ...labels],
+    freeTrialDays: Math.max(0, Math.round(Number(s.freeTrialDays) || 0))
   }
 })
 
@@ -173,11 +197,10 @@ const mapArticle = (row: CockpitArticle): Article => {
   }
 }
 
-export const loadArticles = once(async (): Promise<ArticlesContent> => {
-  const [rows, categories] = await Promise.all([
-    cmsItems<CockpitArticle>('articles', { datePublished: -1 }),
-    cmsItems<CockpitCategory>('articlecategories')
-  ])
+export const loadArticles = loader('articles', () => Promise.all([
+  cmsItems<CockpitArticle>('articles', { datePublished: -1 }),
+  cmsItems<CockpitCategory>('articlecategories')
+]), ([rows, categories]): ArticlesContent => {
   const articles = rows.map(mapArticle).filter(a => a.slug && a.title)
   return {
     articles,
@@ -213,8 +236,8 @@ interface CockpitTestimonial {
   statLabel?: string
 }
 
-export const loadTestimonials = once(async (): Promise<Testimonial[]> =>
-  (await cmsItems<CockpitTestimonial>('testimonials')).map(row => ({
+export const loadTestimonials = loader('testimonials', () => cmsItems<CockpitTestimonial>('testimonials'), (rows): Testimonial[] =>
+  rows.map(row => ({
     name: str(row.name),
     role: str(row.role),
     location: str(row.location),
@@ -240,8 +263,8 @@ interface CockpitAnchorFeature {
  * from `anchorFeatureStyles` on `key`; a card whose key has no entry there is
  * dropped, since it would render with no icon and no colour.
  */
-export const loadAnchorFeatures = once(async (): Promise<AnchorFeature[]> =>
-  (await cmsItems<CockpitAnchorFeature>('anchorfeatures'))
+export const loadAnchorFeatures = loader('anchorfeatures', () => cmsItems<CockpitAnchorFeature>('anchorfeatures'), (rows): AnchorFeature[] =>
+  rows
     .filter(row => anchorFeatureStyles[str(row.key)])
     .map(row => ({
       key: str(row.key),
@@ -252,6 +275,39 @@ export const loadAnchorFeatures = once(async (): Promise<AnchorFeature[]> =>
       ...(row.hidden === true && { hidden: true }),
       ...anchorFeatureStyles[str(row.key)]
     }) as AnchorFeature)
+)
+
+// ── Pricing plans ────────────────────────────────────────────────
+
+interface CockpitPlan {
+  key?: string
+  name?: string
+  tagline?: string
+  monthlyPrice?: number
+  features?: string[]
+  buttonText?: string
+  popular?: boolean
+}
+
+/**
+ * Plan cards on /pricing, cheapest first. Like the anchor features, each joins
+ * its icon and theme from `planStyles` on `key`; a plan with an unknown key or
+ * no price is dropped rather than shown broken.
+ */
+export const loadPlans = loader('plans', () => cmsItems<CockpitPlan>('plans'), (rows): Plan[] =>
+  rows
+    .filter(row => planStyles[str(row.key)] && str(row.name) && Number(row.monthlyPrice) > 0)
+    .map(row => ({
+      id: str(row.key),
+      name: str(row.name),
+      tagline: str(row.tagline),
+      monthlyPrice: Number(row.monthlyPrice),
+      features: (row.features ?? []).map(str).filter(Boolean),
+      buttonText: str(row.buttonText),
+      ...(row.popular === true && { popular: true }),
+      ...planStyles[str(row.key)]
+    }))
+    .sort((a, b) => a.monthlyPrice - b.monthlyPrice)
 )
 
 // ── FAQs ─────────────────────────────────────────────────────────
@@ -268,11 +324,10 @@ export interface FaqsContent {
   categoryColors: FAQCategoryColorMap
 }
 
-export const loadFaqs = once(async (): Promise<FaqsContent> => {
-  const [rows, categories] = await Promise.all([
-    cmsItems<CockpitFaq>('faqs'),
-    cmsItems<CockpitCategory>('faqcategories')
-  ])
+export const loadFaqs = loader('faqs', () => Promise.all([
+  cmsItems<CockpitFaq>('faqs'),
+  cmsItems<CockpitCategory>('faqcategories')
+]), ([rows, categories]): FaqsContent => {
   return {
     faqs: rows
       .filter(row => str(row.question) && str(row.answer))

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { featureGroups } from '../data'
 import { useSiteSettings } from '@/cms/hooks'
@@ -21,6 +21,8 @@ const cardVariants = {
 const Features: React.FC = () => {
   const marqueeItems = useSiteSettings().data?.marqueeItems ?? []
   const [hovered, setHovered] = useState<number | null>(null)
+  const marqueeRef = useRef<HTMLDivElement>(null)
+  const marqueeInView = useInView(marqueeRef)
 
   return (
     <section
@@ -374,10 +376,16 @@ const Features: React.FC = () => {
           />
 
           <div className='flex gap-10 overflow-hidden'>
-            <motion.div
+            {/* A CSS animation rather than a framer-motion loop, which costs
+                script on every frame, and paused while off screen so it costs
+                nothing while the rest of the page loads. */}
+            <div
+              ref={marqueeRef}
               className='flex gap-10 flex-shrink-0'
-              animate={{ x: ['0%', '-50%'] }}
-              transition={{ duration: 22, ease: 'linear', repeat: Infinity }}
+              style={{
+                animation: 'marquee-scroll 22s linear infinite',
+                animationPlayState: marqueeInView ? 'running' : 'paused'
+              }}
             >
               {[...marqueeItems, ...marqueeItems].map((item, i) => (
                 <div key={i} className='flex items-center gap-3 flex-shrink-0'>
@@ -396,12 +404,16 @@ const Features: React.FC = () => {
                   </span>
                 </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
 
       <style>{`
+        @keyframes marquee-scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
         @keyframes gradient-shift {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
