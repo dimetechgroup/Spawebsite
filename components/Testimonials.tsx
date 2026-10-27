@@ -300,16 +300,18 @@ const Testimonials: React.FC = () => {
                   className='absolute bottom-0 left-0 right-0 h-[3px]'
                   style={{ background: 'rgba(255,255,255,0.04)' }}
                 >
+                  {/* Grows with a CSS transform rather than a framer-motion
+                      width: a width change forces layout and paint on every
+                      frame, for as long as the carousel runs. The key restarts
+                      it on each slide. */}
                   {!isPaused && (
-                    <motion.div
+                    <div
                       key={`progress-${current}`}
-                      className='h-full'
+                      className='h-full origin-left'
                       style={{
-                        background: 'linear-gradient(90deg, #2E8B35, #F5A800)'
+                        background: 'linear-gradient(90deg, #2E8B35, #F5A800)',
+                        animation: 'testimonial-progress 5s linear both'
                       }}
-                      initial={{ width: '0%' }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: 5, ease: 'linear' }}
                     />
                   )}
                 </div>
@@ -382,6 +384,13 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @keyframes testimonial-progress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+      `}</style>
     </section>
   )
 }

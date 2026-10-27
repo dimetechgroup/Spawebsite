@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  type CmsLoader,
   loadAnchorFeatures,
   loadArticles,
   loadFaqs,
@@ -18,7 +19,34 @@ export interface CmsState<T> {
  * Results already fetched this page load, so navigating back to a page renders
  * its content immediately instead of flashing the loading state again.
  */
-const resolved = new Map<() => Promise<unknown>, unknown>()
+const resolved = new Map<CmsLoader<unknown>, unknown>()
+
+/**
+ * The raw responses a prerendered page was built from, by loader key. With them
+ * the first render reproduces the static HTML exactly, so index.tsx can hydrate
+ * it instead of starting over. They are only a starting point: each loader still
+ * fetches once the page is up, so an edit in Cockpit shows on the next page load
+ * without a rebuild.
+ */
+let snapshot: Record<string, unknown> = {}
+const fromSnapshot = new Map<CmsLoader<unknown>, unknown>()
+
+export const seedCms = (raw: Record<string, unknown>) => {
+  snapshot = raw
+}
+
+const snapshotData = <T>(load: CmsLoader<T>): T | undefined => {
+  if (!(load.key in snapshot)) return undefined
+  if (!fromSnapshot.has(load)) fromSnapshot.set(load, load.map(snapshot[load.key]))
+  return fromSnapshot.get(load) as T
+}
+
+/** Loaders rendered this page load, recorded during render so a render to HTML counts too. */
+const used = new Set<CmsLoader<unknown>>()
+
+/** What scripts/prerender.mjs embeds in a page: the raw responses it rendered with. */
+export const cmsSnapshot = () =>
+  Object.fromEntries([...used].filter(load => load.raw() !== undefined).map(load => [load.key, load.raw()]))
 
 /**
  * Marks the document while CMS requests are in flight, and when one fails, so
@@ -41,29 +69,41 @@ const track = <T>(promise: Promise<T>): Promise<T> => {
     })
 }
 
-const useCms = <T>(load: () => Promise<T>): CmsState<T> => {
-  const cached = resolved.get(load) as T | undefined
+const useCms = <T>(load: CmsLoader<T>): CmsState<T> => {
+  used.add(load)
+  const initial = (resolved.get(load) as T | undefined) ?? snapshotData(load)
   const [state, setState] = useState<CmsState<T>>({
-    data: cached ?? null,
-    loading: cached === undefined,
+    data: initial ?? null,
+    loading: initial === undefined,
     error: null
   })
 
   useEffect(() => {
-    if (resolved.has(load)) return
     let active = true
+    const show = (data: T) => {
+      if (active) setState(prev => (prev.data === data ? prev : { data, loading: false, error: null }))
+    }
+    if (resolved.has(load)) {
+      // Fresh content may have landed between this render and now.
+      show(resolved.get(load) as T)
+      return
+    }
     track(load())
-      .then(data => {
+      .then(fresh => {
+        // Unchanged since the prerender: keep the content already on screen, so nothing re-renders.
+        const unchanged = JSON.stringify(load.raw()) === JSON.stringify(snapshot[load.key])
+        const data = (unchanged && snapshotData(load)) || fresh
         resolved.set(load, data)
-        if (active) setState({ data, loading: false, error: null })
+        show(data)
       })
       .catch((err: unknown) => {
+        // Content from the snapshot stays up: slightly stale beats an error.
         if (active) {
-          setState({
-            data: null,
-            loading: false,
-            error: err instanceof Error ? err.message : 'Could not load content'
-          })
+          setState(prev =>
+            prev.data !== null
+              ? prev
+              : { data: null, loading: false, error: err instanceof Error ? err.message : 'Could not load content' }
+          )
         }
       })
     return () => {

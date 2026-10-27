@@ -3,9 +3,13 @@
  *
  * The site is a client-rendered SPA, so crawlers would otherwise receive an
  * empty <div id="root">. After `vite build`, this script serves dist/, drives a
- * real browser over every route, and writes the fully-rendered DOM back to disk
- * as static HTML, one file per URL. It then emits sitemap.xml from the same
- * route list, so the sitemap can never list a page that was not prerendered.
+ * real browser over every route, and writes each page back to disk as static
+ * HTML, one file per URL. It then emits sitemap.xml from the same route list,
+ * so the sitemap can never list a page that was not prerendered.
+ *
+ * Each page's body is React's own render of that route (see index.tsx), saved
+ * with the CMS responses it used, so the browser can hydrate the HTML instead
+ * of throwing it away and rendering the page a second time.
  *
  * Route list comes from window.__SEO_ROUTES__ (see index.tsx), which is built
  * from seo/routes.ts. There is no second copy of the routes to keep in sync.
@@ -13,8 +17,8 @@
  * Usage: node scripts/prerender.mjs      (runs automatically via `pnpm build`)
  */
 import { createServer } from 'node:http'
-import { mkdir, writeFile } from 'node:fs/promises'
-import { dirname, join, resolve } from 'node:path'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { dirname, extname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sirv from 'sirv'
 import puppeteer from 'puppeteer'
@@ -39,15 +43,25 @@ const NAV_TIMEOUT = 60_000
 
 const log = (...args) => console.log('[prerender]', ...args)
 
-/** Serves dist/ with an SPA fallback so client-side routes resolve. */
+/**
+ * Serves dist/ with an SPA fallback so client-side routes resolve. The fallback
+ * is the shell as Vite built it, read before anything is written: dist/index.html
+ * itself becomes the prerendered homepage partway through the run.
+ */
 const startServer = async () => {
-  const handler = sirv(DIST, { dev: true, single: true })
-  const server = createServer((req, res) =>
+  const shell = await readFile(join(DIST, 'index.html'), 'utf8')
+  const handler = sirv(DIST, { dev: true })
+  const server = createServer((req, res) => {
+    if (!extname(new URL(req.url, 'http://x').pathname)) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8')
+      res.end(shell)
+      return
+    }
     handler(req, res, () => {
       res.statusCode = 404
       res.end('not found')
     })
-  )
+  })
   await new Promise((res, rej) => {
     server.once('error', rej)
     server.listen(0, '127.0.0.1', res)
@@ -56,9 +70,8 @@ const startServer = async () => {
 }
 
 /**
- * Framer-motion sections start at opacity:0 and only animate in via
- * whileInView. Snapshotting immediately would bake that hidden state into the
- * static HTML, so scroll the whole page first to trigger every animation.
+ * Scrolls the whole page so anything that only mounts or loads once it is in
+ * view has its content by the time the page is rendered to HTML.
  */
 const revealAllSections = async page => {
   await page.evaluate(async () => {
@@ -119,6 +132,10 @@ const main = async () => {
 
   try {
     const page = await browser.newPage()
+    // Tells index.tsx it is being prerendered (render live, expose the HTML).
+    await page.evaluateOnNewDocument(() => {
+      window.__PRERENDERING__ = true
+    })
     await page.setViewport({ width: 1440, height: 900 })
     page.setDefaultNavigationTimeout(NAV_TIMEOUT)
 
@@ -176,16 +193,33 @@ const main = async () => {
       }
 
       const { html, textLength, title, sawSpinner } = await page.evaluate(
-        () => {
+        async () => {
           const main = document.querySelector('main')
           const text = main?.innerText ?? ''
+          const rendered = await window.__PRERENDER__()
+
+          // The live document supplies everything outside #root, such as the
+          // head tags components/Seo.tsx manages. #root gets React's render,
+          // spliced in as a string so it reaches disk byte for byte.
+          const doc = document.documentElement.cloneNode(true)
+          const root = doc.querySelector('#root')
+          root.replaceChildren(document.createComment('prerender-root'))
+          doc.querySelector('#cms-snapshot')?.remove()
+          const snapshot = document.createElement('script')
+          snapshot.type = 'application/json'
+          snapshot.id = 'cms-snapshot' // read back by index.tsx
+          // Escaped so CMS text containing "</script>" cannot end the tag early.
+          snapshot.textContent = JSON.stringify(rendered.cms).replace(/</g, '\\u003c')
+          root.after(snapshot)
+
           return {
-            html: document.documentElement.outerHTML,
+            html: doc.outerHTML.replace('<!--prerender-root-->', () => rendered.html),
             textLength: text.length,
             title: document.title,
-            // The Suspense fallback in App.tsx. If it is still on screen the
-            // lazy chunk never resolved and we would snapshot a spinner.
-            sawSpinner: text.includes('Loading...')
+            // The Suspense fallback in App.tsx. If it shows, the lazy chunk never
+            // resolved and we would save a spinner. A boundary React gave up on
+            // server-side is marked <!--$!-->.
+            sawSpinner: text.includes('Loading...') || rendered.html.includes('Loading...') || rendered.html.includes('<!--$!-->')
           }
         }
       )

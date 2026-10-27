@@ -118,9 +118,7 @@ const InnovationSection: React.FC = () => {
                   background: `linear-gradient(100deg, ${BRAND.greenLight} 10%, ${BRAND.amber} 85%)`,
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  animation: 'shimmer 6s linear infinite',
-                  backgroundSize: '200% auto'
+                  backgroundClip: 'text'
                 }}
               >
                 Innovation
@@ -274,10 +272,6 @@ const InnovationSection: React.FC = () => {
         @keyframes breathe {
           0%, 100% { transform: scale(1.02); }
           50% { transform: scale(1.06); }
-        }
-        @keyframes shimmer {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 200% 50%; }
         }
         @keyframes sweep {
           0% { left: -10%; opacity: 0; }

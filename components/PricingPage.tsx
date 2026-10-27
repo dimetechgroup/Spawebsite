@@ -87,8 +87,16 @@ const PricingPage = () => {
           to   { opacity: 1; transform: translateY(0); }
         }
         .fade-up { animation: fadeUp 0.6s ease both; }
+        /* As tall as the real cards, so nothing below jumps when they replace
+           the placeholders. Measured from the current plans (815 to 1095px
+           depending on width); re-measure if plans gain or lose features. */
+        .plan-placeholder { min-height: 840px; }
+        @media (max-width: 1279px) {
+          .plan-placeholder { min-height: 1000px; }
+        }
         @media (max-width: 900px) {
           .plans-grid { grid-template-columns: 1fr !important; }
+          .plan-placeholder { min-height: 860px; }
         }
         @media (max-width: 640px) {
           .plan-btn { padding: 18px 24px; font-size: 14px; }
@@ -314,7 +322,8 @@ const PricingPage = () => {
             [0, 1, 2].map(i => (
               <div
                 key={i}
-                style={{ minHeight: '640px', borderRadius: '24px', background: '#f8fafc', border: '1.5px solid #f1f5f9' }}
+                className='plan-placeholder'
+                style={{ borderRadius: '24px', background: '#f8fafc', border: '1.5px solid #f1f5f9' }}
               />
             ))}
           {plans.map((plan, i) => {
