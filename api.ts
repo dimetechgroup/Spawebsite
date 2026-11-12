@@ -2,7 +2,7 @@
  * The site's two forms. Neither needs a backend of our own beyond one PHP file:
  *
  * - Contact posts to /api/contact, public/api/contact.php on the same host, which
- *   emails the message to the sales inbox.
+ *   emails the message to the sales inbox and a confirmation to the visitor.
  * - Newsletter signups go straight from the browser to HubSpot.
  */
 

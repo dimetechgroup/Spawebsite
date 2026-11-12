@@ -6,6 +6,7 @@
  * The rest of the site is static, so this is its only server code. It validates
  * the form, drops obvious bots, throttles each IP, and emails the message to the
  * sales inbox with Reply-To set to the visitor, so sales can answer in one click.
+ * Once sales has the message, the visitor gets a short "thank you" confirmation.
  *
  * Mail goes out through the server's own mail transport (PHP mail()). The SPF
  * record for myspa.co.ke authorises this server and cPanel DKIM-signs for the
@@ -23,6 +24,10 @@ declare(strict_types=1);
 const RECIPIENT = 'sales@dimetechgroup.com';
 const SENDER = 'no-reply@myspa.co.ke';
 const SENDER_NAME = 'MySpa Website';
+
+/** The visitor sees this name on their confirmation, from the same SENDER address. */
+const CONFIRMATION_SENDER_NAME = 'MySpa';
+const CONFIRMATION_SUBJECT = 'Thank you for contacting MySpa';
 
 /** Messages accepted per IP per window. Generous for people, closed to loops. */
 const MAX_PER_WINDOW = 5;
@@ -93,6 +98,45 @@ function mailbox(string $name, string $address): string
         : encodeHeader($name);
 
     return $display . ' <' . $address . '>';
+}
+
+/**
+ * "Hi Jane," from the name field, but only when its first word looks like a
+ * name. The confirmation goes to whatever address was typed into the form, so
+ * it must never carry free text a spammer could fill with a link.
+ */
+function greeting(string $name): string
+{
+    return preg_match('/^([\p{L}\p{M}\'-]{1,40})(?:\s|$)/u', $name, $match) === 1
+        ? 'Hi ' . $match[1] . ','
+        : 'Hello,';
+}
+
+/**
+ * Sends one plain-text email from SENDER.
+ *
+ * Local testing only (see vite.config.ts): MYSPA_CONTACT_DRY_RUN=1 logs the
+ * email instead of sending it. Never set this on the server.
+ */
+function sendMail(string $to, string $subject, string $body, array $headers): bool
+{
+    $headers += [
+        'MIME-Version' => '1.0',
+        'Content-Type' => 'text/plain; charset=UTF-8',
+        'Content-Transfer-Encoding' => 'quoted-printable',
+    ];
+
+    if (getenv('MYSPA_CONTACT_DRY_RUN') === '1') {
+        error_log("[contact dry run]\nTo: " . $to . "\nSubject: " . $subject . "\n"
+            . implode("\n", array_map(static function (string $key, string $value): string {
+                return $key . ': ' . $value;
+            }, array_keys($headers), $headers))
+            . "\n\n" . $body);
+        return true;
+    }
+
+    // -f sets the envelope sender, which is the address SPF checks.
+    return mail($to, $subject, quoted_printable_encode($body), $headers, '-f' . SENDER);
 }
 
 // ── Per-IP throttle ─────────────────────────────────────────────────────────
@@ -196,9 +240,8 @@ if ($subject === '') {
 } elseif (length($subject) > MAX_FIELD_LENGTH) {
     $errors['subject'] = 'Subject may not exceed ' . MAX_FIELD_LENGTH . ' characters.';
 }
-if ($message === '') {
-    $errors['message'] = 'Message is required.';
-} elseif (length($message) > MAX_MESSAGE_LENGTH) {
+// The message is optional: name, contact details and subject are enough to follow up.
+if (length($message) > MAX_MESSAGE_LENGTH) {
     $errors['message'] = 'Message may not exceed ' . MAX_MESSAGE_LENGTH . ' characters.';
 }
 if ($errors !== []) {
@@ -223,38 +266,58 @@ $body = implode("\r\n", [
     '',
     'Message:',
     '',
-    str_replace(["\r\n", "\r", "\n"], "\r\n", $message),
+    $message === '' ? '(No message provided)' : str_replace(["\r\n", "\r", "\n"], "\r\n", $message),
     '',
     '--',
     'Sent ' . $sentAt . ' EAT from IP ' . $ip,
 ]);
 
-$mailSubject = encodeHeader('Website enquiry from ' . $name . ': ' . $subject);
-$headers = [
+$sent = sendMail(RECIPIENT, encodeHeader('Website enquiry from ' . $name . ': ' . $subject), $body, [
     'From' => mailbox(SENDER_NAME, SENDER),
     'Reply-To' => mailbox($name, $email),
-    'MIME-Version' => '1.0',
-    'Content-Type' => 'text/plain; charset=UTF-8',
-    'Content-Transfer-Encoding' => 'quoted-printable',
-];
-
-// Local testing only (see vite.config.ts): log the email instead of sending it.
-// Never set this on the server.
-if (getenv('MYSPA_CONTACT_DRY_RUN') === '1') {
-    error_log("[contact dry run]\nTo: " . RECIPIENT . "\nSubject: " . $mailSubject . "\n"
-        . implode("\n", array_map(static function (string $key, string $value): string {
-            return $key . ': ' . $value;
-        }, array_keys($headers), $headers))
-        . "\n\n" . $body);
-    respond(200, ['message' => 'Message sent successfully.']);
-}
-
-// -f sets the envelope sender, which is the address SPF checks.
-$sent = mail(RECIPIENT, $mailSubject, quoted_printable_encode($body), $headers, '-f' . SENDER);
+]);
 
 if (!$sent) {
     error_log('contact.php: mail() failed for a message from ' . $email);
     respond(500, ['message' => 'We could not send your message. Please try again, or email ' . RECIPIENT . '.']);
+}
+
+// ── Confirmation to the visitor ─────────────────────────────────────────────
+// Fixed wording only: nothing from the subject or message is echoed back, so
+// the form cannot be used to send someone else an email with a spammer's text.
+
+$confirmation = implode("\r\n", [
+    greeting($name),
+    '',
+    'Thank you for contacting MySpa. We have received your enquiry and a member',
+    'of our team will get back to you shortly. We typically respond within 2 hours.',
+    '',
+    'If you have anything to add in the meantime, just reply to this email and it',
+    'will reach our team.',
+    '',
+    'Warm regards,',
+    'The MySpa Team',
+    'https://myspa.co.ke',
+    '',
+    '--',
+    'You are receiving this because this address was entered in the contact form',
+    'on myspa.co.ke. If that was not you, you can safely ignore this email.',
+]);
+
+$confirmed = sendMail($email, encodeHeader(CONFIRMATION_SUBJECT), $confirmation, [
+    'From' => mailbox(CONFIRMATION_SENDER_NAME, SENDER),
+    // Replies go to sales rather than bouncing off the no-reply address.
+    'Reply-To' => RECIPIENT,
+    // RFC 3834: marks the email as automatic, so mail servers do not answer it
+    // with out-of-office or vacation replies.
+    'Auto-Submitted' => 'auto-generated',
+    'X-Auto-Response-Suppress' => 'All',
+]);
+
+// Sales already has the enquiry, so a failed confirmation is logged, not reported:
+// telling the visitor to resend would only produce a duplicate enquiry.
+if (!$confirmed) {
+    error_log('contact.php: confirmation mail() failed for ' . $email);
 }
 
 respond(200, ['message' => 'Message sent successfully.']);

@@ -335,14 +335,16 @@ const ContactPage: React.FC = () => {
                   </div>
                   <div className='space-y-2 flex-1 flex flex-col'>
                     <label className='text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1'>
-                      Message
+                      Message{' '}
+                      <span className='normal-case tracking-normal font-medium'>
+                        (optional)
+                      </span>
                     </label>
                     <textarea
                       rows={4}
                       name='message'
                       value={form.message}
                       onChange={handleChange}
-                      required
                       className='flex-1 w-full bg-[#F8FAFC] border border-gray-100 rounded-xl px-5 py-3.5 sm:py-3 focus:outline-none focus:border-[#207D40] transition-colors text-base sm:text-sm font-medium resize-none'
                       placeholder='Tell us about your brand vision...'
                     />
