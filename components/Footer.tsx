@@ -151,7 +151,9 @@ const Footer: React.FC = () => {
         </div>
 
         <div className='pt-10 border-t border-gray-800 text-center text-gray-500 text-xs sm:text-[11px] font-black uppercase tracking-widest'>
-          <p>
+          {/* The prerendered year goes stale on 1 January until the next build;
+              this lets hydration correct it rather than treat it as an error. */}
+          <p suppressHydrationWarning>
             copyright © {new Date().getFullYear()} MySpa. All rights reserved.
           </p>
         </div>

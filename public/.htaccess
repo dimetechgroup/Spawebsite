@@ -20,6 +20,12 @@ Options -Indexes
   RewriteEngine On
   RewriteBase /
 
+  # ── Never serve .env files ────────────────────────────────────────────────
+  # The contact form's SMTP password lives in a .env one level ABOVE the web
+  # root (see api/contact.php). If a copy is ever uploaded into the site by
+  # mistake, refuse it rather than hand the password to anyone who asks.
+  RewriteRule (^|/)\.env - [F,L]
+
   # ── Canonical host ────────────────────────────────────────────────────────
   # Force HTTPS and the non-www host. MUST match SITE_URL in seo/routes.ts. If
   # these disagree, canonicals point at a URL that redirects and ranking

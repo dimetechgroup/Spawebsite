@@ -137,7 +137,9 @@ export interface FeaturesPageMarqueeItem {
 }
 
 // ── PricingPage.tsx ─────────────────────────────────────────────
+/** One card on /pricing. Text and price come from Cockpit; icon and theme from `planStyles`. */
 export interface Plan {
+  /** The Cockpit `key` (basic / standard / premium). Never edited by an author. */
   id: string
   name: string
   icon: LucideIcon

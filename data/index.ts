@@ -279,75 +279,16 @@ export const featuresPageMarqueeItems: FeaturesPageMarqueeItem[] = [
 
 // ── PricingPage.tsx ─────────────────────────────────────────────
 
-export const plans: Plan[] = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    icon: Rocket,
-    monthlyPrice: 3000,
-    tagline: 'Perfect for small businesses starting out.',
-    features: [
-      '1–3 Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling'
-    ],
-    buttonText: 'Start Free Trial',
-    theme: 'light'
-  },
-  {
-    id: 'standard',
-    name: 'Standard',
-    icon: Buildings,
-    monthlyPrice: 5000,
-    tagline: 'Designed for growing medium to high-end businesses.',
-    features: [
-      '4–20 Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling'
-    ],
-    buttonText: 'Join the Standard Plan',
-    theme: 'dark',
-    popular: true
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    icon: Landmark,
-    monthlyPrice: 10000,
-    tagline: 'Built for high-end spa businesses at scale.',
-    features: [
-      'Unlimited Users Management',
-      'Unlimited Appointment Scheduling',
-      'Lead Management',
-      'Vouchers Management',
-      'Subscription Management',
-      'Unlimited Inventory/Service Management',
-      'Payroll Management',
-      'Reports & Analytics',
-      'Payment Gateway',
-      'Stock & Inventory Management',
-      'Unlimited Scheduling'
-    ],
-    buttonText: 'Request Premium Access',
-    theme: 'green'
-  }
-]
+/**
+ * Icon and card colour scheme for each plan, joined on the Cockpit `key`. The
+ * plan's text and price come from the CMS (cms/content.ts); a plan whose key
+ * has no entry here is dropped, since it would render with no icon.
+ */
+export const planStyles: Record<string, Pick<Plan, 'icon' | 'theme'>> = {
+  basic: { icon: Rocket, theme: 'light' },
+  standard: { icon: Buildings, theme: 'dark' },
+  premium: { icon: Landmark, theme: 'green' }
+}
 
 // ── AboutSection.tsx ────────────────────────────────────────────
 

@@ -17,18 +17,8 @@ import DemoVideoEmbed from './DemoVideoEmbed'
 
 const MotionLink = motion.create(Link)
 
-const fadeUp: import('framer-motion').Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.12,
-      duration: 0.65,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number]
-    }
-  })
-}
+// No entrance animation in the hero: its headline is the page's largest paint,
+// and a fade-in would hold that back until the JavaScript has loaded and run.
 
 const Hero: React.FC = () => {
   const settings = useSiteSettings().data
@@ -88,11 +78,7 @@ const Hero: React.FC = () => {
         <div className='grid lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-14 xl:gap-20 items-center'>
           {/* ─────────── LEFT COLUMN ─────────── */}
           <div className='flex flex-col items-start'>
-            <motion.h1
-              variants={fadeUp}
-              initial='hidden'
-              animate='visible'
-              custom={1}
+            <h1
               style={{ fontFamily: '"Playfair Display", serif' }}
               className='text-[2.3rem] sm:text-[2.8rem] lg:text-[2.6rem] xl:text-[3.1rem] 2xl:text-[3.5rem] font-bold text-[#0d1f0d] leading-[1.1] tracking-[-0.02em] mb-6 text-balance'
             >
@@ -109,40 +95,26 @@ const Hero: React.FC = () => {
               >
                 Kenyan Spas and Salons
               </em>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              variants={fadeUp}
-              initial='hidden'
-              animate='visible'
-              custom={2}
+            <p
               style={{ fontFamily: '"DM Sans", sans-serif' }}
               className='text-[#0d1f0d] text-[1.15rem] font-semibold leading-snug mb-4'
             >
               <span className='sm:block'>Simplify spa and salon operations.</span>{' '}
               <span className='sm:block text-[#207D40]'>Grow with confidence.</span>
-            </motion.p>
+            </p>
 
-            <motion.p
-              variants={fadeUp}
-              initial='hidden'
-              animate='visible'
-              custom={3}
+            <p
               style={{ fontFamily: '"DM Sans", sans-serif' }}
               className='text-[#5a6e5a] text-[1rem] leading-[1.75] max-w-[450px] mb-10'
             >
               My Spa Management System is designed exclusively for spas. We are
               helping owners digitize operations, gain real-time visibility, and
               scale with confidence from anywhere.
-            </motion.p>
+            </p>
 
-            <motion.div
-              variants={fadeUp}
-              initial='hidden'
-              animate='visible'
-              custom={4}
-              className='flex flex-col sm:flex-row items-stretch sm:items-start gap-3 mb-10 w-full sm:w-auto'
-            >
+            <div className='flex flex-col sm:flex-row items-stretch sm:items-start gap-3 mb-10 w-full sm:w-auto'>
               <MotionLink
                 to='/contact'
                 whileHover={{ scale: 1.04, y: -2 }}
@@ -175,17 +147,14 @@ const Hero: React.FC = () => {
                 </span>
                 How it works
               </motion.button>
-            </motion.div>
+            </div>
           </div>
 
           {/* ─────────── RIGHT COLUMN ─────────── */}
-          <motion.div
+          <div
             ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className='relative flex justify-center lg:justify-end'
             style={{ perspective: '1000px' }}
           >
@@ -231,7 +200,7 @@ const Hero: React.FC = () => {
                 />
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </div>
 
