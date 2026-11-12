@@ -10,7 +10,8 @@ export default defineConfig(() => {
       // The contact form posts to /api/contact, which is public/api/contact.php
       // in production. To try it locally, run this next to `pnpm dev`:
       //   MYSPA_CONTACT_DRY_RUN=1 php -S localhost:8000 -t public
-      // Dry run logs the email to that terminal instead of sending it.
+      // Dry run logs the email to that terminal instead of sending it. Without
+      // it, mail really goes out through the SMTP account in the project .env.
       proxy: {
         '/api/contact': {
           target: 'http://localhost:8000',

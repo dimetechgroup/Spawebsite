@@ -8,9 +8,16 @@
  * sales inbox with Reply-To set to the visitor, so sales can answer in one click.
  * Once sales has the message, the visitor gets a short "thank you" confirmation.
  *
- * Mail goes out through the server's own mail transport (PHP mail()). The SPF
- * record for myspa.co.ke authorises this server and cPanel DKIM-signs for the
- * domain, so SENDER must stay a @myspa.co.ke address or delivery suffers.
+ * Mail goes out over SMTP using the MAIL_* settings in the .env file one level
+ * above the web root (see ENV_FILE). That file holds the SMTP password, so it
+ * lives outside the public folder, where Apache cannot serve it, and out of git.
+ * SMTP mail is sent as the account it logs in with (MAIL_USERNAME): Gmail
+ * rewrites any other From address to that one anyway.
+ *
+ * Without that .env, mail falls back to the server's own mail transport (PHP
+ * mail()). The SPF record for myspa.co.ke authorises this server and cPanel
+ * DKIM-signs for the domain, so SENDER must stay a @myspa.co.ke address or
+ * delivery suffers.
  *
  * Nothing in this file is secret, and it must stay that way: if PHP ever stopped
  * executing for this site, Apache would serve the file as plain text.
@@ -25,9 +32,16 @@ const RECIPIENT = 'sales@dimetechgroup.com';
 const SENDER = 'no-reply@myspa.co.ke';
 const SENDER_NAME = 'MySpa Website';
 
-/** The visitor sees this name on their confirmation, from the same SENDER address. */
+/** The name the visitor sees on their confirmation. */
 const CONFIRMATION_SENDER_NAME = 'MySpa';
 const CONFIRMATION_SUBJECT = 'Thank you for contacting MySpa';
+
+/**
+ * SMTP settings, as MAIL_* lines. One level above the web root, so Apache never
+ * serves it: the project root locally, the folder above public_html on the server.
+ */
+const ENV_FILE = __DIR__ . '/../../.env';
+const SMTP_TIMEOUT_SECONDS = 15;
 
 /** Messages accepted per IP per window. Generous for people, closed to loops. */
 const MAX_PER_WINDOW = 5;
@@ -84,7 +98,9 @@ function encodeHeader(string $text): string
     }
     $words[] = $chunk;
 
-    return implode(' ', array_map(static function (string $word): string {
+    // Folded onto separate lines: a long non-Latin name could otherwise push the
+    // header past SMTP's 998-character line limit and get the email rejected.
+    return implode("\r\n ", array_map(static function (string $word): string {
         return '=?UTF-8?B?' . base64_encode($word) . '?=';
     }, $words));
 }
@@ -112,31 +128,175 @@ function greeting(string $name): string
         : 'Hello,';
 }
 
+// ── Sending ─────────────────────────────────────────────────────────────────
+
 /**
- * Sends one plain-text email from SENDER.
+ * KEY=value pairs from a .env file, quotes optional, # comment lines skipped.
+ * No ${VAR} expansion: only the literal MAIL_* values are needed.
+ *
+ * @return array<string, string>
+ */
+function readEnvFile(string $path): array
+{
+    $values = [];
+    foreach (@file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [] as $line) {
+        if (preg_match('/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/', $line, $match) !== 1) {
+            continue;
+        }
+        $value = $match[2];
+        if (strlen($value) >= 2 && ($value[0] === '"' || $value[0] === "'") && substr($value, -1) === $value[0]) {
+            $value = substr($value, 1, -1);
+        }
+        $values[$match[1]] = $value;
+    }
+
+    return $values;
+}
+
+/**
+ * The SMTP account from ENV_FILE, or null to send with mail() instead.
+ *
+ * @return array{host: string, port: int, username: string, password: string, encryption: string}|null
+ */
+function smtpConfig(): ?array
+{
+    static $loaded = false;
+    static $config = null;
+    if ($loaded) {
+        return $config;
+    }
+    $loaded = true;
+
+    $env = readEnvFile(ENV_FILE);
+    if (strtolower($env['MAIL_MAILER'] ?? '') !== 'smtp') {
+        return null;
+    }
+    foreach (['MAIL_HOST', 'MAIL_PORT', 'MAIL_USERNAME', 'MAIL_PASSWORD'] as $key) {
+        if (($env[$key] ?? '') === '') {
+            error_log('contact.php: ' . $key . ' is missing from ' . ENV_FILE . ', sending with mail() instead');
+            return null;
+        }
+    }
+
+    return $config = [
+        'host' => $env['MAIL_HOST'],
+        'port' => (int) $env['MAIL_PORT'],
+        'username' => $env['MAIL_USERNAME'],
+        'password' => $env['MAIL_PASSWORD'],
+        'encryption' => strtolower($env['MAIL_ENCRYPTION'] ?? ''),
+    ];
+}
+
+/**
+ * Delivers one finished message over SMTP: only the commands a single
+ * authenticated send needs. Throws RuntimeException with the server's reply.
+ */
+function smtpSend(array $smtp, string $to, string $message): void
+{
+    // Port 465 is TLS from the first byte; others (587) upgrade with STARTTLS.
+    $implicitTls = $smtp['port'] === 465 || $smtp['encryption'] === 'ssl';
+    $socket = @stream_socket_client(
+        ($implicitTls ? 'ssl://' : 'tcp://') . $smtp['host'] . ':' . $smtp['port'],
+        $errno,
+        $errstr,
+        SMTP_TIMEOUT_SECONDS
+    );
+    if ($socket === false) {
+        throw new RuntimeException('could not connect to ' . $smtp['host'] . ': ' . $errstr);
+    }
+    stream_set_timeout($socket, SMTP_TIMEOUT_SECONDS);
+
+    // Reads one reply (each line but the last has "-" after the code) and checks
+    // its code. Errors name the step, never the command: AUTH carries the password.
+    $expect = static function (int $code, string $step) use ($socket): void {
+        $reply = '';
+        do {
+            $line = fgets($socket, 1024);
+            if ($line === false) {
+                throw new RuntimeException($step . ': connection closed or timed out');
+            }
+            $reply .= $line;
+        } while (isset($line[3]) && $line[3] === '-');
+        if ((int) substr($reply, 0, 3) !== $code) {
+            throw new RuntimeException($step . ': ' . trim($reply));
+        }
+    };
+    $command = static function (string $line, int $code, string $step) use ($socket, $expect): void {
+        fwrite($socket, $line . "\r\n");
+        $expect($code, $step);
+    };
+
+    try {
+        $expect(220, 'greeting');
+        $hello = 'EHLO ' . (gethostname() ?: 'localhost');
+        $command($hello, 250, 'EHLO');
+        if (!$implicitTls) {
+            $command('STARTTLS', 220, 'STARTTLS');
+            if (stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT) !== true) {
+                throw new RuntimeException('STARTTLS: TLS handshake failed');
+            }
+            $command($hello, 250, 'EHLO');
+        }
+        $command('AUTH PLAIN ' . base64_encode("\0" . $smtp['username'] . "\0" . $smtp['password']), 235, 'AUTH');
+        $command('MAIL FROM:<' . $smtp['username'] . '>', 250, 'MAIL FROM');
+        $command('RCPT TO:<' . $to . '>', 250, 'RCPT TO');
+        $command('DATA', 354, 'DATA');
+        // A line holding only "." ends the message, so leading dots are doubled.
+        $command(preg_replace('/^\./m', '..', $message) . "\r\n.", 250, 'message');
+        fwrite($socket, "QUIT\r\n");
+    } finally {
+        fclose($socket);
+    }
+}
+
+/**
+ * Sends one plain-text email: over SMTP when ENV_FILE configures it, otherwise
+ * with mail() from SENDER.
  *
  * Local testing only (see vite.config.ts): MYSPA_CONTACT_DRY_RUN=1 logs the
  * email instead of sending it. Never set this on the server.
  */
-function sendMail(string $to, string $subject, string $body, array $headers): bool
+function sendMail(string $to, string $subject, string $body, string $fromName, array $headers): bool
 {
-    $headers += [
+    $smtp = smtpConfig();
+    $from = $smtp['username'] ?? SENDER;
+    $headers = ['From' => mailbox($fromName, $from)] + $headers + [
         'MIME-Version' => '1.0',
         'Content-Type' => 'text/plain; charset=UTF-8',
         'Content-Transfer-Encoding' => 'quoted-printable',
     ];
+    $headerLines = static function (array $headers): string {
+        return implode("\r\n", array_map(static function (string $key, string $value): string {
+            return $key . ': ' . $value;
+        }, array_keys($headers), $headers));
+    };
 
     if (getenv('MYSPA_CONTACT_DRY_RUN') === '1') {
-        error_log("[contact dry run]\nTo: " . $to . "\nSubject: " . $subject . "\n"
-            . implode("\n", array_map(static function (string $key, string $value): string {
-                return $key . ': ' . $value;
-            }, array_keys($headers), $headers))
-            . "\n\n" . $body);
+        error_log('[contact dry run via ' . ($smtp === null ? 'mail()' : 'SMTP ' . $smtp['host']) . "]\n"
+            . 'To: ' . $to . "\nSubject: " . $subject . "\n" . $headerLines($headers) . "\n\n" . $body);
         return true;
     }
 
-    // -f sets the envelope sender, which is the address SPF checks.
-    return mail($to, $subject, quoted_printable_encode($body), $headers, '-f' . SENDER);
+    if ($smtp === null) {
+        // -f sets the envelope sender, which is the address SPF checks.
+        return mail($to, $subject, quoted_printable_encode($body), $headers, '-f' . SENDER);
+    }
+
+    // mail() writes To, Subject and Date itself; over SMTP the message must carry them.
+    $message = $headerLines([
+        'Date' => date('r'),
+        'To' => $to,
+        'Subject' => $subject,
+        'Message-ID' => '<' . bin2hex(random_bytes(16)) . '@' . substr((string) strrchr($from, '@'), 1) . '>',
+    ] + $headers) . "\r\n\r\n" . quoted_printable_encode($body);
+
+    try {
+        smtpSend($smtp, $to, $message);
+        return true;
+    } catch (RuntimeException $e) {
+        error_log('contact.php: SMTP ' . $e->getMessage());
+        return false;
+    }
 }
 
 // ── Per-IP throttle ─────────────────────────────────────────────────────────
@@ -272,13 +432,12 @@ $body = implode("\r\n", [
     'Sent ' . $sentAt . ' EAT from IP ' . $ip,
 ]);
 
-$sent = sendMail(RECIPIENT, encodeHeader('Website enquiry from ' . $name . ': ' . $subject), $body, [
-    'From' => mailbox(SENDER_NAME, SENDER),
+$sent = sendMail(RECIPIENT, encodeHeader('Website enquiry from ' . $name . ': ' . $subject), $body, SENDER_NAME, [
     'Reply-To' => mailbox($name, $email),
 ]);
 
 if (!$sent) {
-    error_log('contact.php: mail() failed for a message from ' . $email);
+    error_log('contact.php: sending failed for a message from ' . $email);
     respond(500, ['message' => 'We could not send your message. Please try again, or email ' . RECIPIENT . '.']);
 }
 
@@ -304,9 +463,8 @@ $confirmation = implode("\r\n", [
     'on myspa.co.ke. If that was not you, you can safely ignore this email.',
 ]);
 
-$confirmed = sendMail($email, encodeHeader(CONFIRMATION_SUBJECT), $confirmation, [
-    'From' => mailbox(CONFIRMATION_SENDER_NAME, SENDER),
-    // Replies go to sales rather than bouncing off the no-reply address.
+$confirmed = sendMail($email, encodeHeader(CONFIRMATION_SUBJECT), $confirmation, CONFIRMATION_SENDER_NAME, [
+    // Replies go to sales rather than to the sending account.
     'Reply-To' => RECIPIENT,
     // RFC 3834: marks the email as automatic, so mail servers do not answer it
     // with out-of-office or vacation replies.
@@ -317,7 +475,7 @@ $confirmed = sendMail($email, encodeHeader(CONFIRMATION_SUBJECT), $confirmation,
 // Sales already has the enquiry, so a failed confirmation is logged, not reported:
 // telling the visitor to resend would only produce a duplicate enquiry.
 if (!$confirmed) {
-    error_log('contact.php: confirmation mail() failed for ' . $email);
+    error_log('contact.php: confirmation failed for ' . $email);
 }
 
 respond(200, ['message' => 'Message sent successfully.']);
